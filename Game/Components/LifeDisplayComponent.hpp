@@ -13,8 +13,6 @@ namespace bae
 
 namespace Game
 {
-    class LifeComponent;
-
     class LifeDisplayComponent : public bae::Component, public bae::Observer
     {
     public:
