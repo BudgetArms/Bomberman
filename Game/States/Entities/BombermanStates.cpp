@@ -1,7 +1,10 @@
 #include "BombermanStates.hpp"
 
+#include "Base/Events.hpp"
+#include "Base/SoundAssets.hpp"
 #include "Components/HitboxComponent.hpp"
 #include "Components/SpriteComponent.hpp"
+#include "Core/EventQueue.hpp"
 #include "Core/ServiceLocator.hpp"
 #include "Singletons/GameTime.hpp"
 #include "Sounds/SoundSystem.hpp"
@@ -43,6 +46,16 @@ void BombermanDyingState::OnEnter()
 
     auto* hitboxComp                    = m_Owner->GetComponent<HitboxComponent>();
     hitboxComp->m_bAreCollisionsEnabled = false;
+
+
+    // Play Sound
+    bae::SoundSystem& soundSystem   = bae::ServiceLocator::GetSoundSystem();
+    const bae::SoundID startSoundID = Game::Sounds::GetSoundId(Sounds::SoundAssets::BombermanKilled);
+
+    const bae::ActiveSoundID playingSoundID = soundSystem.Play(startSoundID);
+    soundSystem.SetVolume(playingSoundID, 1.f);
+
+    bae::EventQueue::GetInstance().SendEvent(GetEventHash(Events::PlayerDied));
 }
 
 void BombermanDyingState::OnExit()
