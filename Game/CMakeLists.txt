@@ -35,6 +35,9 @@ add_executable(${PROJECT_NAME} ${TARGET_PARAM}
     "Components/ScoreDisplayComponent.cpp"
 
     "Managers/CollisionManager.cpp"
+
+    "States/Entities/BombermanStates.cpp"
+    "States/Entities/EntityState.cpp"
 )
 
 
