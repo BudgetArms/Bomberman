@@ -26,6 +26,7 @@
 #include "Sounds/MixerSoundSystem.hpp"
 #endif
 #include "Base/CommonManagerVariables.hpp"
+#include "Base/SoundAssets.hpp"
 #include "Sounds/SoLoudSoundSystem.hpp"
 
 
@@ -150,7 +151,7 @@ void Start()
 
 void LoadSounds()
 {
-    // namespace gs = Game::Sounds;
+    namespace gs = Game::Sounds;
 
     #if __EMSCRIPTEN__
 
@@ -165,28 +166,17 @@ void LoadSounds()
 
     #endif
 
-    /*
     const auto soundSystem = &bae::ServiceLocator::GetSoundSystem();
     gs::g_sSoundEvents     =
     {
-        { gs::SoundAssets::Credit, soundSystem->LoadSound("Sounds/Credit.wav") },
-        { gs::SoundAssets::EatDot, soundSystem->LoadSound("Sounds/EatDot.wav") },
-        { gs::SoundAssets::EatEnergizer, soundSystem->LoadSound("Sounds/EatEnergizer.wav") },
-        { gs::SoundAssets::EatFruit, soundSystem->LoadSound("Sounds/EatFruit.wav") },
-        { gs::SoundAssets::EatGhost, soundSystem->LoadSound("Sounds/EatGhost.wav") },
-        { gs::SoundAssets::ExtraLife, soundSystem->LoadSound("Sounds/ExtraLife.wav") },
-        { gs::SoundAssets::Eyes, soundSystem->LoadSound("Sounds/Eyes.wav") },
-        { gs::SoundAssets::EyesFirstLoop, soundSystem->LoadSound("Sounds/Eyes_FirstLoop.wav") },
-        { gs::SoundAssets::Fright, soundSystem->LoadSound("Sounds/Fright.wav") },
-        { gs::SoundAssets::FruitBounce, soundSystem->LoadSound("Sounds/FruitBounce.wav") },
-        { gs::SoundAssets::IntermissionTune1, soundSystem->LoadSound("Sounds/IntermissionTune1.wav") },
-        { gs::SoundAssets::IntermissionTune1_Bump, soundSystem->LoadSound("Sounds/IntermissionTune1_Bump.wav") },
-        { gs::SoundAssets::IntermissionTune2, soundSystem->LoadSound("Sounds/IntermissionTune2.wav") },
-        { gs::SoundAssets::IntermissionTune3, soundSystem->LoadSound("Sounds/IntermissionTune3.wav") },
-        { gs::SoundAssets::PlayerDeath, soundSystem->LoadSound("Sounds/Death.wav") },
-        { gs::SoundAssets::StartGame, soundSystem->LoadSound("Sounds/Death.wav") },
+        { gs::SoundAssets::BombermanKilled, soundSystem->LoadSound("Sounds/BombermanKilled.wav") },
+        { gs::SoundAssets::BombExplosion, soundSystem->LoadSound("Sounds/BombExplosion.wav") },
+        { gs::SoundAssets::BombLay, soundSystem->LoadSound("Sounds/BombLay.wav") },
+        { gs::SoundAssets::Pause, soundSystem->LoadSound("Sounds/Pause.wav") },
+        { gs::SoundAssets::PowerUp, soundSystem->LoadSound("Sounds/PowerUp.wav") },
+        { gs::SoundAssets::StepHorizontal, soundSystem->LoadSound("Sounds/StepHorizontal.wav") },
+        { gs::SoundAssets::StepVertical, soundSystem->LoadSound("Sounds/StepVertical.wav") },
     };
-    */
 }
 
 void LoadSoundCommands()
