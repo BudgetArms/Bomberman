@@ -27,6 +27,7 @@ add_executable(${PROJECT_NAME} ${TARGET_PARAM}
     "Base/CommonManagerVariables.hpp"
     "Base/GameMode.hpp"
 
+    "Components/BombermanComponent.cpp"
     "Components/HitboxComponent.cpp"
     "Components/LifeComponent.cpp"
     "Components/LifeDisplayComponent.cpp"
