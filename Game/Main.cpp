@@ -27,8 +27,11 @@
 #endif
 #include "Base/CommonManagerVariables.hpp"
 #include "Base/SoundAssets.hpp"
+#include "Commands/ToggleMuteSoundsCommand.hpp"
 #include "Components/ManagersComponent.hpp"
+#include "Managers/InputManager.hpp"
 #include "Sounds/SoLoudSoundSystem.hpp"
+#include "Wrappers/Keyboard.hpp"
 
 
 #ifdef STEAMWORKS_ENABLED
@@ -182,12 +185,10 @@ void LoadSounds()
 
 void LoadSoundCommands()
 {
-    /*
     const bae::Keyboard& keyboard = bae::InputManager::GetInstance().GetKeyboard();
 
-    auto toggleMuteAllSoundsCommand = std::make_unique<Game::ToggleMuteAllSoundsCommand>();
-    keyboard.AddKeyboardCommands(std::move(toggleMuteAllSoundsCommand), SDLK_F2, bae::InputManager::ButtonState::Down);
-    */
+    auto toggleMuteSoundsCommand = std::make_unique<Game::ToggleMuteSoundsCommand>();
+    keyboard.AddKeyboardCommands(std::move(toggleMuteSoundsCommand), SDLK_F2, bae::InputManager::ButtonState::Down);
 }
 
 void CreateAllScenes()
