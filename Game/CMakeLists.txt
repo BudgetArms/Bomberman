@@ -30,6 +30,7 @@ add_executable(${PROJECT_NAME} ${TARGET_PARAM}
     "Commands/ForceDamageCommand.cpp"
     "Commands/ForceMoveCommand.cpp"
     "Commands/LogMousePositionCommand.cpp"
+    "Commands/ToggleMuteSoundsCommand.cpp"
 
     "Components/BombermanComponent.cpp"
     "Components/HitboxComponent.cpp"
