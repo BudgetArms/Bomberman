@@ -61,6 +61,7 @@
 
 
 // Game Includes
+#include "Managers/LevelManager.hpp"
 
 
 namespace fs = std::filesystem;
@@ -74,7 +75,7 @@ void CreateAllScenes();
 
 void LoadStartMenu();
 
-// void LoadManagers();
+void LoadManagers();
 
 void LoadDAEBackground();
 void LoadFpsCounterScene();
@@ -138,10 +139,9 @@ void Start()
     CreateAllScenes();
 
     // LoadStartMenu();
+    LoadManagers();
 
-    // LoadManagers();
-
-    LoadDAEBackground();
+    // LoadDAEBackground();
     LoadFpsCounterScene();
     LoadGameNameScene();
 
@@ -246,10 +246,11 @@ void LoadStartMenu()
 
 void LoadManagers()
 {
-    /*
     // Setting up level manager data
     Game::LevelManager& levelManager = Game::LevelManager::GetInstance();
 
+    levelManager.SpawnBomberman();
+    /*
     const bae::WindowSize windowSize = bae::Renderer::GetInstance().GetSDLWindowSize();
     levelManager.SetSpriteSheetWorldLocation({
         static_cast<float>(windowSize.Width) / 2.f, static_cast<float>(windowSize.Height) / 2.f
