@@ -26,6 +26,7 @@
 #include "Components/LifeDisplayComponent.hpp"
 #include "Components/ScoreComponent.hpp"
 #include "Components/ScoreDisplayComponent.hpp"
+#include "Core/Renderer.hpp"
 #include "Core/Text2D.hpp"
 
 
@@ -35,10 +36,7 @@ using namespace Game;
 LevelManager::LevelManager()
 {
     // Create Background
-    // m_BackgroundSpriteSheet = std::make_unique<bae::SpriteSheet>(m_BackgroundTexturePath,
-    //                                                              SDL_FRect(0, 0, 224, 1488), 1, 6);
-    //
-    // m_BackgroundSpriteSheet->m_Index = 0;
+    m_BackgroundTexture = bae::ResourceManager::GetInstance().LoadTexture(m_BackgroundTexturePath).get();
 }
 
 LevelManager::~LevelManager()
@@ -121,4 +119,9 @@ std::shared_ptr<bae::GameObject> LevelManager::GetBombermanBase(const std::strin
     // bomberman->GetComponent<GridMovementComponent>()->AddObserver(bombermanComponent);
 
     return bomberman;
+}
+
+void LevelManager::RenderBackground() const
+{
+    bae::Renderer::GetInstance().RenderTexture(*m_BackgroundTexture, false, { 0, 0 }, 0, { 2.f, 2.f });
 }

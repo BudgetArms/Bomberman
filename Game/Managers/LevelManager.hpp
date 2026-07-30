@@ -26,8 +26,8 @@ namespace Game
                                                           const glm::vec2& spawnPosition);
         void HandleEvent(unsigned) override {};
 
-        /*
         void RenderBackground() const;
+        /*
 
         void LoadLevelFromFile(int levelNumber, const std::filesystem::path& jsonFile);
 
@@ -64,8 +64,6 @@ namespace Game
         static void AddControls(bae::GameObject& gameObject, bool firstPlayer);
     */
 
-        std::unique_ptr<bae::SpriteSheet> m_BackgroundSpriteSheet{};
-
         GameMode m_GameMode{ GameMode::Singleplayer };
 
 
@@ -73,6 +71,7 @@ namespace Game
 
         // std::unordered_map<int, LevelJson> m_LevelJson{};
 
-        const std::filesystem::path m_BackgroundTexturePath{ "Textures/Level/Levels.png" };
+        const std::string m_BackgroundTexturePath{ "Textures/Level/Playfield.png" };
+        bae::Texture2D* m_BackgroundTexture{};
     };
 }
