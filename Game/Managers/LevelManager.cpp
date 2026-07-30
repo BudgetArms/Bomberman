@@ -55,7 +55,7 @@ void LevelManager::SpawnBomberman()
     const auto bomberman = GetBombermanBase("Bomberman", spawnPosition);
 
     // Score Display
-    bomberman->GetComponent<ScoreDisplayComponent>()->SetPosition(glm::vec2{ 200, 540 });
+    bomberman->GetComponent<ScoreDisplayComponent>()->SetPosition(glm::vec2{ 100, 540 });
 
     // Life Display
     bomberman->GetComponent<LifeDisplayComponent>()->m_Position = { 5, 540 };
@@ -112,10 +112,11 @@ std::shared_ptr<bae::GameObject> LevelManager::GetBombermanBase(const std::strin
     // Life Display
     auto lifeTexture = bae::ResourceManager::GetInstance().LoadTexture("Textures/Level/Heart.png");
     bomberman->AddComponent<LifeDisplayComponent>(*bomberman, glm::vec2{ 0, 0 }, lifeTexture);
-    bomberman->GetComponent<LifeDisplayComponent>()->m_Scale = { 2.f, 2.f };
+    bomberman->GetComponent<LifeDisplayComponent>()->m_Scale = { 1.f, 1.f };
 
     const auto lifeDisplayComp = bomberman->GetComponent<LifeDisplayComponent>();
     bomberman->GetComponent<LifeComponent>()->AddObserver(lifeDisplayComp);
+
     // bomberman->GetComponent<GridMovementComponent>()->m_Speed = 100.f;
     // bomberman->GetComponent<GridMovementComponent>()->AddObserver(bombermanComponent);
 
