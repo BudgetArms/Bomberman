@@ -27,6 +27,7 @@
 #endif
 #include "Base/CommonManagerVariables.hpp"
 #include "Base/SoundAssets.hpp"
+#include "Components/ManagersComponent.hpp"
 #include "Sounds/SoLoudSoundSystem.hpp"
 
 
@@ -250,6 +251,15 @@ void LoadManagers()
     Game::LevelManager& levelManager = Game::LevelManager::GetInstance();
 
     levelManager.SpawnBomberman();
+
+
+    const auto managersObject = std::make_shared<bae::GameObject>("Managers Object");
+    managersObject->AddComponent<Game::ManagersComponent>(*managersObject);
+
+    bae::Scene* managersScene = bae::SceneManager::GetInstance().GetScene(Game::g_LevelBackgroundName.data());
+    managersScene->Add(managersObject);
+
+
     /*
     const bae::WindowSize windowSize = bae::Renderer::GetInstance().GetSDLWindowSize();
     levelManager.SetSpriteSheetWorldLocation({

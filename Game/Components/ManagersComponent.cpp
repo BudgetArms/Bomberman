@@ -24,5 +24,5 @@ void Game::ManagersComponent::LateUpdate()
 
 void Game::ManagersComponent::Render() const
 {
-    // LevelManager::GetInstance().RenderBackground();
+    LevelManager::GetInstance().RenderBackground();
 }
