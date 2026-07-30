@@ -3,6 +3,7 @@
 #include "Base/Events.hpp"
 #include "Base/SoundAssets.hpp"
 #include "Components/HitboxComponent.hpp"
+#include "Components/LifeComponent.hpp"
 #include "Components/SpriteComponent.hpp"
 #include "Core/EventQueue.hpp"
 #include "Core/ServiceLocator.hpp"
@@ -54,8 +55,6 @@ void BombermanDyingState::OnEnter()
 
     const bae::ActiveSoundID playingSoundID = soundSystem.Play(startSoundID);
     soundSystem.SetVolume(playingSoundID, 1.f);
-
-    bae::EventQueue::GetInstance().SendEvent(GetEventHash(Events::PlayerDied));
 }
 
 void BombermanDyingState::OnExit()
@@ -67,9 +66,28 @@ std::unique_ptr<EntityState> BombermanDyingState::Update()
     m_AccumulatedTime += bae::GameTime::GetInstance().GetDeltaTime();
     if(m_AccumulatedTime >= m_DeathDelay)
     {
-        m_Owner->Destroy();
+        return std::make_unique<BombermanDeadState>(*m_Owner);
     }
 
+    return nullptr;
+}
+
+
+BombermanDeadState::BombermanDeadState(bae::GameObject& owner) :
+    EntityState(owner)
+{
+}
+
+void BombermanDeadState::OnEnter()
+{
+}
+
+void BombermanDeadState::OnExit()
+{
+}
+
+std::unique_ptr<EntityState> BombermanDeadState::Update()
+{
     return nullptr;
 }
 

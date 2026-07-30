@@ -29,4 +29,16 @@ namespace Game::States
         float m_AccumulatedTime{};
         static constexpr float m_DeathDelay{ 4.f };
     };
+
+    class BombermanDeadState final : public EntityState
+    {
+    public:
+        explicit BombermanDeadState(bae::GameObject& owner);
+
+        void OnEnter() override;
+        void OnExit() override;
+
+        std::unique_ptr<EntityState> Update();
+    };
 }
+
