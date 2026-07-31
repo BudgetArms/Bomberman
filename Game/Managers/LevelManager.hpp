@@ -71,8 +71,10 @@ namespace Game
 
         void Notify(unsigned eventHash, bae::Subject* subject, const std::any& eventData) override;
 
-        // static void AddControls(bae::GameObject& gameObject, bool firstPlayer);
+        void AddControls(const bae::GameObject& gameObject, bool bIsFirstPlayer) const;
 
+        void SavePlayerData();
+        void LoadPlayerData() const;
 
         GameMode m_GameMode{ GameMode::Singleplayer };
 
@@ -93,6 +95,9 @@ namespace Game
         // todo: load from file
         int m_BombermanLives{ 4 };
         int m_BombermissLives{ 4 };
+
+        int m_BombermanScore{};
+        int m_BombermissScore{};
 
         glm::vec2 m_BombermanStartPosition{ 200, 300 };
         glm::vec2 m_BombermissStartPosition{ 200, 400 };

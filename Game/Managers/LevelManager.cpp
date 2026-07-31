@@ -19,6 +19,7 @@
 #include "Managers/SceneManager.hpp"
 
 #include "Base/CommonManagerVariables.hpp"
+#include "Base/DirectionEnum.hpp"
 #include "Base/Events.hpp"
 #include "Commands/ForceDamageCommand.hpp"
 #include "Components/BombermanComponent.hpp"
@@ -52,6 +53,7 @@ LevelManager::~LevelManager()
     // ClearLevel();
 }
 
+
 void LevelManager::SpawnBomberman()
 {
     bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
@@ -66,17 +68,20 @@ void LevelManager::SpawnBomberman()
     // Lives
     bomberman->GetComponent<LifeComponent>()->SetLives(m_BombermanLives);
 
-    // Score Display
-    bomberman->GetComponent<ScoreDisplayComponent>()->SetPosition(glm::vec2{ 100, 540 });
+    // Score
+    bomberman->GetComponent<ScoreComponent>()->SetScore(m_BombermanScore);
 
     // Life Display
     bomberman->GetComponent<LifeDisplayComponent>()->m_Position = { 5, 540 };
 
-    // Controls
-    // AddControls(*bomberman, true);
+    // Score Display
+    bomberman->GetComponent<ScoreDisplayComponent>()->SetPosition(glm::vec2{ 100, 540 });
 
     // Set Bomberman
     m_Bomberman = bomberman.get();
+
+    // Controls
+    AddControls(*bomberman, true);
 
     const bae::Keyboard& keyboard = bae::InputManager::GetInstance().GetKeyboard();
 
@@ -100,17 +105,21 @@ void LevelManager::SpawnBombermiss()
     // Lives
     bombermiss->GetComponent<LifeComponent>()->SetLives(m_BombermissLives);
 
-    // Score Display
-    bombermiss->GetComponent<ScoreDisplayComponent>()->SetPosition(glm::vec2{ 400, 540 });
+    // Score
+    bombermiss->GetComponent<ScoreComponent>()->SetScore(m_BombermissScore);
 
     // Life Display
     bombermiss->GetComponent<LifeDisplayComponent>()->m_Position = { 300, 540 };
 
-    // Controls
-    // AddControls(*bombermiss, false);
+    // Score Display
+    bombermiss->GetComponent<ScoreDisplayComponent>()->SetPosition(glm::vec2{ 400, 540 });
+
 
     // Set Bombermiss
     m_Bombermiss = bombermiss.get();
+
+    // Controls
+    AddControls(*bombermiss, false);
 
     scene->Add(bombermiss);
 }
@@ -119,7 +128,7 @@ void LevelManager::SpawnBalloom(const glm::vec2& position)
 {
     bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
 
-    auto balloom = GetEnemyBase("Balloom", position);
+    const auto balloom = GetEnemyBase("Balloom", position);
     balloom->AddComponent<bae::SpriteComponent>(*balloom, "Textures/Characters/Enemies.png",
                                                 SDL_FRect(0, 0, 32, 16), 2, 1);
 
@@ -132,7 +141,7 @@ void LevelManager::SpawnOneal(const glm::vec2& position)
 {
     bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
 
-    auto oneal = GetEnemyBase("Oneal", position);
+    const auto oneal = GetEnemyBase("Oneal", position);
     oneal->AddComponent<bae::SpriteComponent>(*oneal, "Textures/Characters/Enemies.png",
                                               SDL_FRect(0, 16, 32, 16), 2, 1);
 
@@ -144,7 +153,7 @@ void LevelManager::SpawnDoll(const glm::vec2& position)
 {
     bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
 
-    auto doll = GetEnemyBase("Doll", position);
+    const auto doll = GetEnemyBase("Doll", position);
     doll->AddComponent<bae::SpriteComponent>(*doll, "Textures/Characters/Enemies.png",
                                              SDL_FRect(0, 32, 32, 16), 2, 1);
 
@@ -156,13 +165,14 @@ void LevelManager::SpawnMinvo(const glm::vec2& position)
 {
     bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
 
-    auto minvo = GetEnemyBase("Minvo", position);
+    const auto minvo = GetEnemyBase("Minvo", position);
     minvo->AddComponent<bae::SpriteComponent>(*minvo, "Textures/Characters/Enemies.png",
                                               SDL_FRect(0, 48, 32, 16), 2, 1);
 
     m_Enemies.insert(minvo.get());
     scene->Add(minvo);
 }
+
 
 std::shared_ptr<bae::GameObject> LevelManager::GetBombermanBase(const std::string& gameObjectName,
                                                                 const glm::vec2& spawnPosition)
@@ -228,13 +238,21 @@ void LevelManager::SpawnBlocks()
 
 void LevelManager::SkipLevel()
 {
+    SavePlayerData();
+
     ++m_CurrentLevel;
     RestartLevel();
 }
 
 void LevelManager::ClearLevel()
 {
+    const bae::Scene* scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
+    scene->RemoveAll();
+
+    m_Bomberman  = nullptr;
+    m_Bombermiss = nullptr;
 }
+
 
 std::set<bae::GameObject*> LevelManager::GetPlayers()
 {
@@ -256,6 +274,7 @@ std::set<bae::GameObject*> LevelManager::GetEnemies()
 {
     return m_Enemies;
 }
+
 
 void LevelManager::HandleEvent(const unsigned int eventHash)
 {
@@ -304,6 +323,8 @@ void LevelManager::HandleBomberDeath(const bae::GameObject& object)
         return;
     }
 
+    SavePlayerData();
+
     if(object.GetComponent<LifeComponent>()->IsAlive())
     {
         RestartLevel();
@@ -322,6 +343,27 @@ void LevelManager::RespawnPlayer(bae::GameObject&)
 void LevelManager::RestartLevel()
 {
     ClearLevel();
+
+    // Spawn Door
+
+
+    // Level Generation
+
+    // Spawn Player(s)
+    switch(m_GameMode)
+    {
+        case GameMode::Singleplayer:
+            SpawnBomberman();
+            break;
+        case GameMode::CoOp:
+            SpawnBomberman();
+            SpawnBombermiss();
+            break;
+        case GameMode::Versus:
+            break;
+    }
+
+    // Spawn Enemies
 }
 
 void LevelManager::HandleGameOver()
@@ -329,11 +371,23 @@ void LevelManager::HandleGameOver()
     switch(m_GameMode)
     {
         case GameMode::Singleplayer:
-            break;
+        {
+            const int score = m_BombermanScore;
+            std::cout << FUNCTION_NAME << ": SinglePlayer, Score: " << m_BombermanScore << '\n';
+        }
+        break;
         case GameMode::CoOp:
-            break;
+        {
+            const int score = m_BombermanScore + m_BombermissScore;
+            std::cout << FUNCTION_NAME << ": Co-Op, Score: " << score << '\n';
+        }
+        break;
         case GameMode::Versus:
-            break;
+        {
+            const int score = m_BombermanScore;
+            std::cout << FUNCTION_NAME << ": Versus, Score: " << score << '\n';
+        }
+        break;
     }
 }
 
@@ -348,5 +402,82 @@ void LevelManager::Notify(const unsigned eventHash, bae::Subject* subject, const
         {
             HandleBomberDeath(*subject->GetGameObject());
         }
+    }
+}
+
+void LevelManager::AddControls(const bae::GameObject& gameObject, bool bIsFirstPlayer) const
+{
+    // todo: remove maybe_unused
+    [[maybe_unused]] const bae::Keyboard& keyboard = bae::InputManager::GetInstance().GetKeyboard();
+    const bae::Controller* controller              = bae::InputManager::GetInstance().GetController(!bIsFirstPlayer);
+
+    [[maybe_unused]] constexpr auto moveOnGridButtonState = bae::InputManager::ButtonState::Pressed;
+
+    if(!controller)
+    {
+        std::cout << FUNCTION_NAME << " Failed to Get controller, IsFirstPlayer: "
+                << std::boolalpha << bIsFirstPlayer << '\n';
+        return;
+    }
+
+    // auto moveOnGridLeftCommand  = std::make_unique<MoveOnGridCommand>(gameObject, Direction::Left);
+    // auto moveOnGridRightCommand = std::make_unique<MoveOnGridCommand>(gameObject, Direction::Right);
+    // auto moveOnGridDownCommand  = std::make_unique<MoveOnGridCommand>(gameObject, Direction::Down);
+    // auto moveOnGridUpCommand    = std::make_unique<MoveOnGridCommand>(gameObject, Direction::Up);
+
+    // [[maybe_unused]] auto moveOnGridLeftCommand  = std::make_unique<MoveOnGridCommand>(gameObject, Direction::Left);
+    // [[maybe_unused]] auto moveOnGridRightCommand = std::make_unique<MoveOnGridCommand>(gameObject, Direction::Right);
+    // [[maybe_unused]] auto moveOnGridDownCommand  = std::make_unique<MoveOnGridCommand>(gameObject, Direction::Down);
+    // [[maybe_unused]] auto moveOnGridUpCommand    = std::make_unique<MoveOnGridCommand>(gameObject, Direction::Up);
+
+
+    if(bIsFirstPlayer)
+    {
+        // keyboard.AddKeyboardCommands(std::move(moveOnGridLeftCommand), SDLK_A, moveOnGridButtonState);
+        // keyboard.AddKeyboardCommands(std::move(moveOnGridRightCommand), SDLK_D, moveOnGridButtonState);
+        // keyboard.AddKeyboardCommands(std::move(moveOnGridDownCommand), SDLK_S, moveOnGridButtonState);
+        // keyboard.AddKeyboardCommands(std::move(moveOnGridUpCommand), SDLK_W, moveOnGridButtonState);
+    }
+    else
+    {
+        // keyboard.AddKeyboardCommands(std::move(moveOnGridLeftCommand), SDLK_LEFT, moveOnGridButtonState);
+        // keyboard.AddKeyboardCommands(std::move(moveOnGridRightCommand), SDLK_RIGHT, moveOnGridButtonState);
+        // keyboard.AddKeyboardCommands(std::move(moveOnGridDownCommand), SDLK_DOWN, moveOnGridButtonState);
+        // keyboard.AddKeyboardCommands(std::move(moveOnGridUpCommand), SDLK_UP, moveOnGridButtonState);
+    }
+
+    // #if WIN32
+    // controller->AddControllerCommands(std::move(moveOnGridLeftCommand), XINPUT_GAMEPAD_DPAD_LEFT,
+    //                                   moveOnGridButtonState);
+    // controller->AddControllerCommands(std::move(moveOnGridRightCommand), XINPUT_GAMEPAD_DPAD_RIGHT,
+    //                                   moveOnGridButtonState);
+    // controller->AddControllerCommands(std::move(moveOnGridDownCommand), XINPUT_GAMEPAD_DPAD_DOWN,
+    //                                   moveOnGridButtonState);
+    // controller->AddControllerCommands(std::move(moveOnGridUpCommand), XINPUT_GAMEPAD_DPAD_UP, moveOnGridButtonState);
+    // #endif
+}
+
+void LevelManager::SavePlayerData()
+{
+    // Save lives & Score
+    m_BombermanLives = m_Bomberman->GetComponent<LifeComponent>()->GetLives();
+    m_BombermanScore = m_Bomberman->GetComponent<ScoreComponent>()->GetScore();
+
+    if(m_Bombermiss)
+    {
+        m_BombermanLives  = m_Bombermiss->GetComponent<LifeComponent>()->GetLives();
+        m_BombermissScore = m_Bombermiss->GetComponent<ScoreComponent>()->GetScore();
+    }
+}
+
+void LevelManager::LoadPlayerData() const
+{
+    m_Bomberman->GetComponent<LifeComponent>()->SetLives(m_BombermanLives);
+    m_Bomberman->GetComponent<ScoreComponent>()->SetScore(m_BombermanScore);
+
+    if(m_Bombermiss)
+    {
+        m_Bombermiss->GetComponent<LifeComponent>()->SetLives(m_BombermissLives);
+        m_Bombermiss->GetComponent<ScoreComponent>()->SetScore(m_BombermissScore);
     }
 }
