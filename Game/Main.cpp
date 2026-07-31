@@ -252,6 +252,10 @@ void LoadManagers()
     Game::LevelManager& levelManager = Game::LevelManager::GetInstance();
 
     levelManager.SpawnBomberman();
+    levelManager.SpawnBalloom({ 400, 300 });
+    levelManager.SpawnOneal({ 440, 300 });
+    levelManager.SpawnDoll({ 480, 300 });
+    levelManager.SpawnMinvo({ 520, 300 });
 
 
     const auto managersObject = std::make_shared<bae::GameObject>("Managers Object");
