@@ -41,24 +41,11 @@ void BombermanComponent::Update()
     }
 
     UpdateToNewState(std::move(newState));
-
-    // Used for DyingState
-    if(m_PendingState)
-    {
-        UpdateToNewState(std::move(m_PendingState));
-        m_PendingState = nullptr;
-    }
 }
 
 
 void BombermanComponent::UpdateToNewState(std::unique_ptr<States::EntityState> newState)
 {
-    // if in dying state, ignore new state
-    if(dynamic_cast<States::BombermanDyingState*>(m_State.get()))
-    {
-        return;
-    }
-
     if(!newState)
     {
         return;
@@ -74,7 +61,6 @@ void BombermanComponent::Notify(const unsigned eventHash, Subject*, const std::a
     switch(GetEvent(eventHash))
     {
         case Events::LivesChanged:
-            m_PendingState = std::make_unique<States::BombermanDyingState>(*m_Owner);
             break;
         case Events::CollisionEvent:
             HandleCollision(eventData);

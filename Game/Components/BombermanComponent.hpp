@@ -26,8 +26,6 @@ namespace Game
 
     private:
         std::unique_ptr<States::EntityState> m_State{};
-
-        std::unique_ptr<States::EntityState> m_PendingState{};
     };
 }
 

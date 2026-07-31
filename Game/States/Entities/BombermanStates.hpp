@@ -1,10 +1,11 @@
 #pragma once
 #include "EntityState.hpp"
+#include "Core/Observer.hpp"
 
 
 namespace Game::States
 {
-    class BombermanAliveState final : public EntityState
+    class BombermanAliveState final : public EntityState, public bae::Observer
     {
     public:
         explicit BombermanAliveState(bae::GameObject& owner);
@@ -13,6 +14,11 @@ namespace Game::States
         void OnExit() override;
 
         std::unique_ptr<EntityState> Update() override;
+
+        void Notify(unsigned eventHash, bae::Subject* subject, const std::any& eventData) override;
+
+    private:
+        bool m_bIsDying{ false };
     };
 
     class BombermanDyingState final : public EntityState

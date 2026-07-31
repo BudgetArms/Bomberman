@@ -23,6 +23,8 @@ void BombermanAliveState::OnEnter()
 {
     auto* spriteComp    = m_Owner->GetComponent<bae::SpriteComponent>();
     spriteComp->m_Index = 0;
+
+    m_Owner->GetComponent<LifeComponent>()->AddObserver(this);
 }
 
 void BombermanAliveState::OnExit()
@@ -31,7 +33,21 @@ void BombermanAliveState::OnExit()
 
 std::unique_ptr<EntityState> BombermanAliveState::Update()
 {
+    std::cout << FUNCTION_NAME << '\n';
+    if(m_bIsDying)
+    {
+        return std::make_unique<BombermanDyingState>(*m_Owner);
+    }
+
     return nullptr;
+}
+
+void BombermanAliveState::Notify(const unsigned eventHash, bae::Subject*, const std::any&)
+{
+    if(GetEvent(eventHash) == Events::LivesChanged)
+    {
+        m_bIsDying = true;
+    }
 }
 
 
