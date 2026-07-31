@@ -98,7 +98,7 @@ int main(int, char*[])
     std::cout << "VLD disabled" << '\n';
     #endif
 
-    bae::Utils::Window window{ "Bomberman", "./Resources/", 992, 416, false };
+    bae::Utils::Window window{ "Bomberman", "./Resources/", 992, 450, false };
 
 
     #if __EMSCRIPTEN__
