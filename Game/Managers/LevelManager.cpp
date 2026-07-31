@@ -109,6 +109,55 @@ void LevelManager::SpawnBombermiss()
     scene->Add(bombermiss);
 }
 
+void LevelManager::SpawnBalloom(const glm::vec2& position)
+{
+    bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
+
+    auto balloom = GetEnemyBase("Balloom", position);
+    balloom->AddComponent<bae::SpriteComponent>(*balloom, "Textures/Characters/Enemies.png",
+                                                SDL_FRect(0, 0, 32, 16), 2, 1);
+
+    m_Enemies.push_back(balloom.get());
+
+    scene->Add(balloom);
+}
+
+void LevelManager::SpawnOneal(const glm::vec2& position)
+{
+    bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
+
+    auto oneal = GetEnemyBase("Oneal", position);
+    oneal->AddComponent<bae::SpriteComponent>(*oneal, "Textures/Characters/Enemies.png",
+                                              SDL_FRect(0, 16, 32, 16), 2, 1);
+
+    m_Enemies.push_back(oneal.get());
+    scene->Add(oneal);
+}
+
+void LevelManager::SpawnDoll(const glm::vec2& position)
+{
+    bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
+
+    auto doll = GetEnemyBase("Doll", position);
+    doll->AddComponent<bae::SpriteComponent>(*doll, "Textures/Characters/Enemies.png",
+                                             SDL_FRect(0, 32, 32, 16), 2, 1);
+
+    m_Enemies.push_back(doll.get());
+    scene->Add(doll);
+}
+
+void LevelManager::SpawnMinvo(const glm::vec2& position)
+{
+    bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
+
+    auto minvo = GetEnemyBase("Minvo", position);
+    minvo->AddComponent<bae::SpriteComponent>(*minvo, "Textures/Characters/Enemies.png",
+                                              SDL_FRect(0, 48, 32, 16), 2, 1);
+
+    m_Enemies.push_back(minvo.get());
+    scene->Add(minvo);
+}
+
 std::shared_ptr<bae::GameObject> LevelManager::GetBombermanBase(const std::string& gameObjectName,
                                                                 const glm::vec2& spawnPosition)
 {
@@ -146,9 +195,28 @@ std::shared_ptr<bae::GameObject> LevelManager::GetBombermanBase(const std::strin
     return bomberman;
 }
 
+std::shared_ptr<bae::GameObject> LevelManager::GetEnemyBase(const std::string& gameObjectName,
+                                                            const glm::vec2& spawnPosition)
+{
+    const auto enemy = std::make_shared<bae::GameObject>(gameObjectName);
+    enemy->SetWorldLocation(spawnPosition);
+
+    constexpr glm::vec2 dimensions = { 20, 20 };
+    constexpr glm::vec2 offset     = { -dimensions.x / 2.f, -dimensions.y / 2.f };
+
+    enemy->AddComponent<HitboxComponent>(*enemy, dimensions, offset);
+    enemy->GetComponent<HitboxComponent>()->SetVisibility(true);
+
+    return enemy;
+}
+
 void LevelManager::RenderBackground() const
 {
     bae::Renderer::GetInstance().RenderTexture(*m_BackgroundTexture, false, { 0, 0 }, 0, { 2.f, 2.f });
+}
+
+void LevelManager::ClearLevel()
+{
 }
 
 void LevelManager::HandleEvent(const unsigned int eventHash)
@@ -190,23 +258,45 @@ void LevelManager::HandleEvent(const unsigned int eventHash)
     }
 }
 
-void LevelManager::HandleBomberDeath(bae::GameObject& object)
+void LevelManager::HandleBomberDeath(const bae::GameObject& object)
 {
-    if(&object == m_Bomberman)
+    if(&object != m_Bomberman || &object != m_Bombermiss)
     {
-        --m_BombermanLives;
-        SpawnBomberman();
+        std::cout << FUNCTION_NAME << " This should never be reached" << '\n';
         return;
     }
 
-    if(&object == m_Bombermiss)
+    if(object.GetComponent<LifeComponent>()->IsAlive())
     {
-        --m_BombermissLives;
-        SpawnBombermiss();
-        return;
+        RestartLevel();
     }
+    else
+    {
+        HandleGameOver();
+    }
+}
 
-    std::cout << FUNCTION_NAME << " This should never be reached" << '\n';
+void LevelManager::RespawnPlayer(bae::GameObject&)
+{
+    // const int lives = player.GetComponent<LifeComponent>()->GetLives();
+}
+
+void LevelManager::RestartLevel()
+{
+    ClearLevel();
+}
+
+void LevelManager::HandleGameOver()
+{
+    switch(m_GameMode)
+    {
+        case GameMode::Singleplayer:
+            break;
+        case GameMode::CoOp:
+            break;
+        case GameMode::Versus:
+            break;
+    }
 }
 
 

@@ -23,49 +23,47 @@ namespace Game
         void SpawnBomberman();
         void SpawnBombermiss();
 
+        void SpawnBalloom(const glm::vec2& position);
+        void SpawnOneal(const glm::vec2& position);
+        void SpawnDoll(const glm::vec2& position);
+        void SpawnMinvo(const glm::vec2& position);
+
         static std::shared_ptr<bae::GameObject> GetBombermanBase(const std::string& gameObjectName,
                                                                  const glm::vec2& spawnPosition);
+
+        static std::shared_ptr<bae::GameObject> GetEnemyBase(const std::string& gameObjectName,
+                                                             const glm::vec2& spawnPosition);
 
         void RenderBackground() const;
 
         void GenerateLevel(int level);
         void SkipLevel();
 
+        // Clears Level Blocks & All Items/Entities
         void ClearLevel();
+
         /*
         void LoadLevelFromFile(int levelNumber, const std::filesystem::path& jsonFile);
-
-        void CreateLevel();
-        void ResetLevel();
-
-        void SkipLevel();
-
 
         [[nodiscard]] int GetCurrentLevelNumber() const;
         [[nodiscard]] LevelJson GetCurrentLevel();
 
         void SetGameMode(GameMode gameMode);
 
-        void SetSpriteSheetWorldLocation(const glm::vec2& location) const;
-        void SetSpriteSheetWorldRotation(float rotation) const;
-        void SetSpriteSheetWorldScale(const glm::vec2& scale) const;
-
-    private:
-        void WonLevel();
-        void LostLevel();
-
-        void LoadBackground() const;
-
-        void ClearLevel() const;
-
         [[nodiscard]] std::optional<LevelJson> GetCurrentLevelJson();
 
         void CreateGrid();
-
     */
+    private:
         void HandleEvent(unsigned int eventHash) override;
-        void HandleBomberLifeChanged(bae::GameObject& object);
-        void HandleBomberDeath(bae::GameObject& object);
+        void HandleBomberDeath(const bae::GameObject& object);
+
+        void RespawnPlayer(bae::GameObject& object);
+
+        void RestartLevel();
+
+        void HandleGameOver();
+
 
         void Notify(unsigned eventHash, bae::Subject* subject, const std::any& eventData) override;
 
@@ -81,6 +79,8 @@ namespace Game
 
         bae::GameObject* m_Bomberman{};
         bae::GameObject* m_Bombermiss{};
+
+        std::vector<bae::GameObject*> m_Enemies{};
 
         const std::string m_BackgroundTexturePath{ "Textures/Level/Playfield.png" };
         bae::Texture2D* m_BackgroundTexture{};
