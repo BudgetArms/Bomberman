@@ -334,7 +334,7 @@ void LevelManager::HandleEvent(const unsigned int eventHash)
 
 void LevelManager::Notify(const unsigned eventHash, bae::Subject* subject, const std::any&)
 {
-    if(GetEvent(eventHash) == Events::LivesChanged)
+    if(GetEvent(eventHash) == Events::PlayerDied)
     {
         std::cout << FUNCTION_NAME << '\t';
         if(subject->GetGameObject() == m_Bomberman ||
@@ -347,7 +347,7 @@ void LevelManager::Notify(const unsigned eventHash, bae::Subject* subject, const
 
 void LevelManager::HandleBomberDeath(const bae::GameObject& object)
 {
-    if(&object != m_Bomberman || &object != m_Bombermiss)
+    if(&object != m_Bomberman && &object != m_Bombermiss)
     {
         std::cout << FUNCTION_NAME << " This should never be reached" << '\n';
         return;
@@ -485,7 +485,7 @@ void LevelManager::SavePlayerData()
 
     if(m_Bombermiss)
     {
-        m_BombermanLives  = m_Bombermiss->GetComponent<LifeComponent>()->GetLives();
+        m_BombermissLives = m_Bombermiss->GetComponent<LifeComponent>()->GetLives();
         m_BombermissScore = m_Bombermiss->GetComponent<ScoreComponent>()->GetScore();
     }
 }
