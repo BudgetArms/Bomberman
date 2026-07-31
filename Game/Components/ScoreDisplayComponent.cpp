@@ -43,11 +43,27 @@ void ScoreDisplayComponent::SetPosition(const glm::vec2& position) const
     m_Text->m_Position = position;
 }
 
-void ScoreDisplayComponent::Notify(const unsigned eventHash, bae::Subject* subject, const std::any&)
+std::string ScoreDisplayComponent::GetPreScoreText() const
+{
+    return m_PreScoreText;
+}
+
+void ScoreDisplayComponent::SetPreScoreText(const std::string& text)
+{
+    m_PreScoreText = text;
+    UpdateDisplayText();
+}
+
+void ScoreDisplayComponent::Notify(const unsigned eventHash, bae::Subject*, const std::any&)
 {
     if(GetEvent(eventHash) == Events::ScoreChanged)
     {
-        const ScoreComponent* scoreComponent = subject->GetGameObject()->GetComponent<ScoreComponent>();
-        m_Text->SetText("Score: " + std::to_string(scoreComponent->GetScore()));
+        UpdateDisplayText();
     }
+}
+
+void ScoreDisplayComponent::UpdateDisplayText() const
+{
+    const ScoreComponent* scoreComponent = m_Owner->GetComponent<ScoreComponent>();
+    m_Text->SetText(m_PreScoreText + std::to_string(scoreComponent->GetScore()));
 }

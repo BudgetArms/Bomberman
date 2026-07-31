@@ -26,10 +26,16 @@ namespace Game
         [[nodiscard]] glm::vec2 GetPosition() const;
         void SetPosition(const glm::vec2& position) const;
 
+        [[nodiscard]] std::string GetPreScoreText() const;
+        void SetPreScoreText(const std::string& text);
 
         void Notify(unsigned eventHash, bae::Subject* subject, const std::any&) override;
 
     private:
+        void UpdateDisplayText() const;
+
         std::shared_ptr<bae::Text2D> m_Text;
+
+        std::string m_PreScoreText{};
     };
 }
