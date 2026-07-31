@@ -5,6 +5,7 @@
 #include "ScoreComponent.hpp"
 #include "Base/Events.hpp"
 #include "Components/SpriteComponent.hpp"
+#include "Core/EventQueue.hpp"
 #include "Managers/ResourceManager.hpp"
 #include "States/Entities/BombermanStates.hpp"
 
@@ -13,7 +14,8 @@ using namespace Game;
 
 
 BombermanComponent::BombermanComponent(bae::GameObject& owner) :
-    Component(owner)
+    Component(owner),
+    Subject(owner)
 {
     bae::ResourceManager::GetInstance().LoadFont("Fonts/Lingua.otf", 32);
     m_Owner->AddComponent<LifeComponent>(*m_Owner, 4, 3.f);
@@ -32,7 +34,20 @@ BombermanComponent::BombermanComponent(bae::GameObject& owner) :
 
 void BombermanComponent::Update()
 {
-    UpdateToNewState(m_State->Update());
+    std::unique_ptr<States::EntityState> newState = m_State->Update();
+    if(dynamic_cast<States::BombermanDeadState*>(newState.get()))
+    {
+        NotifyObservers(GetEventHash(Events::PlayerDied), GetGameObject());
+    }
+
+    UpdateToNewState(std::move(newState));
+
+    // Used for DyingState
+    if(m_PendingState)
+    {
+        UpdateToNewState(std::move(m_PendingState));
+        m_PendingState = nullptr;
+    }
 }
 
 
@@ -54,24 +69,12 @@ void BombermanComponent::UpdateToNewState(std::unique_ptr<States::EntityState> n
     m_State->OnEnter();
 }
 
-void BombermanComponent::Notify(const unsigned eventHash, bae::Subject*, const std::any& eventData)
+void BombermanComponent::Notify(const unsigned eventHash, Subject*, const std::any& eventData)
 {
     switch(GetEvent(eventHash))
     {
-        case Events::PlayerDied:
-        case Events::DirectionChanged:
-        case Events::GameWon:
-        case Events::GameOver:
-        case Events::LevelWon:
-        case Events::LevelLost:
-        case Events::BalloomDied:
-        case Events::OnealDied:
-        case Events::DollDied:
-        case Events::MinvoDied:
-        case Events::BeginLevel:
-        case Events::RestartLevel:
-        case Events::ScoreChanged:
         case Events::LivesChanged:
+            m_PendingState = std::make_unique<States::BombermanDyingState>(*m_Owner);
             break;
         case Events::CollisionEvent:
             HandleCollision(eventData);
