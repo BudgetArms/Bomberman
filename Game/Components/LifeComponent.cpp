@@ -74,7 +74,6 @@ void LifeComponent::RemoveLife()
 
     m_bIsAlive = false;
     SendEventToObservers(Events::LivesChanged);
-    SendEventToObservers(Events::PlayerDied);
 }
 
 void LifeComponent::RemoveAllLives()
@@ -87,7 +86,6 @@ void LifeComponent::RemoveAllLives()
     m_Lives    = 0;
     m_bIsAlive = false;
     SendEventToObservers(Events::LivesChanged);
-    SendEventToObservers(Events::PlayerDied);
 }
 
 int LifeComponent::GetLives() const
@@ -108,7 +106,6 @@ void LifeComponent::SetLives(const int lives)
     }
 
     m_Lives = lives;
-    SendEventToObservers(Events::LivesChanged);
 }
 
 int LifeComponent::GetMaxLives() const
@@ -129,7 +126,6 @@ void LifeComponent::SetMaxLives(const int maxLives)
     }
 
     m_MaxLives = maxLives;
-    SendEventToObservers(Events::LivesChanged);
 }
 
 bool LifeComponent::IsInvincible() const
