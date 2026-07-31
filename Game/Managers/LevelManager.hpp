@@ -22,6 +22,7 @@ namespace Game
 
         void SpawnBomberman();
         void SpawnBombermiss();
+        void SpawnBalloomPlayer();
 
         void SpawnBalloom(const glm::vec2& position);
         void SpawnOneal(const glm::vec2& position);

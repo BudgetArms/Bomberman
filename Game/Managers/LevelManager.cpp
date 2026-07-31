@@ -124,6 +124,24 @@ void LevelManager::SpawnBombermiss()
     scene->Add(bombermiss);
 }
 
+void LevelManager::SpawnBalloomPlayer()
+{
+    bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
+
+    const glm::vec2 spawnPosition = { 500, 200 };
+
+    const auto balloom = GetEnemyBase("Balloom Player", spawnPosition);
+    balloom->AddComponent<bae::SpriteComponent>(*balloom, "Textures/Characters/Enemies.png",
+                                                SDL_FRect(0, 0, 32, 16), 2, 1);
+
+    m_Enemies.insert(balloom.get());
+
+    // Controls
+    AddControls(*balloom, false);
+
+    scene->Add(balloom);
+}
+
 void LevelManager::SpawnBalloom(const glm::vec2& position)
 {
     bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
@@ -360,6 +378,8 @@ void LevelManager::RestartLevel()
             SpawnBombermiss();
             break;
         case GameMode::Versus:
+            SpawnBomberman();
+            SpawnBalloomPlayer();
             break;
     }
 
