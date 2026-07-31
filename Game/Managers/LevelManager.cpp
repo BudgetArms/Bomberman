@@ -20,6 +20,7 @@
 
 #include "Base/CommonManagerVariables.hpp"
 #include "Base/Events.hpp"
+#include "Commands/ForceDamageCommand.hpp"
 #include "Components/BombermanComponent.hpp"
 #include "Components/HitboxComponent.hpp"
 #include "Components/LifeComponent.hpp"
@@ -28,6 +29,7 @@
 #include "Components/ScoreDisplayComponent.hpp"
 #include "Core/Renderer.hpp"
 #include "Core/Text2D.hpp"
+#include "Wrappers/Keyboard.hpp"
 
 
 using namespace Game;
@@ -70,6 +72,10 @@ void LevelManager::SpawnBomberman()
     // Set Bomberman
     m_Bomberman = bomberman.get();
 
+    const bae::Keyboard& keyboard = bae::InputManager::GetInstance().GetKeyboard();
+
+    auto command = std::make_unique<ForceDamageCommand>(*bomberman.get());
+    keyboard.AddKeyboardCommands(std::move(command), SDLK_6, bae::InputManager::ButtonState::Down);
 
     scene->Add(bomberman);
 }
