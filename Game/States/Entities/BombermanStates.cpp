@@ -33,7 +33,6 @@ void BombermanAliveState::OnExit()
 
 std::unique_ptr<EntityState> BombermanAliveState::Update()
 {
-    std::cout << FUNCTION_NAME << '\n';
     if(m_bIsDying)
     {
         return std::make_unique<BombermanDyingState>(*m_Owner);
