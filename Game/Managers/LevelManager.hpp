@@ -36,7 +36,7 @@ namespace Game
 
         void RenderBackground() const;
 
-        void GenerateLevel(int level);
+        void SpawnBlocks();
         void SkipLevel();
 
         // Clears Level Blocks & All Items/Entities
@@ -88,6 +88,7 @@ namespace Game
 
         const std::string m_BackgroundTexturePath{ "Textures/Level/Playfield.png" };
         bae::Texture2D* m_BackgroundTexture{};
+        bae::SpriteSheet* m_LevelBlockTest{};
 
         // todo: load from file
         int m_BombermanLives{ 4 };
