@@ -117,7 +117,7 @@ void LevelManager::SpawnBalloom(const glm::vec2& position)
     balloom->AddComponent<bae::SpriteComponent>(*balloom, "Textures/Characters/Enemies.png",
                                                 SDL_FRect(0, 0, 32, 16), 2, 1);
 
-    m_Enemies.push_back(balloom.get());
+    m_Enemies.insert(balloom.get());
 
     scene->Add(balloom);
 }
@@ -130,7 +130,7 @@ void LevelManager::SpawnOneal(const glm::vec2& position)
     oneal->AddComponent<bae::SpriteComponent>(*oneal, "Textures/Characters/Enemies.png",
                                               SDL_FRect(0, 16, 32, 16), 2, 1);
 
-    m_Enemies.push_back(oneal.get());
+    m_Enemies.insert(oneal.get());
     scene->Add(oneal);
 }
 
@@ -142,7 +142,7 @@ void LevelManager::SpawnDoll(const glm::vec2& position)
     doll->AddComponent<bae::SpriteComponent>(*doll, "Textures/Characters/Enemies.png",
                                              SDL_FRect(0, 32, 32, 16), 2, 1);
 
-    m_Enemies.push_back(doll.get());
+    m_Enemies.insert(doll.get());
     scene->Add(doll);
 }
 
@@ -154,7 +154,7 @@ void LevelManager::SpawnMinvo(const glm::vec2& position)
     minvo->AddComponent<bae::SpriteComponent>(*minvo, "Textures/Characters/Enemies.png",
                                               SDL_FRect(0, 48, 32, 16), 2, 1);
 
-    m_Enemies.push_back(minvo.get());
+    m_Enemies.insert(minvo.get());
     scene->Add(minvo);
 }
 
@@ -213,10 +213,39 @@ std::shared_ptr<bae::GameObject> LevelManager::GetEnemyBase(const std::string& g
 void LevelManager::RenderBackground() const
 {
     bae::Renderer::GetInstance().RenderTexture(*m_BackgroundTexture, false, { 0, 0 }, 0, { 2.f, 2.f });
+    bae::Renderer::GetInstance().RenderTexture(*m_LevelBlockTest, false, { 0, 0 }, 0, { 2.f, 2.f });
+}
+
+
+void LevelManager::SkipLevel()
+{
+    ++m_CurrentLevel;
+    RestartLevel();
 }
 
 void LevelManager::ClearLevel()
 {
+}
+
+std::set<bae::GameObject*> LevelManager::GetPlayers()
+{
+    switch(m_GameMode)
+    {
+        case GameMode::Singleplayer:
+            return { m_Bomberman };
+        case GameMode::CoOp:
+            return { m_Bomberman, m_Bombermiss };
+        case GameMode::Versus:
+            return { m_Bomberman };
+    }
+
+    std::cout << FUNCTION_NAME << "This should never be reached" << '\n';
+    return { nullptr };
+}
+
+std::set<bae::GameObject*> LevelManager::GetEnemies()
+{
+    return m_Enemies;
 }
 
 void LevelManager::HandleEvent(const unsigned int eventHash)

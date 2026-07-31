@@ -42,6 +42,9 @@ namespace Game
         // Clears Level Blocks & All Items/Entities
         void ClearLevel();
 
+        std::set<bae::GameObject*> GetPlayers();
+        std::set<bae::GameObject*> GetEnemies();
+
         /*
         void LoadLevelFromFile(int levelNumber, const std::filesystem::path& jsonFile);
 
@@ -54,8 +57,9 @@ namespace Game
 
         void CreateGrid();
     */
-    private:
         void HandleEvent(unsigned int eventHash) override;
+
+    private:
         void HandleBomberDeath(const bae::GameObject& object);
 
         void RespawnPlayer(bae::GameObject& object);
@@ -80,7 +84,7 @@ namespace Game
         bae::GameObject* m_Bomberman{};
         bae::GameObject* m_Bombermiss{};
 
-        std::vector<bae::GameObject*> m_Enemies{};
+        std::set<bae::GameObject*> m_Enemies{};
 
         const std::string m_BackgroundTexturePath{ "Textures/Level/Playfield.png" };
         bae::Texture2D* m_BackgroundTexture{};
