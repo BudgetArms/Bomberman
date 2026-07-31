@@ -27,11 +27,13 @@
 #endif
 #include "Base/CommonManagerVariables.hpp"
 #include "Base/SoundAssets.hpp"
+#include "Commands/LogMousePositionCommand.hpp"
 #include "Commands/ToggleMuteSoundsCommand.hpp"
 #include "Components/ManagersComponent.hpp"
 #include "Managers/InputManager.hpp"
 #include "Sounds/SoLoudSoundSystem.hpp"
 #include "Wrappers/Keyboard.hpp"
+#include "Wrappers/Mouse.hpp"
 
 
 #ifdef STEAMWORKS_ENABLED
@@ -350,11 +352,9 @@ void LoadGameNameScene()
 
 void EnableLogMousePosition()
 {
-    /*
     const bae::Mouse& mouse = bae::InputManager::GetInstance().GetMouse();
 
-    auto mousePressedCommand = std::make_unique<Game::TestMousePositionCommand>();
+    auto mousePressedCommand = std::make_unique<Game::LogMousePositionCommand>();
     mouse.AddMouseCommands(std::move(mousePressedCommand), SDL_BUTTON_RIGHT, bae::InputManager::ButtonState::Pressed);
-    */
 }
 
