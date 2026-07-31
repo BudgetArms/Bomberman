@@ -9,11 +9,12 @@
 
 #include "Base/GameMode.hpp"
 #include "Core/EventListener.hpp"
+#include "Core/Observer.hpp"
 
 
 namespace Game
 {
-    class LevelManager final : public bae::Singleton<LevelManager>, public bae::EventListener
+    class LevelManager final : public bae::Singleton<LevelManager>, public bae::EventListener, public bae::Observer
     {
     public:
         explicit LevelManager();
@@ -22,13 +23,16 @@ namespace Game
         void SpawnBomberman();
         void SpawnBombermiss();
 
-        std::shared_ptr<bae::GameObject> GetBombermanBase(const std::string& gameObjectName,
-                                                          const glm::vec2& spawnPosition);
-        void HandleEvent(unsigned) override {};
+        static std::shared_ptr<bae::GameObject> GetBombermanBase(const std::string& gameObjectName,
+                                                                 const glm::vec2& spawnPosition);
 
         void RenderBackground() const;
-        /*
 
+        void GenerateLevel(int level);
+        void SkipLevel();
+
+        void ClearLevel();
+        /*
         void LoadLevelFromFile(int levelNumber, const std::filesystem::path& jsonFile);
 
         void CreateLevel();
@@ -58,11 +62,15 @@ namespace Game
 
         void CreateGrid();
 
-        void HandleEvent(unsigned int eventHash) override;
-        void HandlePlayerDied() const;
-
-        static void AddControls(bae::GameObject& gameObject, bool firstPlayer);
     */
+        void HandleEvent(unsigned int eventHash) override;
+        void HandleBomberLifeChanged(bae::GameObject& object);
+        void HandleBomberDeath(bae::GameObject& object);
+
+        void Notify(unsigned eventHash, bae::Subject* subject, const std::any& eventData) override;
+
+        // static void AddControls(bae::GameObject& gameObject, bool firstPlayer);
+
 
         GameMode m_GameMode{ GameMode::Singleplayer };
 
@@ -71,7 +79,17 @@ namespace Game
 
         // std::unordered_map<int, LevelJson> m_LevelJson{};
 
+        bae::GameObject* m_Bomberman{};
+        bae::GameObject* m_Bombermiss{};
+
         const std::string m_BackgroundTexturePath{ "Textures/Level/Playfield.png" };
         bae::Texture2D* m_BackgroundTexture{};
+
+        // todo: load from file
+        int m_BombermanLives{ 4 };
+        int m_BombermissLives{ 4 };
+
+        glm::vec2 m_BombermanStartPosition{ 200, 300 };
+        glm::vec2 m_BombermissStartPosition{ 200, 400 };
     };
 }

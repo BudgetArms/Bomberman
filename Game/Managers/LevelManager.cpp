@@ -52,6 +52,12 @@ void LevelManager::SpawnBomberman()
 
     const auto bomberman = GetBombermanBase("Bomberman", spawnPosition);
 
+    // Observer
+    bomberman->GetComponent<BombermanComponent>()->AddObserver(this);
+
+    // Lives
+    bomberman->GetComponent<LifeComponent>()->SetLives(m_BombermanLives);
+
     // Score Display
     bomberman->GetComponent<ScoreDisplayComponent>()->SetPosition(glm::vec2{ 100, 540 });
 
@@ -59,7 +65,11 @@ void LevelManager::SpawnBomberman()
     bomberman->GetComponent<LifeDisplayComponent>()->m_Position = { 5, 540 };
 
     // Controls
-    // AddControls(*msPacman, true);
+    // AddControls(*bomberman, true);
+
+    // Set Bomberman
+    m_Bomberman = bomberman.get();
+
 
     scene->Add(bomberman);
 }
@@ -72,6 +82,12 @@ void LevelManager::SpawnBombermiss()
 
     const auto bombermiss = GetBombermanBase("Bombermiss", spawnPosition);
 
+    // Observer
+    bombermiss->GetComponent<BombermanComponent>()->AddObserver(this);
+
+    // Lives
+    bombermiss->GetComponent<LifeComponent>()->SetLives(m_BombermissLives);
+
     // Score Display
     bombermiss->GetComponent<ScoreDisplayComponent>()->SetPosition(glm::vec2{ 400, 540 });
 
@@ -79,7 +95,10 @@ void LevelManager::SpawnBombermiss()
     bombermiss->GetComponent<LifeDisplayComponent>()->m_Position = { 300, 540 };
 
     // Controls
-    // AddControls(*msPacman, false);
+    // AddControls(*bombermiss, false);
+
+    // Set Bombermiss
+    m_Bombermiss = bombermiss.get();
 
     scene->Add(bombermiss);
 }
@@ -124,4 +143,76 @@ std::shared_ptr<bae::GameObject> LevelManager::GetBombermanBase(const std::strin
 void LevelManager::RenderBackground() const
 {
     bae::Renderer::GetInstance().RenderTexture(*m_BackgroundTexture, false, { 0, 0 }, 0, { 2.f, 2.f });
+}
+
+void LevelManager::HandleEvent(const unsigned int eventHash)
+{
+    switch(GetEvent(eventHash))
+    {
+        case Events::PlayerDied:
+            break;
+        case Events::DirectionChanged:
+            break;
+        case Events::GameWon:
+            break;
+        case Events::GameOver:
+            break;
+        case Events::LevelWon:
+            break;
+        case Events::LevelLost:
+            break;
+        case Events::BalloomDied:
+            break;
+        case Events::OnealDied:
+            break;
+        case Events::DollDied:
+            break;
+        case Events::MinvoDied:
+            break;
+        case Events::BeginLevel:
+            break;
+        case Events::RestartLevel:
+            break;
+        case Events::ScoreChanged:
+            break;
+        case Events::LivesChanged:
+            break;
+        case Events::CollisionEvent:
+            break;
+        case Events::NoEvent:
+            break;
+    }
+}
+
+void LevelManager::HandleBomberDeath(bae::GameObject& object)
+{
+    if(&object == m_Bomberman)
+    {
+        --m_BombermanLives;
+        SpawnBomberman();
+        return;
+    }
+
+    if(&object == m_Bombermiss)
+    {
+        --m_BombermissLives;
+        SpawnBombermiss();
+        return;
+    }
+
+    std::cout << FUNCTION_NAME << " This should never be reached" << '\n';
+}
+
+
+void LevelManager::Notify(const unsigned eventHash, bae::Subject* subject, const std::any&)
+{
+    if(GetEvent(eventHash) == Events::LivesChanged)
+    {
+        std::cout << FUNCTION_NAME << '\t';
+        if(subject->GetGameObject() == m_Bomberman ||
+            subject->GetGameObject() == m_Bombermiss)
+        {
+            HandleBomberDeath(*subject->GetGameObject());
+        }
+    }
 }
