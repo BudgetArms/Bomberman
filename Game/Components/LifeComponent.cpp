@@ -66,14 +66,13 @@ void LifeComponent::RemoveLife()
     --m_Lives;
     m_ElapsedDamageCooldownTime = 0.0f;
 
-    if(m_Lives > 0)
+    if(m_Lives <= 0)
     {
-        SendEventToObservers(Events::LivesChanged);
-        return;
+        m_bIsAlive = false;
     }
 
-    m_bIsAlive = false;
     SendEventToObservers(Events::LivesChanged);
+    SendEventToObservers(Events::LifeLost);
 }
 
 void LifeComponent::RemoveAllLives()
@@ -86,6 +85,7 @@ void LifeComponent::RemoveAllLives()
     m_Lives    = 0;
     m_bIsAlive = false;
     SendEventToObservers(Events::LivesChanged);
+    SendEventToObservers(Events::LifeLost);
 }
 
 int LifeComponent::GetLives() const
@@ -106,6 +106,7 @@ void LifeComponent::SetLives(const int lives)
     }
 
     m_Lives = lives;
+    SendEventToObservers(Events::LivesChanged);
 }
 
 int LifeComponent::GetMaxLives() const
