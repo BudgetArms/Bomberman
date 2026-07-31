@@ -59,18 +59,15 @@ namespace Game
         void CreateGrid();
     */
         void HandleEvent(unsigned int eventHash) override;
+        void Notify(unsigned eventHash, bae::Subject* subject, const std::any& eventData) override;
 
     private:
         void HandleBomberDeath(const bae::GameObject& object);
 
-        void RespawnPlayer(bae::GameObject& object);
-
         void RestartLevel();
 
-        void HandleGameOver();
+        void HandleGameOver() const;
 
-
-        void Notify(unsigned eventHash, bae::Subject* subject, const std::any& eventData) override;
 
         void AddControls(const bae::GameObject& gameObject, bool bIsFirstPlayer) const;
 
@@ -102,5 +99,7 @@ namespace Game
 
         glm::vec2 m_BombermanStartPosition{ 200, 300 };
         glm::vec2 m_BombermissStartPosition{ 200, 400 };
+
+        glm::vec2 m_BalloomPlayerStartPosition{ 500, 128 };
     };
 }

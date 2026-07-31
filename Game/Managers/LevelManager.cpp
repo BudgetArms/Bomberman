@@ -19,7 +19,6 @@
 #include "Managers/SceneManager.hpp"
 
 #include "Base/CommonManagerVariables.hpp"
-#include "Base/DirectionEnum.hpp"
 #include "Base/Events.hpp"
 #include "Commands/ForceDamageCommand.hpp"
 #include "Components/BombermanComponent.hpp"
@@ -42,7 +41,7 @@ LevelManager::LevelManager()
     m_BackgroundTexture = bae::ResourceManager::GetInstance().LoadTexture(m_BackgroundTexturePath).get();
     m_LevelBlockTest    = new bae::SpriteSheet("Textures/Level/TempBlock.png", SDL_FRect(0, 0, 112, 16), 7, 1);
 
-    // Ttest
+    // Test
     m_LevelBlockTest->m_Scale                 = { 2, 2 };
     m_LevelBlockTest->m_Position              = { 32, 64 };
     m_LevelBlockTest->m_bIsCenteredAtPosition = false;
@@ -128,7 +127,7 @@ void LevelManager::SpawnBalloomPlayer()
 {
     bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
 
-    const glm::vec2 spawnPosition = { 500, 200 };
+    const glm::vec2 spawnPosition = m_BalloomPlayerStartPosition;
 
     const auto balloom = GetEnemyBase("Balloom Player", spawnPosition);
     balloom->AddComponent<bae::SpriteComponent>(*balloom, "Textures/Characters/Enemies.png",
@@ -333,6 +332,19 @@ void LevelManager::HandleEvent(const unsigned int eventHash)
     }
 }
 
+void LevelManager::Notify(const unsigned eventHash, bae::Subject* subject, const std::any&)
+{
+    if(GetEvent(eventHash) == Events::LivesChanged)
+    {
+        std::cout << FUNCTION_NAME << '\t';
+        if(subject->GetGameObject() == m_Bomberman ||
+            subject->GetGameObject() == m_Bombermiss)
+        {
+            HandleBomberDeath(*subject->GetGameObject());
+        }
+    }
+}
+
 void LevelManager::HandleBomberDeath(const bae::GameObject& object)
 {
     if(&object != m_Bomberman || &object != m_Bombermiss)
@@ -353,10 +365,6 @@ void LevelManager::HandleBomberDeath(const bae::GameObject& object)
     }
 }
 
-void LevelManager::RespawnPlayer(bae::GameObject&)
-{
-    // const int lives = player.GetComponent<LifeComponent>()->GetLives();
-}
 
 void LevelManager::RestartLevel()
 {
@@ -386,46 +394,38 @@ void LevelManager::RestartLevel()
     // Spawn Enemies
 }
 
-void LevelManager::HandleGameOver()
+
+void LevelManager::HandleGameOver() const
 {
+    int score{};
+
+    // Get Score
     switch(m_GameMode)
     {
         case GameMode::Singleplayer:
         {
-            const int score = m_BombermanScore;
-            std::cout << FUNCTION_NAME << ": SinglePlayer, Score: " << m_BombermanScore << '\n';
+            score = m_BombermanScore;
+            std::cout << FUNCTION_NAME << ": SinglePlayer, Score: " << score << '\n';
         }
         break;
         case GameMode::CoOp:
         {
-            const int score = m_BombermanScore + m_BombermissScore;
+            score = m_BombermanScore + m_BombermissScore;
             std::cout << FUNCTION_NAME << ": Co-Op, Score: " << score << '\n';
         }
         break;
         case GameMode::Versus:
         {
-            const int score = m_BombermanScore;
+            score = m_BombermanScore;
             std::cout << FUNCTION_NAME << ": Versus, Score: " << score << '\n';
         }
         break;
     }
+
+    // Load Input Name Scene
 }
 
-
-void LevelManager::Notify(const unsigned eventHash, bae::Subject* subject, const std::any&)
-{
-    if(GetEvent(eventHash) == Events::LivesChanged)
-    {
-        std::cout << FUNCTION_NAME << '\t';
-        if(subject->GetGameObject() == m_Bomberman ||
-            subject->GetGameObject() == m_Bombermiss)
-        {
-            HandleBomberDeath(*subject->GetGameObject());
-        }
-    }
-}
-
-void LevelManager::AddControls(const bae::GameObject& gameObject, bool bIsFirstPlayer) const
+void LevelManager::AddControls([[maybe_unused]] const bae::GameObject& gameObject, const bool bIsFirstPlayer) const
 {
     // todo: remove maybe_unused
     [[maybe_unused]] const bae::Keyboard& keyboard = bae::InputManager::GetInstance().GetKeyboard();
