@@ -24,6 +24,7 @@ namespace Game
         RestartLevel,
         ScoreChanged,
         LivesChanged,
+        LifeLost,
         CollisionEvent,
         NoEvent,
     };
@@ -45,6 +46,7 @@ namespace Game
         { Events::RestartLevel, bae::HashSDBM("RestartLevel") },
         { Events::ScoreChanged, bae::HashSDBM("ScoreChanged") },
         { Events::LivesChanged, bae::HashSDBM("LivesChanged") },
+        { Events::LifeLost, bae::HashSDBM("LifeLost") },
         { Events::CollisionEvent, bae::HashSDBM("CollisionEvent") },
         { Events::NoEvent, bae::HashSDBM("NoEvent") },
     };
