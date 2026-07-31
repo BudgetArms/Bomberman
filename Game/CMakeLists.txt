@@ -25,7 +25,9 @@ add_executable(${PROJECT_NAME} ${TARGET_PARAM}
     "Main.cpp"
 
     "Base/CommonManagerVariables.hpp"
+    "Base/DirectionEnum.hpp"
     "Base/GameMode.hpp"
+    "Base/SoundAssets.hpp"
 
     "Commands/ForceDamageCommand.cpp"
     "Commands/ForceMoveCommand.cpp"
