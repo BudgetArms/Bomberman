@@ -71,10 +71,10 @@ void LevelManager::SpawnBomberman()
     bomberman->GetComponent<ScoreComponent>()->SetScore(m_BombermanScore);
 
     // Life Display
-    bomberman->GetComponent<LifeDisplayComponent>()->m_Position = { 5, 540 };
+    bomberman->GetComponent<LifeDisplayComponent>()->m_Position = { 6, 416 };
 
     // Score Display
-    bomberman->GetComponent<ScoreDisplayComponent>()->SetPosition(glm::vec2{ 100, 540 });
+    bomberman->GetComponent<ScoreDisplayComponent>()->SetPosition(glm::vec2{ 176, 432 });
 
     // Set Bomberman
     m_Bomberman = bomberman.get();
@@ -108,10 +108,10 @@ void LevelManager::SpawnBombermiss()
     bombermiss->GetComponent<ScoreComponent>()->SetScore(m_BombermissScore);
 
     // Life Display
-    bombermiss->GetComponent<LifeDisplayComponent>()->m_Position = { 300, 540 };
+    bombermiss->GetComponent<LifeDisplayComponent>()->m_Position = { 890, 416 };
 
     // Score Display
-    bombermiss->GetComponent<ScoreDisplayComponent>()->SetPosition(glm::vec2{ 400, 540 });
+    bombermiss->GetComponent<ScoreDisplayComponent>()->SetPosition(glm::vec2{ 810, 432 });
 
 
     // Set Bombermiss
@@ -208,7 +208,9 @@ std::shared_ptr<bae::GameObject> LevelManager::GetBombermanBase(const std::strin
     bomberman->GetComponent<HitboxComponent>()->AddObserver(bombermanComp);
 
     // Score Display
-    auto text = std::make_unique<bae::Text2D>("Score: 0");
+    auto text = std::make_unique<bae::Text2D>("XXX");
+
+    text->m_bIsCenteredAtPosition = true;
     bomberman->AddComponent<ScoreDisplayComponent>(*bomberman, glm::vec2{ 0, 0 }, std::move(text));
 
     const auto scoreDisplayComp = bomberman->GetComponent<ScoreDisplayComponent>();
