@@ -254,6 +254,10 @@ void LoadManagers()
     Game::LevelManager& levelManager = Game::LevelManager::GetInstance();
 
     levelManager.SpawnBomberman();
+    levelManager.SpawnBombermiss();
+
+    levelManager.SpawnBalloomPlayer();
+
     levelManager.SpawnBalloom({ 400, 300 });
     levelManager.SpawnOneal({ 440, 300 });
     levelManager.SpawnDoll({ 480, 300 });
