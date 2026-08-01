@@ -31,13 +31,20 @@ namespace Game::States
         virtual std::unique_ptr<SceneState> Update() = 0;
 
     protected:
+        static void ClearCommands();
+
+        static void AddSelectionConfirmedCommands();
+        static void AddSelectionDownUpCommands();
+        static void AddSelectionLeftRightCommands();
+
+
         bae::GameObject* m_GameObject;
 
         static constexpr SDL_Keycode m_KeySelectionConfirmation = SDLK_J;
-        static constexpr SDL_Keycode m_keySelectionDown         = SDLK_S;
-        static constexpr SDL_Keycode m_keySelectionUp           = SDLK_W;
-        static constexpr SDL_Keycode m_keySelectionLeft         = SDLK_A;
-        static constexpr SDL_Keycode m_keySelectionRight        = SDLK_D;
+        static constexpr SDL_Keycode m_KeySelectionDown         = SDLK_S;
+        static constexpr SDL_Keycode m_KeySelectionUp           = SDLK_W;
+        static constexpr SDL_Keycode m_KeySelectionLeft         = SDLK_A;
+        static constexpr SDL_Keycode m_KeySelectionRight        = SDLK_D;
 
         #if WIN32
         static constexpr unsigned int m_ControllerSelectionConfirmation = XINPUT_GAMEPAD_A;

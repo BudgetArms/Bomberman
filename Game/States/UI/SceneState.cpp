@@ -5,6 +5,7 @@
 
 #include "Base/Events.hpp"
 #include "Commands/SelectionCommands.hpp"
+#include "Commands/ToggleMuteSoundsCommand.hpp"
 #include "Managers/LevelManager.hpp"
 #include "Managers/ScenesManager.hpp"
 
@@ -17,6 +18,81 @@ SceneState::SceneState(bae::GameObject& selectionObject) :
 {
 }
 
+void SceneState::ClearCommands()
+{
+    const bae::Keyboard& keyboard     = bae::InputManager::GetInstance().GetKeyboard();
+    const bae::Controller& controller = *bae::InputManager::GetInstance().GetController(0);
+
+    keyboard.ClearCommands();
+    controller.ClearCommands();
+}
+
+void SceneState::AddSelectionConfirmedCommands()
+{
+    constexpr auto buttonState  = bae::InputManager::ButtonState::Pressed;
+    bae::GameObject* gameObject = ScenesManager::GetInstance().GetSelectionObject();
+
+
+    const bae::Keyboard& keyboard = bae::InputManager::GetInstance().GetKeyboard();
+
+    auto selectionConfirmationCommand = std::make_unique<SelectionConfirmedCommand>(*gameObject);
+    keyboard.AddKeyboardCommands(std::move(selectionConfirmationCommand), m_KeySelectionConfirmation, buttonState);
+
+    #if WIN32
+    const bae::Controller& controller = *bae::InputManager::GetInstance().GetController(0);
+
+    selectionConfirmationCommand = std::make_unique<SelectionConfirmedCommand>(*gameObject);
+    controller.AddControllerCommands(std::move(selectionConfirmationCommand), m_ControllerSelectionConfirmation,
+                                     buttonState);
+    #endif
+}
+
+void SceneState::AddSelectionDownUpCommands()
+{
+    constexpr auto buttonState  = bae::InputManager::ButtonState::Pressed;
+    bae::GameObject* gameObject = ScenesManager::GetInstance().GetSelectionObject();
+
+
+    const bae::Keyboard& keyboard = bae::InputManager::GetInstance().GetKeyboard();
+
+    auto selectionDownCommand = std::make_unique<SelectionDownCommand>(*gameObject);
+    auto selectionUpCommand   = std::make_unique<SelectionUpCommand>(*gameObject);
+    keyboard.AddKeyboardCommands(std::move(selectionDownCommand), m_KeySelectionDown, buttonState);
+    keyboard.AddKeyboardCommands(std::move(selectionUpCommand), m_KeySelectionUp, buttonState);
+
+    #if WIN32
+    const bae::Controller& controller = *bae::InputManager::GetInstance().GetController(0);
+
+    selectionDownCommand = std::make_unique<SelectionDownCommand>(*gameObject);
+    selectionUpCommand   = std::make_unique<SelectionUpCommand>(*gameObject);
+    controller.AddControllerCommands(std::move(selectionDownCommand), m_ControllerSelectionDown, buttonState);
+    controller.AddControllerCommands(std::move(selectionUpCommand), m_ControllerSelectionUp, buttonState);
+    #endif
+}
+
+void SceneState::AddSelectionLeftRightCommands()
+{
+    constexpr auto buttonState  = bae::InputManager::ButtonState::Pressed;
+    bae::GameObject* gameObject = ScenesManager::GetInstance().GetSelectionObject();
+
+
+    const bae::Keyboard& keyboard = bae::InputManager::GetInstance().GetKeyboard();
+
+    auto selectionLeftCommand  = std::make_unique<SelectionLeftCommand>(*gameObject);
+    auto selectionRightCommand = std::make_unique<SelectionRightCommand>(*gameObject);
+    keyboard.AddKeyboardCommands(std::move(selectionLeftCommand), m_KeySelectionLeft, buttonState);
+    keyboard.AddKeyboardCommands(std::move(selectionRightCommand), m_KeySelectionRight, buttonState);
+
+    #if WIN32
+    const bae::Controller& controller = *bae::InputManager::GetInstance().GetController(0);
+
+    selectionLeftCommand  = std::make_unique<SelectionLeftCommand>(*gameObject);
+    selectionRightCommand = std::make_unique<SelectionRightCommand>(*gameObject);
+    controller.AddControllerCommands(std::move(selectionLeftCommand), m_ControllerSelectionLeft, buttonState);
+    controller.AddControllerCommands(std::move(selectionRightCommand), m_ControllerSelectionRight, buttonState);
+    #endif
+}
+
 
 // Main Menu
 MainMenuState::MainMenuState(bae::GameObject& selectionObject) :
@@ -26,45 +102,14 @@ MainMenuState::MainMenuState(bae::GameObject& selectionObject) :
 
 void MainMenuState::OnEnter()
 {
-    bae::GameObject* gameObject = ScenesManager::GetInstance().GetSelectionObject();
-
-    constexpr bae::InputManager::ButtonState buttonState = bae::InputManager::ButtonState::Pressed;
-
-    bae::Keyboard& keyboard = bae::InputManager::GetInstance().GetKeyboard();
-
-    auto selectionConfirmationCommand = std::make_unique<SelectionConfirmedCommand>(*gameObject);
-    auto selectionDownCommand         = std::make_unique<SelectionDownCommand>(*gameObject);
-    auto selectionUpCommand           = std::make_unique<SelectionUpCommand>(*gameObject);
-    auto selectionLeftCommand         = std::make_unique<SelectionLeftCommand>(*gameObject);
-    auto selectionRightCommand        = std::make_unique<SelectionRightCommand>(*gameObject);
-
-    keyboard.AddKeyboardCommands(std::move(selectionConfirmationCommand), m_KeySelectionConfirmation, buttonState);
-    keyboard.AddKeyboardCommands(std::move(selectionDownCommand), m_keySelectionDown, buttonState);
-    keyboard.AddKeyboardCommands(std::move(selectionUpCommand), m_keySelectionUp, buttonState);
-    keyboard.AddKeyboardCommands(std::move(selectionLeftCommand), m_keySelectionLeft, buttonState);
-    keyboard.AddKeyboardCommands(std::move(selectionRightCommand), m_keySelectionRight, buttonState);
-
-
-    [[maybe_unused]] bae::Controller* controller = bae::InputManager::GetInstance().GetController(0);
-
-    selectionConfirmationCommand = std::make_unique<SelectionConfirmedCommand>(*gameObject);
-    selectionDownCommand         = std::make_unique<SelectionDownCommand>(*gameObject);
-    selectionUpCommand           = std::make_unique<SelectionUpCommand>(*gameObject);
-    selectionLeftCommand         = std::make_unique<SelectionLeftCommand>(*gameObject);
-    selectionRightCommand        = std::make_unique<SelectionRightCommand>(*gameObject);
-
-    #if WIN32
-    controller->AddControllerCommands(std::move(selectionConfirmationCommand), m_ControllerSelectionConfirmation,
-                                      buttonState);
-    controller->AddControllerCommands(std::move(selectionDownCommand), m_ControllerSelectionDown, buttonState);
-    controller->AddControllerCommands(std::move(selectionUpCommand), m_ControllerSelectionUp, buttonState);
-    controller->AddControllerCommands(std::move(selectionLeftCommand), m_ControllerSelectionLeft, buttonState);
-    controller->AddControllerCommands(std::move(selectionRightCommand), m_ControllerSelectionRight, buttonState);
-    #endif
+    ClearCommands();
+    AddSelectionConfirmedCommands();
+    AddSelectionDownUpCommands();
 }
 
 void MainMenuState::OnExit()
 {
+    ClearCommands();
 }
 
 std::unique_ptr<SceneState> MainMenuState::Update()
@@ -143,10 +188,14 @@ GameModeSelectionState::GameModeSelectionState(bae::GameObject& selectionObject)
 
 void GameModeSelectionState::OnEnter()
 {
+    ClearCommands();
+    AddSelectionConfirmedCommands();
+    AddSelectionDownUpCommands();
 }
 
 void GameModeSelectionState::OnExit()
 {
+    ClearCommands();
 }
 
 std::unique_ptr<SceneState> GameModeSelectionState::Update()
@@ -237,10 +286,18 @@ GameState::GameState(bae::GameObject& selectionObject) :
 
 void GameState::OnEnter()
 {
+    ClearCommands();
+
+    // Added Sound Toggle
+    const bae::Keyboard& keyboard = bae::InputManager::GetInstance().GetKeyboard();
+
+    auto toggleMuteSoundsCommand = std::make_unique<ToggleMuteSoundsCommand>();
+    keyboard.AddKeyboardCommands(std::move(toggleMuteSoundsCommand), SDLK_F2, bae::InputManager::ButtonState::Down);
 }
 
 void GameState::OnExit()
 {
+    ClearCommands();
 }
 
 std::unique_ptr<SceneState> GameState::Update()
@@ -271,10 +328,13 @@ LeaderboardState::LeaderboardState(bae::GameObject& selectionObject) :
 
 void LeaderboardState::OnEnter()
 {
+    ClearCommands();
+    AddSelectionConfirmedCommands();
 }
 
 void LeaderboardState::OnExit()
 {
+    ClearCommands();
 }
 
 std::unique_ptr<SceneState> LeaderboardState::Update()
@@ -305,10 +365,15 @@ InputLeaderboardNameState::InputLeaderboardNameState(bae::GameObject& selectionO
 
 void InputLeaderboardNameState::OnEnter()
 {
+    ClearCommands();
+    AddSelectionConfirmedCommands();
+    AddSelectionDownUpCommands();
+    AddSelectionLeftRightCommands();
 }
 
 void InputLeaderboardNameState::OnExit()
 {
+    ClearCommands();
 }
 
 std::unique_ptr<SceneState> InputLeaderboardNameState::Update()
@@ -379,7 +444,7 @@ void InputLeaderboardNameState::Notify(const unsigned eventHash, bae::Subject*, 
 
 std::string InputLeaderboardNameState::GetLetter(const int letterIndex)
 {
-    return std::string(1, static_cast<char>('a' + letterIndex));
+    return std::basic_string<char>{ 1, static_cast<char>('a' + letterIndex) };
 }
 
 
