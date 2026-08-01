@@ -5,7 +5,7 @@
 
 namespace Game::States
 {
-    class GameModeSelectionState final : public SceneState, public bae::Observer
+    class GameModeSelectionState final : public SceneState
     {
     public:
         explicit GameModeSelectionState(bae::GameObject& selectionObject);

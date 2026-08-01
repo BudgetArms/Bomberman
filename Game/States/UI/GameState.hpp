@@ -17,6 +17,8 @@ namespace Game::States
 
         void HandleEvent(unsigned eventHash) override;
 
+        void Notify(unsigned eventHash, bae::Subject* subject, const std::any& eventData) override;
+
     private:
         bool m_bIsGameFinished{};
     };

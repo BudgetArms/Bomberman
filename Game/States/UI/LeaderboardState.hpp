@@ -5,7 +5,7 @@
 
 namespace Game::States
 {
-    class LeaderboardState final : public SceneState, public bae::Observer
+    class LeaderboardState final : public SceneState
     {
     public:
         explicit LeaderboardState(bae::GameObject& selectionObject);

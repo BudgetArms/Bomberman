@@ -5,7 +5,7 @@
 
 namespace Game::States
 {
-    class InputLeaderboardNameState final : public SceneState, public bae::Observer
+    class InputLeaderboardNameState final : public SceneState
     {
     public:
         explicit InputLeaderboardNameState(bae::GameObject& selectionObject);

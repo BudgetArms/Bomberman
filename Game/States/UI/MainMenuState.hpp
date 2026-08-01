@@ -1,11 +1,12 @@
 #pragma once
 
+#include "Components/TextureComponent.hpp"
 #include "States/UI/SceneState.hpp"
 
 
 namespace Game::States
 {
-    class MainMenuState final : public SceneState, public bae::Observer
+    class MainMenuState final : public SceneState
     {
     public:
         explicit MainMenuState(bae::GameObject& selectionObject);

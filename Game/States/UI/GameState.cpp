@@ -50,3 +50,7 @@ void GameState::HandleEvent(const unsigned eventHash)
     }
 }
 
+void GameState::Notify(unsigned, bae::Subject*, const std::any&)
+{
+}
+
