@@ -48,6 +48,7 @@ add_executable(${PROJECT_NAME} ${TARGET_PARAM}
 
     "States/Entities/BombermanStates.cpp"
     "States/Entities/EntityState.cpp"
+    "States/UI/SceneState.cpp"
 )
 
 
