@@ -28,6 +28,8 @@ namespace Game
         CollisionEvent,
         SelectionUp,
         SelectionDown,
+        SelectionLeft,
+        SelectionRight,
         SelectionConfirmed,
         NoEvent,
     };

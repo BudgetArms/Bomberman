@@ -22,6 +22,22 @@ namespace Game
         void Execute() override;
     };
 
+    class SelectionLeftCommand final : public bae::GameActorCommand, public bae::Subject
+    {
+    public:
+        explicit SelectionLeftCommand(bae::GameObject& gameObject);
+
+        void Execute() override;
+    };
+
+    class SelectionRightCommand final : public bae::GameActorCommand, public bae::Subject
+    {
+    public:
+        explicit SelectionRightCommand(bae::GameObject& gameObject);
+
+        void Execute() override;
+    };
+
     class SelectionConfirmedCommand final : public bae::GameActorCommand, public bae::Subject
     {
     public:

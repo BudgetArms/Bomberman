@@ -17,6 +17,7 @@ void SelectionUpCommand::Execute()
     NotifyObservers(GetEventHash(Events::SelectionUp));
 }
 
+
 SelectionDownCommand::SelectionDownCommand(bae::GameObject& gameObject) :
     GameActorCommand(gameObject),
     Subject(gameObject)
@@ -26,6 +27,30 @@ SelectionDownCommand::SelectionDownCommand(bae::GameObject& gameObject) :
 void SelectionDownCommand::Execute()
 {
     NotifyObservers(GetEventHash(Events::SelectionUp));
+}
+
+
+SelectionLeftCommand::SelectionLeftCommand(bae::GameObject& gameObject) :
+    GameActorCommand(gameObject),
+    Subject(gameObject)
+{
+}
+
+void SelectionLeftCommand::Execute()
+{
+    NotifyObservers(GetEventHash(Events::SelectionLeft));
+}
+
+
+SelectionRightCommand::SelectionRightCommand(bae::GameObject& gameObject) :
+    GameActorCommand(gameObject),
+    Subject(gameObject)
+{
+}
+
+void SelectionRightCommand::Execute()
+{
+    NotifyObservers(GetEventHash(Events::SelectionRight));
 }
 
 
@@ -39,4 +64,3 @@ void SelectionConfirmedCommand::Execute()
 {
     NotifyObservers(GetEventHash(Events::SelectionUp));
 }
-
