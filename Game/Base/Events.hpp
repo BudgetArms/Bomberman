@@ -26,6 +26,9 @@ namespace Game
         LivesChanged,
         LifeLost,
         CollisionEvent,
+        SelectionUp,
+        SelectionDown,
+        SelectionConfirmed,
         NoEvent,
     };
 
@@ -48,6 +51,9 @@ namespace Game
         { Events::LivesChanged, bae::HashSDBM("LivesChanged") },
         { Events::LifeLost, bae::HashSDBM("LifeLost") },
         { Events::CollisionEvent, bae::HashSDBM("CollisionEvent") },
+        { Events::SelectionUp, bae::HashSDBM("SelectionUp") },
+        { Events::SelectionDown, bae::HashSDBM("SelectionDown") },
+        { Events::SelectionConfirmed, bae::HashSDBM("SelectionConfirmed") },
         { Events::NoEvent, bae::HashSDBM("NoEvent") },
     };
 
