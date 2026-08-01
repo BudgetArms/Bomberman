@@ -17,19 +17,19 @@
 #include "Core/Text2D.hpp"
 #include "Managers/ResourceManager.hpp"
 #include "Managers/SceneManager.hpp"
+#include "Wrappers/Controller.hpp"
+#include "Wrappers/Keyboard.hpp"
 
 #include "Base/CommonManagerVariables.hpp"
 #include "Base/Events.hpp"
 #include "Commands/ForceDamageCommand.hpp"
+#include "Commands/ForceMoveCommand.hpp"
 #include "Components/BombermanComponent.hpp"
 #include "Components/HitboxComponent.hpp"
 #include "Components/LifeComponent.hpp"
 #include "Components/LifeDisplayComponent.hpp"
 #include "Components/ScoreComponent.hpp"
 #include "Components/ScoreDisplayComponent.hpp"
-#include "Core/Renderer.hpp"
-#include "Core/Text2D.hpp"
-#include "Wrappers/Keyboard.hpp"
 
 
 using namespace Game;
@@ -455,7 +455,7 @@ void LevelManager::HandleGameOver() const
     // Load Input Name Scene
 }
 
-void LevelManager::AddControls([[maybe_unused]] const bae::GameObject& gameObject, const bool bIsFirstPlayer) const
+void LevelManager::AddControls(bae::GameObject& gameObject, const bool bIsFirstPlayer)
 {
     // todo: remove maybe_unused
     [[maybe_unused]] const bae::Keyboard& keyboard = bae::InputManager::GetInstance().GetKeyboard();
@@ -470,41 +470,45 @@ void LevelManager::AddControls([[maybe_unused]] const bae::GameObject& gameObjec
         return;
     }
 
-    // auto moveOnGridLeftCommand  = std::make_unique<MoveOnGridCommand>(gameObject, Direction::Left);
-    // auto moveOnGridRightCommand = std::make_unique<MoveOnGridCommand>(gameObject, Direction::Right);
-    // auto moveOnGridDownCommand  = std::make_unique<MoveOnGridCommand>(gameObject, Direction::Down);
-    // auto moveOnGridUpCommand    = std::make_unique<MoveOnGridCommand>(gameObject, Direction::Up);
-
-    // [[maybe_unused]] auto moveOnGridLeftCommand  = std::make_unique<MoveOnGridCommand>(gameObject, Direction::Left);
-    // [[maybe_unused]] auto moveOnGridRightCommand = std::make_unique<MoveOnGridCommand>(gameObject, Direction::Right);
-    // [[maybe_unused]] auto moveOnGridDownCommand  = std::make_unique<MoveOnGridCommand>(gameObject, Direction::Down);
-    // [[maybe_unused]] auto moveOnGridUpCommand    = std::make_unique<MoveOnGridCommand>(gameObject, Direction::Up);
-
+    auto keyboardMoveOnGridLeftCommand  = std::make_unique<ForceMoveCommand>(gameObject, Direction::Left, 100.f);
+    auto keyboardMoveOnGridRightCommand = std::make_unique<ForceMoveCommand>(gameObject, Direction::Right, 100.f);
+    auto keyboardMoveOnGridDownCommand  = std::make_unique<ForceMoveCommand>(gameObject, Direction::Down, 100.f);
+    auto keyboardMoveOnGridUpCommand    = std::make_unique<ForceMoveCommand>(gameObject, Direction::Up, 100.f);
 
     if(bIsFirstPlayer)
     {
-        // keyboard.AddKeyboardCommands(std::move(moveOnGridLeftCommand), SDLK_A, moveOnGridButtonState);
-        // keyboard.AddKeyboardCommands(std::move(moveOnGridRightCommand), SDLK_D, moveOnGridButtonState);
-        // keyboard.AddKeyboardCommands(std::move(moveOnGridDownCommand), SDLK_S, moveOnGridButtonState);
-        // keyboard.AddKeyboardCommands(std::move(moveOnGridUpCommand), SDLK_W, moveOnGridButtonState);
+        keyboard.AddKeyboardCommands(std::move(keyboardMoveOnGridLeftCommand), SDLK_A, moveOnGridButtonState);
+        keyboard.AddKeyboardCommands(std::move(keyboardMoveOnGridRightCommand), SDLK_D, moveOnGridButtonState);
+        keyboard.AddKeyboardCommands(std::move(keyboardMoveOnGridDownCommand), SDLK_S, moveOnGridButtonState);
+        keyboard.AddKeyboardCommands(std::move(keyboardMoveOnGridUpCommand), SDLK_W, moveOnGridButtonState);
     }
     else
     {
-        // keyboard.AddKeyboardCommands(std::move(moveOnGridLeftCommand), SDLK_LEFT, moveOnGridButtonState);
-        // keyboard.AddKeyboardCommands(std::move(moveOnGridRightCommand), SDLK_RIGHT, moveOnGridButtonState);
-        // keyboard.AddKeyboardCommands(std::move(moveOnGridDownCommand), SDLK_DOWN, moveOnGridButtonState);
-        // keyboard.AddKeyboardCommands(std::move(moveOnGridUpCommand), SDLK_UP, moveOnGridButtonState);
+        keyboard.AddKeyboardCommands(std::move(keyboardMoveOnGridLeftCommand), SDLK_LEFT, moveOnGridButtonState);
+        keyboard.AddKeyboardCommands(std::move(keyboardMoveOnGridRightCommand), SDLK_RIGHT, moveOnGridButtonState);
+        keyboard.AddKeyboardCommands(std::move(keyboardMoveOnGridDownCommand), SDLK_DOWN, moveOnGridButtonState);
+        keyboard.AddKeyboardCommands(std::move(keyboardMoveOnGridUpCommand), SDLK_UP, moveOnGridButtonState);
     }
 
-    // #if WIN32
-    // controller->AddControllerCommands(std::move(moveOnGridLeftCommand), XINPUT_GAMEPAD_DPAD_LEFT,
-    //                                   moveOnGridButtonState);
-    // controller->AddControllerCommands(std::move(moveOnGridRightCommand), XINPUT_GAMEPAD_DPAD_RIGHT,
-    //                                   moveOnGridButtonState);
-    // controller->AddControllerCommands(std::move(moveOnGridDownCommand), XINPUT_GAMEPAD_DPAD_DOWN,
-    //                                   moveOnGridButtonState);
-    // controller->AddControllerCommands(std::move(moveOnGridUpCommand), XINPUT_GAMEPAD_DPAD_UP, moveOnGridButtonState);
-    // #endif
+    [[maybe_unused]] auto controllerMoveOnGridLeftCommand = std::make_unique<ForceMoveCommand>(
+        gameObject, Direction::Left, 100.f);
+    [[maybe_unused]] auto controllerMoveOnGridRightCommand = std::make_unique<ForceMoveCommand>(
+        gameObject, Direction::Right, 100.f);
+    [[maybe_unused]] auto controllerMoveOnGridDownCommand = std::make_unique<ForceMoveCommand>(
+        gameObject, Direction::Down, 100.f);
+    [[maybe_unused]] auto controllerMoveOnGridUpCommand = std::make_unique<ForceMoveCommand>(
+        gameObject, Direction::Up, 100.f);
+
+    #if WIN32
+    controller->AddControllerCommands(std::move(controllerMoveOnGridLeftCommand), XINPUT_GAMEPAD_DPAD_LEFT,
+                                      moveOnGridButtonState);
+    controller->AddControllerCommands(std::move(controllerMoveOnGridRightCommand), XINPUT_GAMEPAD_DPAD_RIGHT,
+                                      moveOnGridButtonState);
+    controller->AddControllerCommands(std::move(controllerMoveOnGridDownCommand), XINPUT_GAMEPAD_DPAD_DOWN,
+                                      moveOnGridButtonState);
+    controller->AddControllerCommands(std::move(controllerMoveOnGridUpCommand), XINPUT_GAMEPAD_DPAD_UP,
+                                      moveOnGridButtonState);
+    #endif
 }
 
 void LevelManager::SavePlayerData()

@@ -69,7 +69,7 @@ namespace Game
         void HandleGameOver() const;
 
 
-        void AddControls(const bae::GameObject& gameObject, bool bIsFirstPlayer) const;
+        static void AddControls(bae::GameObject& gameObject, bool bIsFirstPlayer);
 
         void SavePlayerData();
         void LoadPlayerData() const;
