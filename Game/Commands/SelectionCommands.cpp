@@ -6,18 +6,6 @@
 using namespace Game;
 
 
-SelectionUpCommand::SelectionUpCommand(bae::GameObject& gameObject) :
-    GameActorCommand(gameObject),
-    Subject(gameObject)
-{
-}
-
-void SelectionUpCommand::Execute()
-{
-    NotifyObservers(GetEventHash(Events::SelectionUp));
-}
-
-
 SelectionDownCommand::SelectionDownCommand(bae::GameObject& gameObject) :
     GameActorCommand(gameObject),
     Subject(gameObject)
@@ -25,6 +13,18 @@ SelectionDownCommand::SelectionDownCommand(bae::GameObject& gameObject) :
 }
 
 void SelectionDownCommand::Execute()
+{
+    NotifyObservers(GetEventHash(Events::SelectionDown));
+}
+
+
+SelectionUpCommand::SelectionUpCommand(bae::GameObject& gameObject) :
+    GameActorCommand(gameObject),
+    Subject(gameObject)
+{
+}
+
+void SelectionUpCommand::Execute()
 {
     NotifyObservers(GetEventHash(Events::SelectionUp));
 }
@@ -62,5 +62,5 @@ SelectionConfirmedCommand::SelectionConfirmedCommand(bae::GameObject& gameObject
 
 void SelectionConfirmedCommand::Execute()
 {
-    NotifyObservers(GetEventHash(Events::SelectionUp));
+    NotifyObservers(GetEventHash(Events::SelectionConfirmed));
 }
