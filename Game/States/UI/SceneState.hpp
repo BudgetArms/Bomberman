@@ -19,7 +19,7 @@
 
 namespace Game::States
 {
-    class SceneState
+    class SceneState : public bae::Observer
     {
     public:
         explicit SceneState(bae::GameObject& selectionObject);
@@ -30,12 +30,16 @@ namespace Game::States
 
         virtual std::unique_ptr<SceneState> Update() = 0;
 
+        virtual void Notify(unsigned eventHash, bae::Subject* subject, const std::any& eventData) = 0;
+
     protected:
+        static void ClearScene();
+
         static void ClearCommands();
 
-        static void AddSelectionConfirmedCommands();
-        static void AddSelectionDownUpCommands();
-        static void AddSelectionLeftRightCommands();
+        void AddSelectionConfirmedCommands();
+        void AddSelectionDownUpCommands();
+        void AddSelectionLeftRightCommands();
 
 
         bae::GameObject* m_GameObject;
