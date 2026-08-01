@@ -60,14 +60,9 @@ void BombermanComponent::Notify(const unsigned eventHash, Subject*, const std::a
 {
     switch(GetEvent(eventHash))
     {
-        case Events::LivesChanged:
-            break;
         case Events::CollisionEvent:
             HandleCollision(eventData);
             break;
-        case Events::NoEvent:
-            break;
-        default:;
     }
 }
 

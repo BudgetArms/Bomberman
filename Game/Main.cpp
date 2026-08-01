@@ -198,13 +198,13 @@ void CreateAllScenes()
     // in reverse order, so that the start menu scene is displayed before anything else
     bae::SceneManager::GetInstance().CreateScene(Game::g_LevelBackgroundName.data());
     bae::SceneManager::GetInstance().CreateScene(Game::g_LevelSceneName.data());
-    bae::SceneManager::GetInstance().CreateScene(Game::g_LevelGameOverSceneName.data());
-    bae::SceneManager::GetInstance().CreateScene(Game::g_StartMenuSceneName.data());
+    bae::SceneManager::GetInstance().CreateScene(Game::g_ScenesManagerSceneName.data());
+    bae::SceneManager::GetInstance().CreateScene(Game::g_SelectionObjectSceneName.data());
 }
 
 void LoadStartMenu()
 {
-    auto* startMenuScene = bae::SceneManager::GetInstance().GetScene(Game::g_StartMenuSceneName.data());
+    auto* startMenuScene = bae::SceneManager::GetInstance().GetScene(Game::g_ScenesManagerSceneName.data());
 
     bae::Renderer::GetInstance().SetBackgroundColor(bae::Utils::Color::Black);
 
@@ -252,17 +252,7 @@ void LoadManagers()
 {
     // Setting up level manager data
     Game::LevelManager& levelManager = Game::LevelManager::GetInstance();
-
-    levelManager.SpawnBomberman();
-    levelManager.SpawnBombermiss();
-
-    levelManager.SpawnBalloomPlayer();
-
-    levelManager.SpawnBalloom({ 400, 300 });
-    levelManager.SpawnOneal({ 440, 300 });
-    levelManager.SpawnDoll({ 480, 300 });
-    levelManager.SpawnMinvo({ 520, 300 });
-
+    levelManager.StartGame(Game::GameMode::Singleplayer);
 
     const auto managersObject = std::make_shared<bae::GameObject>("Managers Object");
     managersObject->AddComponent<Game::ManagersComponent>(*managersObject);
