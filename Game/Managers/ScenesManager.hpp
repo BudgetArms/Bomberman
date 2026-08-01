@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/EventListener.hpp"
+#include "Core/GameObject.hpp"
 #include "Core/Observer.hpp"
 #include "Singletons/Singleton.hpp"
 
@@ -23,19 +23,12 @@ namespace Game
 
         void Notify(unsigned eventHash, bae::Subject* subject, const std::any& eventData) override;
 
+        bae::GameObject* GetSelectionObject() const;
+
     private:
-        static void ClearScene();
-
-        void LoadControls();
-
-        void LoadMainMenuScene();
-        void LoadGameModeSelectionScene();
-        void LoadLeaderboardScene();
-        void LoadGameScene();
-        void LoadInputLeaderboardNameScene();
-
-
         SceneMode m_SceneMode{};
+
+        bae::GameObject* m_SelectionObject{};
 
         bool m_bIsInitialized{};
     };

@@ -45,6 +45,7 @@ add_executable(${PROJECT_NAME} ${TARGET_PARAM}
 
     "Managers/CollisionManager.cpp"
     "Managers/LevelManager.cpp"
+    "Managers/ScenesManager.cpp"
 
     "States/Entities/BombermanStates.cpp"
     "States/Entities/EntityState.cpp"

@@ -20,37 +20,20 @@ void ScenesManager::Initialize()
     m_bIsInitialized = true;
     m_SceneMode      = SceneMode::MainMenu;
 
-    ClearScene();
-    LoadMainMenuScene();
+
+    const auto selectionObject = std::make_shared<bae::GameObject>("Selection Object");
+    m_SelectionObject          = selectionObject.get();
+
+    bae::Scene* scene = bae::SceneManager::GetInstance().GetScene(g_ScenesManagerSceneName.data());
+    scene->Add(selectionObject);
 }
 
-void ScenesManager::Notify(unsigned eventHash, bae::Subject* subject, const std::any& eventData)
+void ScenesManager::Notify(const unsigned, bae::Subject*, const std::any&)
 {
 }
 
-
-void ScenesManager::ClearScene()
+bae::GameObject* ScenesManager::GetSelectionObject() const
 {
-    const bae::Scene* scene = bae::SceneManager::GetInstance().GetScene(g_ScenesManagerSceneName.data());
-    scene->RemoveAll();
+    return m_SelectionObject;
 }
 
-void ScenesManager::LoadControls()
-{
-}
-
-void ScenesManager::LoadMainMenuScene()
-{
-}
-
-void ScenesManager::LoadGameModeSelectionScene() {
-}
-
-void ScenesManager::LoadLeaderboardScene() {
-}
-
-void ScenesManager::LoadGameScene() {
-}
-
-void ScenesManager::LoadInputLeaderboardNameScene() {
-}
