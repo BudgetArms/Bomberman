@@ -49,6 +49,12 @@ add_executable(${PROJECT_NAME} ${TARGET_PARAM}
 
     "States/Entities/BombermanStates.cpp"
     "States/Entities/EntityState.cpp"
+
+    "States/UI/GameModeSelectionState.cpp"
+    "States/UI/GameState.cpp"
+    "States/UI/InputLeaderboardNameState.cpp"
+    "States/UI/LeaderboardState.cpp"
+    "States/UI/MainMenuState.cpp"
     "States/UI/SceneState.cpp"
 )
 
