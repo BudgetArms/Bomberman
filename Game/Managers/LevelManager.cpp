@@ -7,14 +7,14 @@
 
 #include <fstream>
 
-
 #include <glm/glm.hpp>
 #include <nlohmann/json.hpp>
 
-
 #include "Components/SpriteComponent.hpp"
 #include "Core/HelperFunctions.hpp"
+#include "Core/Renderer.hpp"
 #include "Core/Scene.hpp"
+#include "Core/Text2D.hpp"
 #include "Managers/ResourceManager.hpp"
 #include "Managers/SceneManager.hpp"
 
@@ -50,6 +50,26 @@ LevelManager::LevelManager()
 LevelManager::~LevelManager()
 {
     // ClearLevel();
+}
+
+void LevelManager::StartGame(const GameMode gameMode)
+{
+    if(m_bHasGameStarted)
+    {
+        std::cout << FUNCTION_NAME << ": Cannot start Game that's already started" << '\n';
+        return;
+    }
+
+    m_GameMode        = gameMode;
+    m_bHasGameStarted = true;
+
+    // Reset all Data
+    m_CurrentLevel = 0;
+    m_Bomberman    = nullptr;
+    m_Bombermiss   = nullptr;
+    m_Enemies.clear();
+
+    RestartLevel();
 }
 
 
@@ -247,8 +267,11 @@ std::shared_ptr<bae::GameObject> LevelManager::GetEnemyBase(const std::string& g
 
 void LevelManager::RenderBackground() const
 {
-    bae::Renderer::GetInstance().RenderTexture(*m_BackgroundTexture, false, { 0, 0 }, 0, { 2.f, 2.f });
-    m_LevelBlockTest->Render();
+    if(m_bHasGameStarted)
+    {
+        bae::Renderer::GetInstance().RenderTexture(*m_BackgroundTexture, false, { 0, 0 }, 0, { 2.f, 2.f });
+        m_LevelBlockTest->Render();
+    }
 }
 
 void LevelManager::SpawnBlocks()
@@ -374,7 +397,6 @@ void LevelManager::RestartLevel()
 
     // Spawn Door
 
-
     // Level Generation
 
     // Spawn Player(s)
@@ -394,6 +416,12 @@ void LevelManager::RestartLevel()
     }
 
     // Spawn Enemies
+
+    // Added for testing :D
+    SpawnBalloom({ 400, 300 });
+    SpawnOneal({ 440, 300 });
+    SpawnDoll({ 480, 300 });
+    SpawnMinvo({ 520, 300 });
 }
 
 

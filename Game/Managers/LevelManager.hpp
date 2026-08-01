@@ -20,6 +20,8 @@ namespace Game
         explicit LevelManager();
         ~LevelManager() override;
 
+        void StartGame(GameMode gameMode);
+
         void SpawnBomberman();
         void SpawnBombermiss();
         void SpawnBalloomPlayer();
@@ -52,8 +54,6 @@ namespace Game
         [[nodiscard]] int GetCurrentLevelNumber() const;
         [[nodiscard]] LevelJson GetCurrentLevel();
 
-        void SetGameMode(GameMode gameMode);
-
         [[nodiscard]] std::optional<LevelJson> GetCurrentLevelJson();
 
         void CreateGrid();
@@ -75,7 +75,7 @@ namespace Game
         void LoadPlayerData() const;
 
         GameMode m_GameMode{ GameMode::Singleplayer };
-
+        bool m_bHasGameStarted{};
 
         int m_CurrentLevel{};
 
