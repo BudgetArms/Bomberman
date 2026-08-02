@@ -317,6 +317,27 @@ std::set<bae::GameObject*> LevelManager::GetEnemies()
     return m_Enemies;
 }
 
+GameMode LevelManager::GetGameMode() const
+{
+    return m_GameMode;
+}
+
+
+int LevelManager::GetTotalScore()
+{
+    SavePlayerData();
+    switch(m_GameMode)
+    {
+        case GameMode::Singleplayer:
+            return m_BombermanScore;
+        case GameMode::CoOp:
+            return m_BombermanScore + m_BombermissScore;
+        case GameMode::Versus:
+            return m_BombermanScore;
+    }
+
+    return -1;
+}
 
 void LevelManager::HandleEvent(const unsigned int eventHash)
 {
@@ -427,31 +448,6 @@ void LevelManager::RestartLevel()
 
 void LevelManager::HandleGameOver() const
 {
-    int score{};
-
-    // Get Score
-    switch(m_GameMode)
-    {
-        case GameMode::Singleplayer:
-        {
-            score = m_BombermanScore;
-            std::cout << FUNCTION_NAME << ": SinglePlayer, Score: " << score << '\n';
-        }
-        break;
-        case GameMode::CoOp:
-        {
-            score = m_BombermanScore + m_BombermissScore;
-            std::cout << FUNCTION_NAME << ": Co-Op, Score: " << score << '\n';
-        }
-        break;
-        case GameMode::Versus:
-        {
-            score = m_BombermanScore;
-            std::cout << FUNCTION_NAME << ": Versus, Score: " << score << '\n';
-        }
-        break;
-    }
-
     // Load Input Name Scene
 }
 

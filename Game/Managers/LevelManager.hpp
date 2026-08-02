@@ -48,6 +48,9 @@ namespace Game
         std::set<bae::GameObject*> GetPlayers();
         std::set<bae::GameObject*> GetEnemies();
 
+        GameMode GetGameMode() const;
+        int GetTotalScore();
+
         /*
         void LoadLevelFromFile(int levelNumber, const std::filesystem::path& jsonFile);
 
