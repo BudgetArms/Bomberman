@@ -4,6 +4,7 @@
 
 #include "Base/Events.hpp"
 #include "Commands/ToggleMuteSoundsCommand.hpp"
+#include "Managers/LevelManager.hpp"
 #include "States/UI/InputLeaderboardNameState.hpp"
 
 
@@ -36,7 +37,12 @@ std::unique_ptr<SceneState> GameState::Update()
         return nullptr;
     }
 
-    return std::make_unique<InputLeaderboardNameState>(*m_GameObject);
+    auto& levelManager = LevelManager::GetInstance();
+
+    const GameMode gameMode = levelManager.GetGameMode();
+    const int finalScore    = levelManager.GetTotalScore();
+
+    return std::make_unique<InputLeaderboardNameState>(*m_GameObject, gameMode, finalScore);
 }
 
 void GameState::HandleEvent(const unsigned eventHash)
