@@ -18,6 +18,8 @@ namespace Game::States
         void Notify(unsigned eventHash, bae::Subject* subject, const std::any& eventData) override;
 
     private:
+        void UpdateSelectorPosition();
+
         enum class GameModeSelection
         {
             SinglePlayer,
@@ -28,6 +30,12 @@ namespace Game::States
 
         GameModeSelection m_Selection{ GameModeSelection::SinglePlayer };
         bool m_bIsSelected{};
+
+        static constexpr float m_SelectorXPosition{ 330.f };
+        static constexpr float m_SelectorYOffset{ -15.f };
+
+        std::array<glm::vec2, 4> m_SelectorPositions{};
+        bae::GameObject* m_SelectorObject{};
     };
 }
 
