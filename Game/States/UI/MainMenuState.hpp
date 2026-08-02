@@ -19,6 +19,8 @@ namespace Game::States
         void Notify(unsigned eventHash, bae::Subject* subject, const std::any& eventData) override;
 
     private:
+        void UpdateSelectorPosition();
+
         enum class StartMenuSelections
         {
             Play,
@@ -28,6 +30,12 @@ namespace Game::States
 
         StartMenuSelections m_Selection{ StartMenuSelections::Play };
         bool m_bIsSelected{};
+
+        static constexpr float m_SelectorXPosition{ 330.f };
+        static constexpr float m_SelectorYOffset{ -15.f };
+
+        std::array<glm::vec2, 3> m_SelectorPositions{};
+        bae::GameObject* m_SelectorObject{};
     };
 }
 
