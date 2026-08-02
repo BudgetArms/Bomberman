@@ -31,6 +31,7 @@
 #include "Commands/ToggleMuteSoundsCommand.hpp"
 #include "Components/ManagersComponent.hpp"
 #include "Managers/InputManager.hpp"
+#include "Managers/ScenesManager.hpp"
 #include "Sounds/SoLoudSoundSystem.hpp"
 #include "Wrappers/Keyboard.hpp"
 #include "Wrappers/Mouse.hpp"
@@ -250,9 +251,8 @@ void LoadStartMenu()
 
 void LoadManagers()
 {
-    // Setting up level manager data
-    Game::LevelManager& levelManager = Game::LevelManager::GetInstance();
-    levelManager.StartGame(Game::GameMode::Singleplayer);
+    Game::ScenesManager& scenesManager = Game::ScenesManager::GetInstance();
+    scenesManager.Initialize();
 
     const auto managersObject = std::make_shared<bae::GameObject>("Managers Object");
     managersObject->AddComponent<Game::ManagersComponent>(*managersObject);
