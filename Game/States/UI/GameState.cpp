@@ -17,8 +17,6 @@ GameState::GameState(bae::GameObject& selectionObject) :
 
 void GameState::OnEnter()
 {
-    ClearCommands();
-
     // Added Sound Toggle
     const bae::Keyboard& keyboard = bae::InputManager::GetInstance().GetKeyboard();
 
