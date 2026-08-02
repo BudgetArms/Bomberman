@@ -6,7 +6,7 @@
 
 An NES Bomberman (1987) clone. <br>
 
-Game Engine Used (2D only): [BudgetArmsEngine](https://github.com/BudgetArms/BudgetArmsEngine)<br>
+Game Engine: [BudgetArmsEngine](https://github.com/BudgetArms/BudgetArmsEngine)<br>
 
 
 ## Design patterns
