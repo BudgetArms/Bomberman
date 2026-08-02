@@ -16,11 +16,11 @@ void Game::ManagersComponent::Update()
 
 void Game::ManagersComponent::FixedUpdate()
 {
+    CollisionManager::GetInstance().HandleCollisions();
 }
 
 void Game::ManagersComponent::LateUpdate()
 {
-    CollisionManager::GetInstance().HandleCollisions();
     ScenesManager::GetInstance().Update();
 }
 
