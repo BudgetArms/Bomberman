@@ -73,6 +73,194 @@ void LevelManager::StartGame(const GameMode gameMode)
 }
 
 
+void LevelManager::RenderBackground() const
+{
+    if(m_bHasGameStarted)
+    {
+        bae::Renderer::GetInstance().RenderTexture(*m_BackgroundTexture, false, { 0, 0 }, 0, { 2.f, 2.f });
+        m_LevelBlockTest->Render();
+    }
+}
+
+void LevelManager::SkipLevel()
+{
+    SavePlayerData();
+
+    ++m_CurrentLevel;
+    RestartLevel();
+}
+
+std::set<bae::GameObject*> LevelManager::GetPlayers()
+{
+    switch(m_GameMode)
+    {
+        case GameMode::Singleplayer:
+            return { m_Bomberman };
+        case GameMode::CoOp:
+            return { m_Bomberman, m_Bombermiss };
+        case GameMode::Versus:
+            return { m_Bomberman };
+    }
+
+    std::cout << FUNCTION_NAME << "This should never be reached" << '\n';
+    return { nullptr };
+}
+
+std::set<bae::GameObject*> LevelManager::GetEnemies()
+{
+    return m_Enemies;
+}
+
+GameMode LevelManager::GetGameMode() const
+{
+    return m_GameMode;
+}
+
+int LevelManager::GetTotalScore()
+{
+    SavePlayerData();
+    switch(m_GameMode)
+    {
+        case GameMode::Singleplayer:
+            return m_BombermanScore;
+        case GameMode::CoOp:
+            return m_BombermanScore + m_BombermissScore;
+        case GameMode::Versus:
+            return m_BombermanScore;
+    }
+
+    return -1;
+}
+
+void LevelManager::HandleEvent(const unsigned int eventHash)
+{
+    switch(GetEvent(eventHash))
+    {
+        case Events::PlayerDied:
+            break;
+        case Events::DirectionChanged:
+            break;
+        case Events::GameWon:
+            break;
+        case Events::GameOver:
+            break;
+        case Events::LevelWon:
+            break;
+        case Events::LevelLost:
+            break;
+        case Events::BalloomDied:
+            break;
+        case Events::OnealDied:
+            break;
+        case Events::DollDied:
+            break;
+        case Events::MinvoDied:
+            break;
+        case Events::BeginLevel:
+            break;
+        case Events::RestartLevel:
+            break;
+        case Events::ScoreChanged:
+            break;
+        case Events::LivesChanged:
+            break;
+        case Events::CollisionEvent:
+            break;
+        case Events::NoEvent:
+            break;
+    }
+}
+
+
+void LevelManager::Notify(const unsigned eventHash, bae::Subject* subject, const std::any&)
+{
+    if(GetEvent(eventHash) == Events::PlayerDied)
+    {
+        std::cout << FUNCTION_NAME << '\t';
+        if(subject->GetGameObject() == m_Bomberman ||
+            subject->GetGameObject() == m_Bombermiss)
+        {
+            HandleBomberDeath(*subject->GetGameObject());
+        }
+    }
+}
+
+void LevelManager::HandleBomberDeath(const bae::GameObject& object)
+{
+    if(&object != m_Bomberman && &object != m_Bombermiss)
+    {
+        std::cout << FUNCTION_NAME << " This should never be reached" << '\n';
+        return;
+    }
+
+    SavePlayerData();
+
+    if(object.GetComponent<LifeComponent>()->IsAlive())
+    {
+        RestartLevel();
+    }
+    else
+    {
+        HandleGameOver();
+    }
+}
+
+void LevelManager::HandleGameOver() const
+{
+    // Load Input Name Scene
+}
+
+void LevelManager::ClearLevel()
+{
+    const bae::Scene* scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
+    scene->RemoveAll();
+
+    m_Bomberman  = nullptr;
+    m_Bombermiss = nullptr;
+}
+
+void LevelManager::RestartLevel()
+{
+    ClearLevel();
+
+    // Spawn Door
+
+    // Level Generation
+
+    // Spawn Player(s)
+    switch(m_GameMode)
+    {
+        case GameMode::Singleplayer:
+            SpawnBomberman();
+            break;
+        case GameMode::CoOp:
+            SpawnBomberman();
+            SpawnBombermiss();
+            break;
+        case GameMode::Versus:
+            SpawnBomberman();
+            SpawnBalloomPlayer();
+            break;
+    }
+
+    // Spawn Enemies
+
+    // Added for testing :D
+    SpawnBalloom({ 400, 300 });
+    SpawnOneal({ 440, 300 });
+    SpawnDoll({ 480, 300 });
+    SpawnMinvo({ 520, 300 });
+}
+
+void LevelManager::CreateGrid()
+{
+}
+
+void LevelManager::SpawnBlocks()
+{
+}
+
+
 void LevelManager::SpawnBomberman()
 {
     bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
@@ -160,6 +348,7 @@ void LevelManager::SpawnBalloomPlayer()
 
     scene->Add(balloom);
 }
+
 
 void LevelManager::SpawnBalloom(const glm::vec2& position)
 {
@@ -250,6 +439,7 @@ std::shared_ptr<bae::GameObject> LevelManager::GetBombermanBase(const std::strin
     return bomberman;
 }
 
+
 std::shared_ptr<bae::GameObject> LevelManager::GetEnemyBase(const std::string& gameObjectName,
                                                             const glm::vec2& spawnPosition)
 {
@@ -263,192 +453,6 @@ std::shared_ptr<bae::GameObject> LevelManager::GetEnemyBase(const std::string& g
     enemy->GetComponent<HitboxComponent>()->SetVisibility(true);
 
     return enemy;
-}
-
-void LevelManager::RenderBackground() const
-{
-    if(m_bHasGameStarted)
-    {
-        bae::Renderer::GetInstance().RenderTexture(*m_BackgroundTexture, false, { 0, 0 }, 0, { 2.f, 2.f });
-        m_LevelBlockTest->Render();
-    }
-}
-
-void LevelManager::SpawnBlocks()
-{
-}
-
-void LevelManager::SkipLevel()
-{
-    SavePlayerData();
-
-    ++m_CurrentLevel;
-    RestartLevel();
-}
-
-void LevelManager::ClearLevel()
-{
-    const bae::Scene* scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
-    scene->RemoveAll();
-
-    m_Bomberman  = nullptr;
-    m_Bombermiss = nullptr;
-}
-
-
-std::set<bae::GameObject*> LevelManager::GetPlayers()
-{
-    switch(m_GameMode)
-    {
-        case GameMode::Singleplayer:
-            return { m_Bomberman };
-        case GameMode::CoOp:
-            return { m_Bomberman, m_Bombermiss };
-        case GameMode::Versus:
-            return { m_Bomberman };
-    }
-
-    std::cout << FUNCTION_NAME << "This should never be reached" << '\n';
-    return { nullptr };
-}
-
-std::set<bae::GameObject*> LevelManager::GetEnemies()
-{
-    return m_Enemies;
-}
-
-GameMode LevelManager::GetGameMode() const
-{
-    return m_GameMode;
-}
-
-
-int LevelManager::GetTotalScore()
-{
-    SavePlayerData();
-    switch(m_GameMode)
-    {
-        case GameMode::Singleplayer:
-            return m_BombermanScore;
-        case GameMode::CoOp:
-            return m_BombermanScore + m_BombermissScore;
-        case GameMode::Versus:
-            return m_BombermanScore;
-    }
-
-    return -1;
-}
-
-void LevelManager::HandleEvent(const unsigned int eventHash)
-{
-    switch(GetEvent(eventHash))
-    {
-        case Events::PlayerDied:
-            break;
-        case Events::DirectionChanged:
-            break;
-        case Events::GameWon:
-            break;
-        case Events::GameOver:
-            break;
-        case Events::LevelWon:
-            break;
-        case Events::LevelLost:
-            break;
-        case Events::BalloomDied:
-            break;
-        case Events::OnealDied:
-            break;
-        case Events::DollDied:
-            break;
-        case Events::MinvoDied:
-            break;
-        case Events::BeginLevel:
-            break;
-        case Events::RestartLevel:
-            break;
-        case Events::ScoreChanged:
-            break;
-        case Events::LivesChanged:
-            break;
-        case Events::CollisionEvent:
-            break;
-        case Events::NoEvent:
-            break;
-    }
-}
-
-void LevelManager::Notify(const unsigned eventHash, bae::Subject* subject, const std::any&)
-{
-    if(GetEvent(eventHash) == Events::PlayerDied)
-    {
-        std::cout << FUNCTION_NAME << '\t';
-        if(subject->GetGameObject() == m_Bomberman ||
-            subject->GetGameObject() == m_Bombermiss)
-        {
-            HandleBomberDeath(*subject->GetGameObject());
-        }
-    }
-}
-
-void LevelManager::HandleBomberDeath(const bae::GameObject& object)
-{
-    if(&object != m_Bomberman && &object != m_Bombermiss)
-    {
-        std::cout << FUNCTION_NAME << " This should never be reached" << '\n';
-        return;
-    }
-
-    SavePlayerData();
-
-    if(object.GetComponent<LifeComponent>()->IsAlive())
-    {
-        RestartLevel();
-    }
-    else
-    {
-        HandleGameOver();
-    }
-}
-
-
-void LevelManager::RestartLevel()
-{
-    ClearLevel();
-
-    // Spawn Door
-
-    // Level Generation
-
-    // Spawn Player(s)
-    switch(m_GameMode)
-    {
-        case GameMode::Singleplayer:
-            SpawnBomberman();
-            break;
-        case GameMode::CoOp:
-            SpawnBomberman();
-            SpawnBombermiss();
-            break;
-        case GameMode::Versus:
-            SpawnBomberman();
-            SpawnBalloomPlayer();
-            break;
-    }
-
-    // Spawn Enemies
-
-    // Added for testing :D
-    SpawnBalloom({ 400, 300 });
-    SpawnOneal({ 440, 300 });
-    SpawnDoll({ 480, 300 });
-    SpawnMinvo({ 520, 300 });
-}
-
-
-void LevelManager::HandleGameOver() const
-{
-    // Load Input Name Scene
 }
 
 void LevelManager::AddControls(bae::GameObject& gameObject, const bool bIsFirstPlayer)

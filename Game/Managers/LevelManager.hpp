@@ -22,6 +22,40 @@ namespace Game
 
         void StartGame(GameMode gameMode);
 
+        void RenderBackground() const;
+
+        void SkipLevel();
+
+        std::set<bae::GameObject*> GetPlayers();
+        std::set<bae::GameObject*> GetEnemies();
+
+        [[nodiscard]] GameMode GetGameMode() const;
+        [[nodiscard]] int GetTotalScore();
+
+        void HandleEvent(unsigned int eventHash) override;
+        void Notify(unsigned eventHash, bae::Subject* subject, const std::any& eventData) override;
+
+    private:
+        void HandleBomberDeath(const bae::GameObject& object);
+        void HandleGameOver() const;
+
+        // Clears Level Blocks & All Items/Entities
+        void ClearLevel();
+        void RestartLevel();
+
+        /*
+       void LoadLevelFromFile(int levelNumber, const std::filesystem::path& jsonFile);
+
+       [[nodiscard]] int GetCurrentLevelNumber() const;
+       [[nodiscard]] LevelJson GetCurrentLevel();
+
+       [[nodiscard]] std::optional<LevelJson> GetCurrentLevelJson();
+       */
+
+        void CreateGrid();
+
+        void SpawnBlocks();
+
         void SpawnBomberman();
         void SpawnBombermiss();
         void SpawnBalloomPlayer();
@@ -37,45 +71,12 @@ namespace Game
         static std::shared_ptr<bae::GameObject> GetEnemyBase(const std::string& gameObjectName,
                                                              const glm::vec2& spawnPosition);
 
-        void RenderBackground() const;
-
-        void SpawnBlocks();
-        void SkipLevel();
-
-        // Clears Level Blocks & All Items/Entities
-        void ClearLevel();
-
-        std::set<bae::GameObject*> GetPlayers();
-        std::set<bae::GameObject*> GetEnemies();
-
-        GameMode GetGameMode() const;
-        int GetTotalScore();
-
-        /*
-        void LoadLevelFromFile(int levelNumber, const std::filesystem::path& jsonFile);
-
-        [[nodiscard]] int GetCurrentLevelNumber() const;
-        [[nodiscard]] LevelJson GetCurrentLevel();
-
-        [[nodiscard]] std::optional<LevelJson> GetCurrentLevelJson();
-
-        void CreateGrid();
-    */
-        void HandleEvent(unsigned int eventHash) override;
-        void Notify(unsigned eventHash, bae::Subject* subject, const std::any& eventData) override;
-
-    private:
-        void HandleBomberDeath(const bae::GameObject& object);
-
-        void RestartLevel();
-
-        void HandleGameOver() const;
-
 
         static void AddControls(bae::GameObject& gameObject, bool bIsFirstPlayer);
 
         void SavePlayerData();
         void LoadPlayerData() const;
+
 
         GameMode m_GameMode{ GameMode::Singleplayer };
         bool m_bHasGameStarted{};
