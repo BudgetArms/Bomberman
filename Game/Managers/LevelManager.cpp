@@ -69,6 +69,9 @@ void LevelManager::StartGame(const GameMode gameMode)
     m_Bombermiss   = nullptr;
     m_Enemies.clear();
 
+    // Create Grid
+    CreateGrid();
+
     RestartLevel();
 }
 
@@ -132,43 +135,13 @@ int LevelManager::GetTotalScore()
     return -1;
 }
 
-void LevelManager::HandleEvent(const unsigned int eventHash)
+GridComponent* LevelManager::GetGridComponent() const
 {
-    switch(GetEvent(eventHash))
-    {
-        case Events::PlayerDied:
-            break;
-        case Events::DirectionChanged:
-            break;
-        case Events::GameWon:
-            break;
-        case Events::GameOver:
-            break;
-        case Events::LevelWon:
-            break;
-        case Events::LevelLost:
-            break;
-        case Events::BalloomDied:
-            break;
-        case Events::OnealDied:
-            break;
-        case Events::DollDied:
-            break;
-        case Events::MinvoDied:
-            break;
-        case Events::BeginLevel:
-            break;
-        case Events::RestartLevel:
-            break;
-        case Events::ScoreChanged:
-            break;
-        case Events::LivesChanged:
-            break;
-        case Events::CollisionEvent:
-            break;
-        case Events::NoEvent:
-            break;
-    }
+    return m_GridComponent;
+}
+
+void LevelManager::HandleEvent(const unsigned int)
+{
 }
 
 
@@ -254,6 +227,17 @@ void LevelManager::RestartLevel()
 
 void LevelManager::CreateGrid()
 {
+    auto* backgroundScene = bae::SceneManager::GetInstance().GetScene(g_LevelBackgroundName.data());
+
+    const auto gridObject = std::make_shared<bae::GameObject>("Grid Object");
+    gridObject->SetWorldLocation(m_GridOffset);
+
+    gridObject->AddComponent<GridComponent>(*gridObject, m_GridColumns, m_GridRows, m_CellSize);
+
+    m_GridComponent = gridObject->GetComponent<GridComponent>();
+    m_GridComponent->SetRenderConnections(true);
+
+    backgroundScene->Add(gridObject);
 }
 
 void LevelManager::SpawnBlocks()

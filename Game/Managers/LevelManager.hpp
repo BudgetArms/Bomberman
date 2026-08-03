@@ -8,6 +8,7 @@
 #include "Core/SpriteSheet.hpp"
 
 #include "Base/GameMode.hpp"
+#include "Components/GridComponent.hpp"
 #include "Core/EventListener.hpp"
 #include "Core/Observer.hpp"
 
@@ -26,11 +27,15 @@ namespace Game
 
         void SkipLevel();
 
+
         std::set<bae::GameObject*> GetPlayers();
         std::set<bae::GameObject*> GetEnemies();
 
         [[nodiscard]] GameMode GetGameMode() const;
         [[nodiscard]] int GetTotalScore();
+
+        [[nodiscard]] GridComponent* GetGridComponent() const;
+
 
         void HandleEvent(unsigned int eventHash) override;
         void Notify(unsigned eventHash, bae::Subject* subject, const std::any& eventData) override;
@@ -94,6 +99,8 @@ namespace Game
         bae::Texture2D* m_BackgroundTexture{};
         bae::SpriteSheet* m_LevelBlockTest{};
 
+        GridComponent* m_GridComponent{};
+
         // todo: load from file
         int m_BombermanLives{ 4 };
         int m_BombermissLives{ 4 };
@@ -101,9 +108,15 @@ namespace Game
         int m_BombermanScore{};
         int m_BombermissScore{};
 
-        glm::vec2 m_BombermanStartPosition{ 200, 300 };
-        glm::vec2 m_BombermissStartPosition{ 200, 400 };
+        // todo: load from file
+        const int m_GridColumns{ 29 };
+        const int m_GridRows{ 11 };
+        const glm::vec2 m_GridOffset{ 48.f, 48.f };
+        const glm::ivec2 m_CellSize{ 32.f, 32.f };
 
-        glm::vec2 m_BalloomPlayerStartPosition{ 500, 128 };
+        const glm::vec2 m_BombermanStartPosition{ 200, 300 };
+        const glm::vec2 m_BombermissStartPosition{ 200, 400 };
+
+        const glm::vec2 m_BalloomPlayerStartPosition{ 500, 128 };
     };
 }
