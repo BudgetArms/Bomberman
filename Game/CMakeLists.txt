@@ -35,6 +35,7 @@ add_executable(${PROJECT_NAME} ${TARGET_PARAM}
     "Commands/ForceDamageCommand.cpp"
     "Commands/ForceMoveCommand.cpp"
     "Commands/LogMousePositionCommand.cpp"
+    "Commands/MoveCommand.cpp"
     "Commands/SelectionCommands.cpp"
     "Commands/ToggleMuteSoundsCommand.cpp"
 
@@ -44,6 +45,7 @@ add_executable(${PROJECT_NAME} ${TARGET_PARAM}
     "Components/LifeComponent.cpp"
     "Components/LifeDisplayComponent.cpp"
     "Components/ManagersComponent.cpp"
+    "Components/MovementGridComponent.cpp"
     "Components/ScoreComponent.cpp"
     "Components/ScoreDisplayComponent.cpp"
 
