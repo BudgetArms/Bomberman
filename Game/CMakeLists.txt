@@ -49,6 +49,7 @@ add_executable(${PROJECT_NAME} ${TARGET_PARAM}
     "Components/MovementGridComponent.cpp"
     "Components/ScoreComponent.cpp"
     "Components/ScoreDisplayComponent.cpp"
+    "Components/TemporaryWallComponent.cpp"
 
     "Managers/CollisionManager.cpp"
     "Managers/LevelManager.cpp"
