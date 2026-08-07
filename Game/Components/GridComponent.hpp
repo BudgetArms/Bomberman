@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Base/DirectionEnum.hpp"
+#include "Base/LevelNodeType.hpp"
 #include "Components/Component.hpp"
 #include "Graphs/AStar.hpp"
 #include "Graphs/GridGraph.hpp"
@@ -28,6 +29,8 @@ namespace Game
         void RemoveNode(int nodeId) const;
         void RemoveNode(const bae::Graphs::GridPosition& position) const;
         void RemoveNodeAtPosition(const glm::vec2& positionNode) const;
+
+        void SetNodeType(int nodeId, LevelNodeType nodeType);
 
         // Connections
         void AddConnection(int nodeId, Direction direction) const;

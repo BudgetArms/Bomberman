@@ -27,9 +27,10 @@ add_executable(${PROJECT_NAME} ${TARGET_PARAM}
     "Base/CommonManagerVariables.hpp"
     "Base/DirectionEnum.hpp"
     "Base/GameMode.hpp"
+    "Base/Level.cpp"
     "Base/LevelGraphNode.cpp"
     "Base/LevelGridGraph.cpp"
-    "Base/LevelGridType.hpp"
+    "Base/LevelNodeType.hpp"
     "Base/SoundAssets.hpp"
 
     "Commands/ForceDamageCommand.cpp"

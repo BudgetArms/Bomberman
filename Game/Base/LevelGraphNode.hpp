@@ -2,7 +2,7 @@
 
 #include "Graphs/Node.hpp"
 
-#include "Base/LevelGridType.hpp"
+#include "Base/LevelNodeType.hpp"
 
 
 namespace Game
@@ -12,6 +12,6 @@ namespace Game
     public:
         explicit LevelGraphNode(const glm::vec2& position);
 
-        LevelGridType m_GridType{ LevelGridType::Nothing };
+        LevelNodeType m_GridType{ LevelNodeType::Nothing };
     };
 }

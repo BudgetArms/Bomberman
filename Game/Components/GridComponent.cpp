@@ -84,6 +84,11 @@ void GridComponent::RemoveNodeAtPosition(const glm::vec2& positionNode) const
     RemoveNode(nodeId);
 }
 
+void GridComponent::SetNodeType(int nodeId, LevelNodeType gridType)
+{
+    m_LevelGridGraph->SetNodeType(nodeId, gridType);
+}
+
 
 void GridComponent::AddConnection(const int nodeId, const Direction direction) const
 {

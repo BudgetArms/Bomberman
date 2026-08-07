@@ -2,7 +2,7 @@
 
 #include "Graphs/GridGraph.hpp"
 
-#include "Base/LevelGridType.hpp"
+#include "Base/LevelNodeType.hpp"
 
 
 namespace Game
@@ -12,7 +12,7 @@ namespace Game
     public:
         LevelGridGraph(const glm::vec2& position, int columns, int rows, const glm::ivec2& cellSize);
 
-        void SetNodeTerrainType(int nodeId, LevelGridType type) const;
-        void SetNodeTerrainType(const glm::vec2& position, LevelGridType type) const;
+        void SetNodeType(int nodeId, LevelNodeType type) const;
+        void SetNodeType(const glm::vec2& position, LevelNodeType type) const;
     };
 }

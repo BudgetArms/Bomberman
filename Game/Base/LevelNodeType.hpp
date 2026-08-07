@@ -3,7 +3,7 @@
 
 namespace Game
 {
-    enum class LevelGridType
+    enum class LevelNodeType
     {
         Nothing   = 1,
         Block     = 1000000000,

@@ -12,7 +12,7 @@ Game::LevelGridGraph::LevelGridGraph(const glm::vec2& position, const int column
 {
 }
 
-void Game::LevelGridGraph::SetNodeTerrainType(const int nodeId, const LevelGridType type) const
+void Game::LevelGridGraph::SetNodeType(const int nodeId, const LevelNodeType type) const
 {
     const auto pNode = dynamic_cast<LevelGraphNode*>(GetNode(GetGridPosition(nodeId)));
     if(!pNode)
@@ -24,9 +24,9 @@ void Game::LevelGridGraph::SetNodeTerrainType(const int nodeId, const LevelGridT
     pNode->m_GridType = type;
 }
 
-void Game::LevelGridGraph::SetNodeTerrainType(const glm::vec2& position, const LevelGridType type) const
+void Game::LevelGridGraph::SetNodeType(const glm::vec2& position, const LevelNodeType type) const
 {
     const int nodeId = GetNodeId(GetGridPosition(position));
-    return SetNodeTerrainType(nodeId, type);
+    return SetNodeType(nodeId, type);
 }
 
