@@ -30,8 +30,8 @@ namespace Game
         void RemoveNode(const bae::Graphs::GridPosition& position) const;
         void RemoveNodeAtPosition(const glm::vec2& positionNode) const;
 
-        [[nodiscard]] LevelNodeType GetNodeType(int nodeId) const;
-        void SetNodeType(int nodeId, LevelNodeType nodeType) const;
+        [[nodiscard]] LevelNodeType GetNodeType(const bae::Graphs::GridPosition& position) const;
+        void SetNodeType(const bae::Graphs::GridPosition& position, LevelNodeType nodeType) const;
 
         // Connections
         void AddConnection(int nodeId, Direction direction) const;
@@ -40,7 +40,7 @@ namespace Game
         void RemoveConnection(int nodeId, Direction direction) const;
         void RemoveConnection(const glm::vec2& positionNode, Direction direction) const;
 
-        void AddConnectionsToNeighbors(bae::Graphs::GridPosition position) const;
+        void AddConnectionsToNeighbors(const bae::Graphs::GridPosition& position) const;
 
 
         [[nodiscard]] bool GetRenderCells() const;
@@ -53,13 +53,13 @@ namespace Game
         void SetRenderConnections(bool bRenderConnections) const;
 
 
-        [[nodiscard]] bae::Graphs::GridPosition GetGridPosition(const glm::vec2& position) const;
+        [[nodiscard]] bae::Graphs::GridPosition GetGridPosition(const glm::vec2& positionNode) const;
 
-        [[nodiscard]] glm::vec2 GetPosition(bae::Graphs::GridPosition gridPosition) const;
+        [[nodiscard]] glm::vec2 GetPosition(bae::Graphs::GridPosition position) const;
 
-        [[nodiscard]] bool IsValidGridPosition(bae::Graphs::GridPosition gridPosition) const;
+        [[nodiscard]] bool IsValidGridPosition(bae::Graphs::GridPosition position) const;
 
-        [[nodiscard]] bae::Graphs::GridPosition GetClosestValidNodePosition(const glm::vec2& position) const;
+        [[nodiscard]] bae::Graphs::GridPosition GetClosestValidNodePosition(const glm::vec2& positionNode) const;
 
 
         [[nodiscard]] int GetColumns() const;

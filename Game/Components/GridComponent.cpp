@@ -1,5 +1,6 @@
 #include "GridComponent.hpp"
 
+#include "Base/LevelGraphNode.hpp"
 #include "Base/LevelGridGraph.hpp"
 #include "Core/HelperFunctions.hpp"
 
@@ -39,7 +40,7 @@ void GridComponent::AddNode(const int nodeId) const
 
     if(m_LevelGridGraph->IsWithinBounds(gridPosition))
     {
-        m_LevelGridGraph->AddNode(std::make_unique<bae::Graphs::Node>(positionNode));
+        m_LevelGridGraph->AddNode(std::make_unique<LevelGraphNode>(positionNode));
     }
 }
 
@@ -84,14 +85,14 @@ void GridComponent::RemoveNodeAtPosition(const glm::vec2& positionNode) const
     RemoveNode(nodeId);
 }
 
-LevelNodeType GridComponent::GetNodeType(const int nodeId) const
+LevelNodeType GridComponent::GetNodeType(const bae::Graphs::GridPosition& position) const
 {
-    return m_LevelGridGraph->GetNodeType(nodeId);
+    return m_LevelGridGraph->GetNodeType(position);
 }
 
-void GridComponent::SetNodeType(const int nodeId, const LevelNodeType nodeType) const
+void GridComponent::SetNodeType(const bae::Graphs::GridPosition& position, const LevelNodeType nodeType) const
 {
-    m_LevelGridGraph->SetNodeType(nodeId, nodeType);
+    m_LevelGridGraph->SetNodeType(position, nodeType);
 }
 
 
@@ -155,7 +156,7 @@ void GridComponent::RemoveConnection(const glm::vec2& positionNode, const Direct
     RemoveConnection(nodeId, direction);
 }
 
-void GridComponent::AddConnectionsToNeighbors(const bae::Graphs::GridPosition position) const
+void GridComponent::AddConnectionsToNeighbors(const bae::Graphs::GridPosition& position) const
 {
     m_LevelGridGraph->AddConnectionsToAdjacentCells(position);
 }
@@ -190,34 +191,34 @@ void GridComponent::SetRenderConnections(const bool bRenderConnections) const
     m_LevelGridGraph->m_bRenderConnections = bRenderConnections;
 }
 
-bae::Graphs::GridPosition GridComponent::GetGridPosition(const glm::vec2& position) const
+bae::Graphs::GridPosition GridComponent::GetGridPosition(const glm::vec2& positionNode) const
 {
-    return m_LevelGridGraph->GetGridPosition(position);
+    return m_LevelGridGraph->GetGridPosition(positionNode);
 }
 
-glm::vec2 GridComponent::GetPosition(const bae::Graphs::GridPosition gridPosition) const
+glm::vec2 GridComponent::GetPosition(const bae::Graphs::GridPosition position) const
 {
-    return m_LevelGridGraph->GetPosition(gridPosition);
+    return m_LevelGridGraph->GetPosition(position);
 }
 
-bool GridComponent::IsValidGridPosition(const bae::Graphs::GridPosition gridPosition) const
+bool GridComponent::IsValidGridPosition(const bae::Graphs::GridPosition position) const
 {
-    if(!m_LevelGridGraph->IsWithinBounds(gridPosition))
+    if(!m_LevelGridGraph->IsWithinBounds(position))
     {
         return false;
     }
-    const bae::Graphs::Node* node = m_LevelGridGraph->GetNode(gridPosition);
+    const bae::Graphs::Node* node = m_LevelGridGraph->GetNode(position);
     if(!node || !node->IsValid())
     {
         return false;
     }
 
-    return m_LevelGridGraph->GetNodeId(gridPosition) != bae::Graphs::InvalidNodeID;
+    return m_LevelGridGraph->GetNodeId(position) != bae::Graphs::InvalidNodeID;
 }
 
-bae::Graphs::GridPosition GridComponent::GetClosestValidNodePosition(const glm::vec2& position) const
+bae::Graphs::GridPosition GridComponent::GetClosestValidNodePosition(const glm::vec2& positionNode) const
 {
-    return m_LevelGridGraph->GetClosestValidNodePositionAtPosition(position);
+    return m_LevelGridGraph->GetClosestValidNodePositionAtPosition(positionNode);
 }
 
 int GridComponent::GetColumns() const
