@@ -84,9 +84,14 @@ void GridComponent::RemoveNodeAtPosition(const glm::vec2& positionNode) const
     RemoveNode(nodeId);
 }
 
-void GridComponent::SetNodeType(int nodeId, LevelNodeType gridType)
+LevelNodeType GridComponent::GetNodeType(const int nodeId) const
 {
-    m_LevelGridGraph->SetNodeType(nodeId, gridType);
+    return m_LevelGridGraph->GetNodeType(nodeId);
+}
+
+void GridComponent::SetNodeType(const int nodeId, const LevelNodeType nodeType) const
+{
+    m_LevelGridGraph->SetNodeType(nodeId, nodeType);
 }
 
 

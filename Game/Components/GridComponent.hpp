@@ -30,7 +30,8 @@ namespace Game
         void RemoveNode(const bae::Graphs::GridPosition& position) const;
         void RemoveNodeAtPosition(const glm::vec2& positionNode) const;
 
-        void SetNodeType(int nodeId, LevelNodeType nodeType);
+        [[nodiscard]] LevelNodeType GetNodeType(int nodeId) const;
+        void SetNodeType(int nodeId, LevelNodeType nodeType) const;
 
         // Connections
         void AddConnection(int nodeId, Direction direction) const;
