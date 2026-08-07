@@ -71,7 +71,31 @@ bool MovementGridComponent::CanMoveInDirection(const Direction direction) const
         return false;
     }
 
-    return m_GridComponent->DoesConnectionExistInDirection(gridPosition, direction);
+    if(!m_GridComponent->DoesConnectionExistInDirection(gridPosition, direction))
+    {
+        return false;
+    }
+
+
+    bae::Graphs::GridPosition moveToGridPosition = gridPosition;
+    switch(direction)
+    {
+        case Direction::Right:
+            ++moveToGridPosition.Column;
+            break;
+        case Direction::Left:
+            --moveToGridPosition.Column;
+            break;
+        case Direction::Up:
+            --moveToGridPosition.Row;
+            break;
+        case Direction::Down:
+            ++moveToGridPosition.Row;
+            break;
+    }
+
+    const LevelNodeType nodeType = m_GridComponent->GetNodeType(moveToGridPosition);
+    return nodeType == LevelNodeType::Nothing;
 }
 
 
