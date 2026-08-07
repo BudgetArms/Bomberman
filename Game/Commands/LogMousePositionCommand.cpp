@@ -1,7 +1,10 @@
 #include "LogMousePositionCommand.hpp"
 
 #include <iostream>
+
 #include <SDL3/SDL_mouse.h>
+
+#include "Managers/LevelManager.hpp"
 
 
 using namespace Game;
@@ -15,20 +18,18 @@ void LogMousePositionCommand::Execute()
 
     std::cout << "MousePos X: " << static_cast<int>(x) << ", Y: " << static_cast<int>(y) << '\n';
 
-    /*
-    const auto levelGridComp = LevelManager::GetInstance().GetLevelGridComponent();
-    if(!levelGridComp)
+    const auto gridComponent = LevelManager::GetInstance().GetGridComponent();
+    if(!gridComponent)
     {
         return;
     }
 
-    const auto gridPos = levelGridComp->GetGridPosition({ x, y });
-    if(!levelGridComp->IsValidGridPosition(gridPos))
+    const auto gridPos = gridComponent->GetGridPosition({ x, y });
+    if(!gridComponent->IsValidGridPosition(gridPos))
     {
         std::cout << "not valid" << '\n';
     }
 
     std::cout << "GridPos Column: " << gridPos.Column << ", Row: " << gridPos.Row << '\n';
-    */
 }
 
