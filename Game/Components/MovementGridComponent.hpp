@@ -34,6 +34,7 @@ namespace Game
 
         [[nodiscard]] static bool IsOppositeDirection(Direction direction, Direction oppositeDirection);
 
+
         const float m_ToleranceNodeCenter{ 10.f };
         GridComponent* m_GridComponent{};
         Direction m_DirectionThisFrame{};

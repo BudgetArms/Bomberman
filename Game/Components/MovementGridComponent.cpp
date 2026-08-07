@@ -38,6 +38,11 @@ void MovementGridComponent::Update()
             ApplyMovement();
             return;
         }
+
+        if(!CanMoveInDirection(m_DirectionThisFrame))
+        {
+            return;
+        }
     }
 
     if(!IsAtNodeCenter() || !CanMoveInDirection(m_DirectionThisFrame))
