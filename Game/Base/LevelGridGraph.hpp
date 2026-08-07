@@ -12,9 +12,9 @@ namespace Game
     public:
         LevelGridGraph(const glm::vec2& position, int columns, int rows, const glm::ivec2& cellSize);
 
-        [[nodiscard]] LevelNodeType GetNodeType(int nodeId) const;
+        [[nodiscard]] LevelNodeType GetNodeType(const bae::Graphs::GridPosition& gridPosition) const;
 
-        void SetNodeType(int nodeId, LevelNodeType type) const;
+        void SetNodeType(const bae::Graphs::GridPosition& gridPosition, LevelNodeType type) const;
         void SetNodeType(const glm::vec2& position, LevelNodeType type) const;
     };
 }
