@@ -9,6 +9,7 @@ namespace Game
     {
     public:
         explicit ManagersComponent(bae::GameObject& owner);
+        ~ManagersComponent() override;
 
         void Update() override;
         void FixedUpdate() override;

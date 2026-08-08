@@ -7,6 +7,11 @@
 using namespace Game;
 
 
+void CollisionManager::Destroy()
+{
+    m_HitboxObjects = {};
+}
+
 void CollisionManager::HandleCollisions() const
 {
     if(m_HitboxObjects.size() < 2)

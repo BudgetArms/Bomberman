@@ -12,7 +12,10 @@ namespace Game
     class ScenesManager final : public bae::Singleton<ScenesManager>, public bae::Observer
     {
     public:
+        ~ScenesManager() override;
+
         void Initialize();
+        void Destroy();
 
         void Update();
 

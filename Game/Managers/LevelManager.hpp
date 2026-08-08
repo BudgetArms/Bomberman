@@ -69,6 +69,7 @@ namespace Game
         ~LevelManager() override;
 
         void StartGame(GameMode gameMode);
+        void Destroy();
 
         void RenderBackground() const;
 
@@ -171,3 +172,4 @@ namespace Game
         std::set<bae::Graphs::GridPosition> m_TemporaryBlockPositions{};
     };
 }
+

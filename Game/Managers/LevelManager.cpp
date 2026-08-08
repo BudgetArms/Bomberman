@@ -79,6 +79,32 @@ void LevelManager::StartGame(const GameMode gameMode)
     RestartLevel();
 }
 
+void LevelManager::Destroy()
+{
+    // nothing holds data, all heap allocations are destroyed somewhere else
+    m_GameMode                = GameMode::Singleplayer;
+    m_bHasGameStarted         = false;
+    m_CurrentLevel            = 0;
+    m_LoadedLevels            = {};
+    m_Bomberman               = nullptr;
+    m_Bombermiss              = nullptr;
+    m_Enemies                 = {};
+    m_BackgroundTexture       = nullptr;
+    m_GridComponent           = nullptr;
+    m_HitboxDimension         = {};
+    m_BombermanInfo           = {};
+    m_BombermissInfo          = {};
+    m_BalloomPlayerInfo       = {};
+    m_EnemyStartPositions     = {};
+    m_EnemySharedInfos        = {};
+    m_DoorPosition            = {};
+    m_ScoreMap                = {};
+    m_PickupPosition          = {};
+    m_GridInfo                = {};
+    m_PermanentBlockPositions = {};
+    m_TemporaryBlockPositions = {};
+}
+
 
 void LevelManager::RenderBackground() const
 {

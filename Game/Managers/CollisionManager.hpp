@@ -13,6 +13,8 @@ namespace Game
     class CollisionManager : public bae::Singleton<CollisionManager>
     {
     public:
+        void Destroy();
+
         void HandleCollisions() const;
 
         void RegisterHitbox(const HitboxComponent& hitbox);

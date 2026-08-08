@@ -10,6 +10,11 @@ Game::ManagersComponent::ManagersComponent(bae::GameObject& owner) :
 {
 }
 
+Game::ManagersComponent::~ManagersComponent()
+{
+    ScenesManager::GetInstance().Destroy();
+}
+
 void Game::ManagersComponent::Update()
 {
 }

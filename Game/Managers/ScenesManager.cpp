@@ -10,6 +10,11 @@
 using namespace Game;
 
 
+ScenesManager::~ScenesManager()
+{
+    m_SceneState = nullptr;
+}
+
 void ScenesManager::Initialize()
 {
     if(m_bIsInitialized)
@@ -29,6 +34,13 @@ void ScenesManager::Initialize()
 
     m_SceneState = std::make_unique<States::MainMenuState>(*m_SelectionObject);
     m_SceneState->OnEnter();
+}
+
+void ScenesManager::Destroy()
+{
+    m_bIsInitialized  = false;
+    m_SelectionObject = nullptr;
+    m_SceneState      = nullptr;
 }
 
 void ScenesManager::Update()
