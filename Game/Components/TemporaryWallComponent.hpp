@@ -2,8 +2,9 @@
 
 
 #include "Components/Component.hpp"
-#include "Components/SpriteComponent.hpp"
 #include "Graphs/GridGraph.hpp"
+
+#include "Components/SpriteComponent.hpp"
 
 
 namespace Game
