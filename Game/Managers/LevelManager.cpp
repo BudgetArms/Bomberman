@@ -40,12 +40,6 @@ LevelManager::LevelManager()
 {
     // Create Background
     m_BackgroundTexture = bae::ResourceManager::GetInstance().LoadTexture(m_BackgroundTexturePath).get();
-    m_LevelBlockTest    = new bae::SpriteSheet("Textures/Level/TempBlock.png", SDL_FRect(0, 0, 112, 16), 7, 1);
-
-    // Test
-    m_LevelBlockTest->m_Scale                 = { 2, 2 };
-    m_LevelBlockTest->m_Position              = { 32, 64 };
-    m_LevelBlockTest->m_bIsCenteredAtPosition = false;
 }
 
 LevelManager::~LevelManager()
@@ -82,7 +76,6 @@ void LevelManager::RenderBackground() const
     if(m_bHasGameStarted)
     {
         bae::Renderer::GetInstance().RenderTexture(*m_BackgroundTexture, false, { 0, 0 }, 0, { 2.f, 2.f });
-        m_LevelBlockTest->Render();
     }
 }
 

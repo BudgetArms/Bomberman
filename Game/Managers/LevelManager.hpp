@@ -97,7 +97,6 @@ namespace Game
 
         const std::string m_BackgroundTexturePath{ "Textures/Level/Playfield.png" };
         bae::Texture2D* m_BackgroundTexture{};
-        bae::SpriteSheet* m_LevelBlockTest{};
 
         GridComponent* m_GridComponent{};
 
