@@ -557,6 +557,12 @@ void LevelManager::AddControls(bae::GameObject& gameObject, const bool bIsFirstP
 
     constexpr auto moveOnGridButtonState = bae::InputManager::ButtonState::Pressed;
 
+    if(!controller && !bIsFirstPlayer)
+    {
+        bae::InputManager::GetInstance().AddController(1);
+        controller = bae::InputManager::GetInstance().GetController(1);
+    }
+
     if(!controller)
     {
         std::cout << FUNCTION_NAME << " Failed to Get controller, IsFirstPlayer: "
