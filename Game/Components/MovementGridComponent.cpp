@@ -162,6 +162,7 @@ bool MovementGridComponent::IsAtNodeCenter() const
 {
     const glm::vec2& position = m_Owner->GetWorldLocation();
 
+    // todo: this or the character positions are offset
     const auto gridPosition = m_GridComponent->GetClosestValidNodePosition(position);
 
     if(gridPosition.Column < 0 || gridPosition.Row < 0 ||
