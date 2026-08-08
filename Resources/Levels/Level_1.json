@@ -1,0 +1,614 @@
+﻿{
+  "Name": "Level 0",
+  "Index": 0,
+  "Grid": {
+    "Columns": 29,
+    "Rows": 11,
+    "CellSize": {
+      "Width": 32,
+      "Height": 32
+    },
+    "Offset": {
+      "X": 48,
+      "Y": 48
+    }
+  },
+  "Hitbox": {
+    "Width": 25,
+    "Height": 25
+  },
+  "Bomberman": {
+    "StartLives": 4,
+    "Speed": 100,
+    "Position": {
+      "Column": 0,
+      "Row": 0
+    }
+  },
+  "Bombermiss": {
+    "StartLives": 4,
+    "Speed": 200,
+    "Position": {
+      "Column": 0,
+      "Row": 1
+    }
+  },
+  "BalloomPlayer": {
+    "Speed": 300,
+    "Position": {
+      "Column": 7,
+      "Row": 7
+    }
+  },
+  "EnemySpeed": {
+    "Balloom": 111,
+    "Oneal": 222,
+    "Doll": 333,
+    "Minvo": 444
+  },
+  "EnemyChangeDirectionUp": {
+    "Balloom": 0.20,
+    "Oneal": 0.30,
+    "Doll": 0.10,
+    "Minvo": 0.20
+  },
+  "DoorPosition": {
+    "Column": 24,
+    "Row": 4
+  },
+  "ScoreMap": {
+    "Pickup": 1000,
+    "Balloom": 100,
+    "Oneal": 200,
+    "Doll": 400,
+    "Minvo": 800
+  },
+  "Pickups": {
+    "Bomb": {
+      "Column": 10,
+      "Row": 1
+    },
+    "Fire": {
+      "Column": 10,
+      "Row": 2
+    },
+    "RemoteControl": {
+      "Column": 10,
+      "Row": 3
+    }
+  },
+  "BalloomPositions": [
+    {
+      "Column": 6,
+      "Row": 8
+    },
+    {
+      "Column": 11,
+      "Row": 10
+    },
+    {
+      "Column": 12,
+      "Row": 3
+    },
+    {
+      "Column": 18,
+      "Row": 6
+    },
+    {
+      "Column": 23,
+      "Row": 6
+    },
+    {
+      "Column": 27,
+      "Row": 8
+    }
+  ],
+  "OnealPositions": [
+  ],
+  "DollPositions": [
+  ],
+  "MinvoPositions": [
+  ],
+  "PermanentBlockPositions": [
+    {
+      "Column": 1,
+      "Row": 1
+    },
+    {
+      "Column": 3,
+      "Row": 1
+    },
+    {
+      "Column": 5,
+      "Row": 1
+    },
+    {
+      "Column": 7,
+      "Row": 1
+    },
+    {
+      "Column": 9,
+      "Row": 1
+    },
+    {
+      "Column": 11,
+      "Row": 1
+    },
+    {
+      "Column": 13,
+      "Row": 1
+    },
+    {
+      "Column": 15,
+      "Row": 1
+    },
+    {
+      "Column": 17,
+      "Row": 1
+    },
+    {
+      "Column": 19,
+      "Row": 1
+    },
+    {
+      "Column": 21,
+      "Row": 1
+    },
+    {
+      "Column": 23,
+      "Row": 1
+    },
+    {
+      "Column": 25,
+      "Row": 1
+    },
+    {
+      "Column": 27,
+      "Row": 1
+    },
+    {
+      "Column": 1,
+      "Row": 3
+    },
+    {
+      "Column": 3,
+      "Row": 3
+    },
+    {
+      "Column": 5,
+      "Row": 3
+    },
+    {
+      "Column": 7,
+      "Row": 3
+    },
+    {
+      "Column": 9,
+      "Row": 3
+    },
+    {
+      "Column": 11,
+      "Row": 3
+    },
+    {
+      "Column": 13,
+      "Row": 3
+    },
+    {
+      "Column": 15,
+      "Row": 3
+    },
+    {
+      "Column": 17,
+      "Row": 3
+    },
+    {
+      "Column": 19,
+      "Row": 3
+    },
+    {
+      "Column": 21,
+      "Row": 3
+    },
+    {
+      "Column": 23,
+      "Row": 3
+    },
+    {
+      "Column": 25,
+      "Row": 3
+    },
+    {
+      "Column": 27,
+      "Row": 3
+    },
+    {
+      "Column": 1,
+      "Row": 5
+    },
+    {
+      "Column": 3,
+      "Row": 5
+    },
+    {
+      "Column": 5,
+      "Row": 5
+    },
+    {
+      "Column": 7,
+      "Row": 5
+    },
+    {
+      "Column": 9,
+      "Row": 5
+    },
+    {
+      "Column": 11,
+      "Row": 5
+    },
+    {
+      "Column": 13,
+      "Row": 5
+    },
+    {
+      "Column": 15,
+      "Row": 5
+    },
+    {
+      "Column": 17,
+      "Row": 5
+    },
+    {
+      "Column": 19,
+      "Row": 5
+    },
+    {
+      "Column": 21,
+      "Row": 5
+    },
+    {
+      "Column": 23,
+      "Row": 5
+    },
+    {
+      "Column": 25,
+      "Row": 5
+    },
+    {
+      "Column": 27,
+      "Row": 5
+    },
+    {
+      "Column": 1,
+      "Row": 7
+    },
+    {
+      "Column": 3,
+      "Row": 7
+    },
+    {
+      "Column": 5,
+      "Row": 7
+    },
+    {
+      "Column": 7,
+      "Row": 7
+    },
+    {
+      "Column": 9,
+      "Row": 7
+    },
+    {
+      "Column": 11,
+      "Row": 7
+    },
+    {
+      "Column": 13,
+      "Row": 7
+    },
+    {
+      "Column": 15,
+      "Row": 7
+    },
+    {
+      "Column": 17,
+      "Row": 7
+    },
+    {
+      "Column": 19,
+      "Row": 7
+    },
+    {
+      "Column": 21,
+      "Row": 7
+    },
+    {
+      "Column": 23,
+      "Row": 7
+    },
+    {
+      "Column": 25,
+      "Row": 7
+    },
+    {
+      "Column": 27,
+      "Row": 7
+    },
+    {
+      "Column": 1,
+      "Row": 9
+    },
+    {
+      "Column": 3,
+      "Row": 9
+    },
+    {
+      "Column": 5,
+      "Row": 9
+    },
+    {
+      "Column": 7,
+      "Row": 9
+    },
+    {
+      "Column": 9,
+      "Row": 9
+    },
+    {
+      "Column": 11,
+      "Row": 9
+    },
+    {
+      "Column": 13,
+      "Row": 9
+    },
+    {
+      "Column": 15,
+      "Row": 9
+    },
+    {
+      "Column": 17,
+      "Row": 9
+    },
+    {
+      "Column": 19,
+      "Row": 9
+    },
+    {
+      "Column": 21,
+      "Row": 9
+    },
+    {
+      "Column": 23,
+      "Row": 9
+    },
+    {
+      "Column": 25,
+      "Row": 9
+    },
+    {
+      "Column": 27,
+      "Row": 9
+    }
+  ],
+  "TemporaryBlockPositions": [
+    {
+      "Column": 0,
+      "Row": 2
+    },
+    {
+      "Column": 0,
+      "Row": 6
+    },
+    {
+      "Column": 4,
+      "Row": 0
+    },
+    {
+      "Column": 4,
+      "Row": 2
+    },
+    {
+      "Column": 4,
+      "Row": 6
+    },
+    {
+      "Column": 4,
+      "Row": 9
+    },
+    {
+      "Column": 5,
+      "Row": 0
+    },
+    {
+      "Column": 7,
+      "Row": 0
+    },
+    {
+      "Column": 7,
+      "Row": 8
+    },
+    {
+      "Column": 8,
+      "Row": 0
+    },
+    {
+      "Column": 8,
+      "Row": 5
+    },
+    {
+      "Column": 8,
+      "Row": 10
+    },
+    {
+      "Column": 9,
+      "Row": 0
+    },
+    {
+      "Column": 9,
+      "Row": 4
+    },
+    {
+      "Column": 10,
+      "Row": 2
+    },
+    {
+      "Column": 10,
+      "Row": 9
+    },
+    {
+      "Column": 11,
+      "Row": 0
+    },
+    {
+      "Column": 11,
+      "Row": 6
+    },
+    {
+      "Column": 12,
+      "Row": 0
+    },
+    {
+      "Column": 12,
+      "Row": 1
+    },
+    {
+      "Column": 13,
+      "Row": 0
+    },
+    {
+      "Column": 14,
+      "Row": 2
+    },
+    {
+      "Column": 14,
+      "Row": 9
+    },
+    {
+      "Column": 16,
+      "Row": 0
+    },
+    {
+      "Column": 16,
+      "Row": 1
+    },
+    {
+      "Column": 16,
+      "Row": 7
+    },
+    {
+      "Column": 17,
+      "Row": 2
+    },
+    {
+      "Column": 17,
+      "Row": 10
+    },
+    {
+      "Column": 18,
+      "Row": 1
+    },
+    {
+      "Column": 18,
+      "Row": 3
+    },
+    {
+      "Column": 18,
+      "Row": 10
+    },
+    {
+      "Column": 19,
+      "Row": 2
+    },
+    {
+      "Column": 19,
+      "Row": 6
+    },
+    {
+      "Column": 20,
+      "Row": 3
+    },
+    {
+      "Column": 20,
+      "Row": 8
+    },
+    {
+      "Column": 21,
+      "Row": 4
+    },
+    {
+      "Column": 21,
+      "Row": 6
+    },
+    {
+      "Column": 21,
+      "Row": 8
+    },
+    {
+      "Column": 22,
+      "Row": 3
+    },
+    {
+      "Column": 22,
+      "Row": 7
+    },
+    {
+      "Column": 23,
+      "Row": 4
+    },
+    {
+      "Column": 23,
+      "Row": 8
+    },
+    {
+      "Column": 24,
+      "Row": 0
+    },
+    {
+      "Column": 24,
+      "Row": 4
+    },
+    {
+      "Column": 24,
+      "Row": 5
+    },
+    {
+      "Column": 24,
+      "Row": 7
+    },
+    {
+      "Column": 24,
+      "Row": 9
+    },
+    {
+      "Column": 25,
+      "Row": 6
+    },
+    {
+      "Column": 26,
+      "Row": 4
+    },
+    {
+      "Column": 26,
+      "Row": 7
+    },
+    {
+      "Column": 26,
+      "Row": 8
+    },
+    {
+      "Column": 27,
+      "Row": 0
+    },
+    {
+      "Column": 28,
+      "Row": 5
+    },
+    {
+      "Column": 28,
+      "Row": 9
+    }
+  ]
+}
+
+
