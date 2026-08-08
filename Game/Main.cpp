@@ -260,31 +260,10 @@ void LoadManagers()
     bae::Scene* managersScene = bae::SceneManager::GetInstance().GetScene(Game::g_LevelBackgroundName.data());
     managersScene->Add(managersObject);
 
+    auto& levelManager = Game::LevelManager::GetInstance();
 
-    /*
-    const bae::WindowSize windowSize = bae::Renderer::GetInstance().GetSDLWindowSize();
-    levelManager.SetSpriteSheetWorldLocation({
-        static_cast<float>(windowSize.Width) / 2.f, static_cast<float>(windowSize.Height) / 2.f
-    });
-    levelManager.SetSpriteSheetWorldScale({ 2.f, 2.f });
+    levelManager.LoadLevelInfo("Levels/Level_0.json");
 
-    levelManager.LoadLevelFromFile(0, "Levels/Level_1.json");
-    levelManager.LoadLevelFromFile(1, "Levels/Level_2.json");
-
-    auto skipLevelCommand = std::make_unique<Game::SkipLevelCommand>();
-
-    const bae::Keyboard& keyboard = bae::InputManager::GetInstance().GetKeyboard();
-    keyboard.AddKeyboardCommands(std::move(skipLevelCommand), SDLK_F1, bae::InputManager::ButtonState::Down);
-
-    bae::EventQueue::GetInstance().SendEvent(Game::GetEventHash(Game::Events::BeginLevel));
-
-    auto* backgroundScene = bae::SceneManager::GetInstance().GetScene(Game::g_LevelBackgroundName.data());
-
-    const auto managersObject = std::make_shared<bae::GameObject>("ManagersObject");
-    managersObject->AddComponent<Game::ManagersComponent>(*managersObject);
-
-    backgroundScene->Add(managersObject);
-    */
 }
 
 void LoadDAEBackground()
