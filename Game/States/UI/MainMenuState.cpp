@@ -106,8 +106,14 @@ std::unique_ptr<SceneState> MainMenuState::Update()
         case StartMenuSelections::Leaderboard:
             return std::make_unique<LeaderboardState>(*m_GameObject);
         case StartMenuSelections::Quit:
-            std::cout << "Quit\n";
+        {
+            // Request Quit
+            SDL_Event event{};
+            event.type = SDL_EVENT_QUIT;
+            SDL_PushEvent(&event);
+
             return nullptr;
+        }
     }
 
     return nullptr;
