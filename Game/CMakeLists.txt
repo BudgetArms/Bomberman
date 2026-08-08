@@ -41,6 +41,7 @@ add_executable(${PROJECT_NAME} ${TARGET_PARAM}
     "Commands/ToggleMuteSoundsCommand.cpp"
 
     "Components/BombermanComponent.cpp"
+    "Components/DoorComponent.cpp"
     "Components/GridComponent.cpp"
     "Components/HitboxComponent.cpp"
     "Components/LifeComponent.cpp"
