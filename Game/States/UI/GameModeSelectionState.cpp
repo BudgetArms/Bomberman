@@ -101,19 +101,16 @@ void GameModeSelectionState::OnExit()
     switch(m_Selection)
     {
         case GameModeSelection::SinglePlayer:
-            std::cout << "Singleplayer\n";
             LevelManager::GetInstance().StartGame(GameMode::Singleplayer);
             break;
         case GameModeSelection::CoOp:
-            std::cout << "Co-Op\n";
             LevelManager::GetInstance().StartGame(GameMode::CoOp);
             break;
         case GameModeSelection::Versus:
-            std::cout << "Versus\n";
             LevelManager::GetInstance().StartGame(GameMode::Versus);
             break;
         case GameModeSelection::Back:
-            std::cout << "Back\n";
+            break;
     }
 }
 
@@ -159,18 +156,14 @@ void GameModeSelectionState::Notify(const unsigned eventHash, bae::Subject*, con
         switch(m_Selection)
         {
             case GameModeSelection::SinglePlayer:
-                std::cout << "Singleplayer->Nothing\n";
                 break;
             case GameModeSelection::CoOp:
-                std::cout << "coop->singleplayer\n";
                 m_Selection = GameModeSelection::SinglePlayer;
                 break;
             case GameModeSelection::Versus:
-                std::cout << "versus->coop\n";
                 m_Selection = GameModeSelection::CoOp;
                 break;
             case GameModeSelection::Back:
-                std::cout << "back->versus\n";
                 m_Selection = GameModeSelection::Versus;
                 break;
         }
@@ -181,19 +174,15 @@ void GameModeSelectionState::Notify(const unsigned eventHash, bae::Subject*, con
         switch(m_Selection)
         {
             case GameModeSelection::SinglePlayer:
-                std::cout << "sp->co\n";
                 m_Selection = GameModeSelection::CoOp;
                 break;
             case GameModeSelection::CoOp:
-                std::cout << "co->vs\n";
                 m_Selection = GameModeSelection::Versus;
                 break;
             case GameModeSelection::Versus:
-                std::cout << "vs->back\n";
                 m_Selection = GameModeSelection::Back;
                 break;
             case GameModeSelection::Back:
-                std::cout << "back->nothing\n";
                 break;
         }
     }

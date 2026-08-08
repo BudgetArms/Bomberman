@@ -102,10 +102,8 @@ std::unique_ptr<SceneState> MainMenuState::Update()
     switch(m_Selection)
     {
         case StartMenuSelections::Play:
-            std::cout << "GameMode Selection\n";
             return std::make_unique<GameModeSelectionState>(*m_GameObject);
         case StartMenuSelections::Leaderboard:
-            std::cout << "Leaderboard\n";
             return std::make_unique<LeaderboardState>(*m_GameObject);
         case StartMenuSelections::Quit:
             std::cout << "Quit\n";
