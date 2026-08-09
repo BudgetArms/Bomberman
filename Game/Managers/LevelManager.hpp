@@ -92,6 +92,14 @@ namespace Game
 
         void LoadLevelInfo(const std::filesystem::path& jsonFile);
 
+
+        static constexpr std::string_view m_SaveFileName{ "Scores.json" };
+        static constexpr std::string_view m_SaveEntryName{ "Name" };
+        static constexpr std::string_view m_SaveEntryScore{ "Score" };
+        static constexpr std::string_view m_SinglePlayerName{ "Singleplayer" };
+        static constexpr std::string_view m_CoOpName{ "Co-Op" };
+        static constexpr std::string_view m_VersusName{ "Versus" };
+
     private:
         void HandleBomberDeath(const bae::GameObject& object);
         void HandleGameOver() const;

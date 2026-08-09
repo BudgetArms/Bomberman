@@ -1,15 +1,21 @@
 #include "InputLeaderboardNameState.hpp"
 
+#include <fstream>
+
+#include <nlohmann/json.hpp>
+
 #include "Base/CommonManagerVariables.hpp"
 #include "Core/Renderer.hpp"
 
 #include "Base/Events.hpp"
 #include "Core/Scene.hpp"
+#include "Managers/LevelManager.hpp"
 #include "Managers/SceneManager.hpp"
 #include "States/UI/MainMenuState.hpp"
 
 
 using namespace Game::States;
+using json = nlohmann::json;
 
 
 InputLeaderboardNameState::InputLeaderboardNameState(bae::GameObject& selectionObject, const GameMode gameMode,
@@ -60,8 +66,6 @@ void InputLeaderboardNameState::OnEnter()
                                                       SDL_FRect(0.f, 0.f, 208.f, 8.f), 26, 26);
 
         m_LeaderboardName[index] = gameObject.GetComponent<bae::SpriteComponent>();
-        std::cout << "Position Letter " << index << ", x:" << gameObject.GetWorldLocation().x
-                << ", y:" << gameObject.GetWorldLocation().y << '\n';
     };
 
     AddData(0, *letter0Object.get());
@@ -139,10 +143,7 @@ std::unique_ptr<SceneState> InputLeaderboardNameState::Update()
         return nullptr;
     }
 
-    // todo: add the score to the score save file
-    [[maybe_unused]] const std::string leaderboardName = GetLeaderboardName();
-    std::cout << leaderboardName << '\n';
-
+    SaveScore();
 
     return std::make_unique<MainMenuState>(*m_GameObject);
 }
@@ -208,6 +209,50 @@ void InputLeaderboardNameState::UpdateSelector() const
     m_SelectorObject->SetWorldLocation(position);
 }
 
+void InputLeaderboardNameState::SaveScore() const
+{
+    std::ifstream file(LevelManager::m_SaveFileName.data());
+
+    json data{};
+    if(!file)
+    {
+        data[LevelManager::m_SinglePlayerName.data()] = json::array();
+        data[LevelManager::m_CoOpName.data()]         = json::array();
+        data[LevelManager::m_VersusName.data()]       = json::array();
+    }
+    else
+    {
+        file >> data;
+    }
+
+    file.close();
+
+
+    std::string gameMode{};
+    switch(m_GameMode)
+    {
+        case GameMode::Singleplayer:
+            gameMode = LevelManager::m_SinglePlayerName;
+            break;
+        case GameMode::CoOp:
+            gameMode = LevelManager::m_CoOpName;
+            break;
+        case GameMode::Versus:
+            gameMode = LevelManager::m_VersusName;
+            break;
+    }
+
+    const std::string leaderboardName = GetLeaderboardName();
+    data[gameMode].push_back(
+        {
+            { LevelManager::m_SaveEntryName, leaderboardName },
+            { LevelManager::m_SaveEntryScore, m_Score },
+        }
+    );
+
+    std::ofstream outputFile(LevelManager::m_SaveFileName.data());
+    outputFile << data.dump(4);
+}
 
 std::string InputLeaderboardNameState::GetLetter(const int letterIndex)
 {

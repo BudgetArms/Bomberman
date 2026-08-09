@@ -22,6 +22,8 @@ namespace Game::States
     private:
         void UpdateSelector() const;
 
+        void SaveScore() const;
+
         static std::string GetLetter(int letterIndex);
         std::string GetLeaderboardName() const;
 

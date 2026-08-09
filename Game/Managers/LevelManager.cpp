@@ -87,7 +87,6 @@ void LevelManager::StopGame()
     m_Bomberman               = nullptr;
     m_Bombermiss              = nullptr;
     m_Enemies                 = {};
-    m_BackgroundTexture       = nullptr;
     m_GridComponent           = nullptr;
     m_HitboxDimension         = {};
     m_BombermanInfo           = {};
