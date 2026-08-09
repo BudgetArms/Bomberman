@@ -149,8 +149,8 @@ void Start()
     LoadManagers();
 
     // LoadDAEBackground();
-    LoadFpsCounterScene();
-    LoadGameNameScene();
+    // LoadFpsCounterScene();
+    // LoadGameNameScene();
 
     EnableLogMousePosition();
 }
