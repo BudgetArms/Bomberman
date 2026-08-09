@@ -6,6 +6,7 @@ namespace Game
 {
     // WORST FILENAME EVER: CommonManagerVariables
 
+    static constexpr std::string_view g_NeverDestroySceneName{ "Never Destroy Scene" };
     static constexpr std::string_view g_SelectionObjectSceneName{ "SelectionObject Scene" };
     static constexpr std::string_view g_ScenesManagerSceneName{ "ScenesManager Scene" };
     static constexpr std::string_view g_LevelSceneName{ "Level Scene" };

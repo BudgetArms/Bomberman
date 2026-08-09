@@ -1,10 +1,13 @@
 #include "GameState.hpp"
 
+#include "Core/Scene.hpp"
 #include "Wrappers/Keyboard.hpp"
 
+#include "Base/CommonManagerVariables.hpp"
 #include "Base/Events.hpp"
 #include "Commands/ToggleMuteSoundsCommand.hpp"
 #include "Managers/LevelManager.hpp"
+#include "Managers/SceneManager.hpp"
 #include "States/UI/InputLeaderboardNameState.hpp"
 
 
@@ -28,6 +31,17 @@ void GameState::OnEnter()
 void GameState::OnExit()
 {
     ClearCommands();
+    ClearScene();
+
+    // Remove Level Foreground
+    const auto* levelScene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
+    levelScene->RemoveAll();
+
+    // Remove Level Background
+    const auto* scenesManagerScene = bae::SceneManager::GetInstance().GetScene(g_LevelBackgroundName.data());
+    scenesManagerScene->RemoveAll();
+
+    LevelManager::GetInstance().StopGame();
 }
 
 std::unique_ptr<SceneState> GameState::Update()

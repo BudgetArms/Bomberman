@@ -197,6 +197,7 @@ void LoadSoundCommands()
 void CreateAllScenes()
 {
     // in reverse order, so that the start menu scene is displayed before anything else
+    bae::SceneManager::GetInstance().CreateScene(Game::g_NeverDestroySceneName.data());
     bae::SceneManager::GetInstance().CreateScene(Game::g_LevelBackgroundName.data());
     bae::SceneManager::GetInstance().CreateScene(Game::g_LevelSceneName.data());
     bae::SceneManager::GetInstance().CreateScene(Game::g_ScenesManagerSceneName.data());
@@ -257,13 +258,12 @@ void LoadManagers()
     const auto managersObject = std::make_shared<bae::GameObject>("Managers Object");
     managersObject->AddComponent<Game::ManagersComponent>(*managersObject);
 
-    bae::Scene* managersScene = bae::SceneManager::GetInstance().GetScene(Game::g_LevelBackgroundName.data());
+    bae::Scene* managersScene = bae::SceneManager::GetInstance().GetScene(Game::g_NeverDestroySceneName.data());
     managersScene->Add(managersObject);
 
     auto& levelManager = Game::LevelManager::GetInstance();
 
     levelManager.LoadLevelInfo("Levels/Level_0.json");
-
 }
 
 void LoadDAEBackground()
