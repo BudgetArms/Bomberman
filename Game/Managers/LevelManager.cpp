@@ -46,7 +46,7 @@ LevelManager::LevelManager()
 
 LevelManager::~LevelManager()
 {
-    // ClearLevel();
+    Destroy();
 }
 
 void LevelManager::StartGame(const GameMode gameMode)
@@ -79,13 +79,11 @@ void LevelManager::StartGame(const GameMode gameMode)
     RestartLevel();
 }
 
-void LevelManager::Destroy()
+void LevelManager::StopGame()
 {
-    // nothing holds data, all heap allocations are destroyed somewhere else
     m_GameMode                = GameMode::Singleplayer;
     m_bHasGameStarted         = false;
     m_CurrentLevel            = 0;
-    m_LoadedLevels            = {};
     m_Bomberman               = nullptr;
     m_Bombermiss              = nullptr;
     m_Enemies                 = {};
@@ -98,11 +96,16 @@ void LevelManager::Destroy()
     m_EnemyStartPositions     = {};
     m_EnemySharedInfos        = {};
     m_DoorPosition            = {};
-    m_ScoreMap                = {};
     m_PickupPosition          = {};
     m_GridInfo                = {};
     m_PermanentBlockPositions = {};
     m_TemporaryBlockPositions = {};
+}
+
+void LevelManager::Destroy()
+{
+    StopGame();
+    m_LoadedLevels = {};
 }
 
 
@@ -217,7 +220,7 @@ void LevelManager::HandleBomberDeath(const bae::GameObject& object)
 
 void LevelManager::HandleGameOver() const
 {
-    // Load Input Name Scene
+    bae::EventQueue::GetInstance().SendEvent(GetEventHash(Events::GameOver));
 }
 
 void LevelManager::ClearLevel()
@@ -640,7 +643,9 @@ void LevelManager::SavePlayerData()
 {
     // Save lives & Score
     m_BombermanInfo.Lives = m_Bomberman->GetComponent<LifeComponent>()->GetLives();
-    m_BombermanInfo.Score = m_Bomberman->GetComponent<ScoreComponent>()->GetScore();
+    // TODO: remove this test
+    // m_BombermanInfo.Score = m_Bomberman->GetComponent<ScoreComponent>()->GetScore();
+    m_BombermanInfo.Score = 132;
 
     if(m_Bombermiss)
     {

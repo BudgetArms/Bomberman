@@ -69,6 +69,8 @@ namespace Game
         ~LevelManager() override;
 
         void StartGame(GameMode gameMode);
+        void StopGame();
+
         void Destroy();
 
         void RenderBackground() const;
