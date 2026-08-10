@@ -18,7 +18,20 @@ namespace Game::States
         void Notify(unsigned eventHash, bae::Subject* subject, const std::any& eventData) override;
 
     private:
+        void LoadSaveFileData();
+
+
+        struct ScoreData
+        {
+            std::string Name{};
+            int Score{};
+        };
+
         bool m_bIsSelected{};
+
+        std::vector<ScoreData> m_SingleplayerData{};
+        std::vector<ScoreData> m_CoOpData{};
+        std::vector<ScoreData> m_VersusData{};
     };
 }
 
