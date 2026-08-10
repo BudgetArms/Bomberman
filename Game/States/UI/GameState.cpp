@@ -5,6 +5,7 @@
 
 #include "Base/CommonManagerVariables.hpp"
 #include "Base/Events.hpp"
+#include "Commands/ForceDamageCommand.hpp"
 #include "Commands/ToggleMuteSoundsCommand.hpp"
 #include "Managers/LevelManager.hpp"
 #include "Managers/SceneManager.hpp"
@@ -26,6 +27,12 @@ void GameState::OnEnter()
 
     auto toggleMuteSoundsCommand = std::make_unique<ToggleMuteSoundsCommand>();
     keyboard.AddKeyboardCommands(std::move(toggleMuteSoundsCommand), SDLK_F2, bae::InputManager::ButtonState::Down);
+
+
+    // todo: remove forceDamage
+    const auto player      = LevelManager::GetInstance().GetPlayers()[0].first;
+    auto removeLifeCommand = std::make_unique<ForceDamageCommand>(*player);
+    keyboard.AddKeyboardCommands(std::move(removeLifeCommand), SDLK_5, bae::InputManager::ButtonState::Down);
 }
 
 void GameState::OnExit()
