@@ -44,7 +44,7 @@ namespace Game::States
         void OnEnter() override;
         void OnExit() override;
 
-        std::unique_ptr<EntityState> Update();
+        std::unique_ptr<EntityState> Update() override;
     };
 }
 

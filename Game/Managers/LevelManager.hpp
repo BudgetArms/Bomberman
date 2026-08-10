@@ -102,7 +102,7 @@ namespace Game
 
     private:
         void HandleBomberDeath(const bae::GameObject& object);
-        void HandleGameOver() const;
+        static void HandleGameOver();
 
         // Clears Level Blocks & All Items/Entities
         void ClearLevel();

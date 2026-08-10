@@ -63,6 +63,28 @@ void BombermanComponent::Notify(const unsigned eventHash, Subject*, const std::a
         case Events::CollisionEvent:
             HandleCollision(eventData);
             break;
+        case Events::PlayerDied:
+        case Events::DirectionChanged:
+        case Events::GameWon:
+        case Events::GameOver:
+        case Events::LevelWon:
+        case Events::LevelLost:
+        case Events::BalloomDied:
+        case Events::OnealDied:
+        case Events::DollDied:
+        case Events::MinvoDied:
+        case Events::BeginLevel:
+        case Events::RestartLevel:
+        case Events::ScoreChanged:
+        case Events::LivesChanged:
+        case Events::LifeLost:
+        case Events::SelectionDown:
+        case Events::SelectionUp:
+        case Events::SelectionLeft:
+        case Events::SelectionRight:
+        case Events::SelectionConfirmed:
+        case Events::NoEvent:
+            break;
     }
 }
 

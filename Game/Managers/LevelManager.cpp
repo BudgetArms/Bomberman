@@ -217,7 +217,7 @@ void LevelManager::HandleBomberDeath(const bae::GameObject& object)
     }
 }
 
-void LevelManager::HandleGameOver() const
+void LevelManager::HandleGameOver()
 {
     bae::EventQueue::GetInstance().SendEvent(GetEventHash(Events::GameOver));
 }
