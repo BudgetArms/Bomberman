@@ -60,7 +60,7 @@ void LeaderboardState::OnEnter()
 
 
     const auto entryFont = bae::ResourceManager::GetInstance().LoadFont("Fonts/JoystixMonospace.otf", 28);
-    auto AddNameAndScore = [&](const ScoreData& data, const int index, bae::GameObject& gameObject)
+    auto AddNameAndScore = [&](const ScoreData& data, const size_t index, bae::GameObject& gameObject)
     {
         std::string text{ data.Name };
 
@@ -68,7 +68,7 @@ void LeaderboardState::OnEnter()
         const size_t textOccupied         = data.Name.size() + std::to_string(data.Score).size();
         if(textOccupied < textToBeOccupied)
         {
-            for(int i{}; i < textToBeOccupied - textOccupied; ++i)
+            for(size_t i{}; i < textToBeOccupied - textOccupied; ++i)
             {
                 text += " ";
             }
@@ -93,17 +93,17 @@ void LeaderboardState::OnEnter()
 
     LoadSaveFileData();
 
-    for(int i{}; i < m_SingleplayerData.size(); ++i)
+    for(size_t i{}; i < m_SingleplayerData.size(); ++i)
     {
         AddNameAndScore(m_SingleplayerData[i], i, *singleplayerSection);
     }
 
-    for(int i{}; i < m_CoOpData.size(); ++i)
+    for(size_t i{}; i < m_CoOpData.size(); ++i)
     {
         AddNameAndScore(m_CoOpData[i], i, *coOpSection);
     }
 
-    for(int i{}; i < m_VersusData.size(); ++i)
+    for(size_t i{}; i < m_VersusData.size(); ++i)
     {
         AddNameAndScore(m_VersusData[i], i, *versusSection);
     }
