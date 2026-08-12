@@ -16,6 +16,7 @@ namespace Game::Sounds
         PowerUp,
         StepHorizontal,
         StepVertical,
+        ManOutOfMe,
     };
 
 

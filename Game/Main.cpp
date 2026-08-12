@@ -183,6 +183,7 @@ void LoadSounds()
         { gs::SoundAssets::PowerUp, soundSystem->LoadSound("Sounds/PowerUp.wav") },
         { gs::SoundAssets::StepHorizontal, soundSystem->LoadSound("Sounds/StepHorizontal.wav") },
         { gs::SoundAssets::StepVertical, soundSystem->LoadSound("Sounds/StepVertical.wav") },
+        { gs::SoundAssets::ManOutOfMe, soundSystem->LoadSound("Sounds/StepVertical.wav") },
     };
 }
 
