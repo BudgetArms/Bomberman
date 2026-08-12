@@ -22,6 +22,11 @@ MovementGridComponent::MovementGridComponent(bae::GameObject& owner) :
 
 void MovementGridComponent::Update()
 {
+    if(!m_bIsEnabled)
+    {
+        return;
+    }
+
     if(!m_bWasDirectionSetThisFrame)
     {
         LockOnGrid();
@@ -53,6 +58,16 @@ void MovementGridComponent::Update()
     ApplyMovement();
 }
 
+void MovementGridComponent::Enable()
+{
+    m_bIsEnabled = true;
+}
+
+void MovementGridComponent::Disable()
+{
+    m_bIsEnabled = false;
+}
+
 Direction MovementGridComponent::GetDirection() const
 {
     return m_DirectionThisFrame;
@@ -80,7 +95,6 @@ bool MovementGridComponent::CanMoveInDirection(const Direction direction) const
     {
         return false;
     }
-
 
     bae::Graphs::GridPosition moveToGridPosition = gridPosition;
     switch(direction)

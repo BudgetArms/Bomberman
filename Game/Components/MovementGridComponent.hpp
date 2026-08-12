@@ -16,6 +16,8 @@ namespace Game
 
         void Update() override;
 
+        void Enable();
+        void Disable();
 
         [[nodiscard]] Direction GetDirection() const;
         void SetDirection(Direction direction);
@@ -34,6 +36,7 @@ namespace Game
 
         [[nodiscard]] static bool IsOppositeDirection(Direction direction, Direction oppositeDirection);
 
+        bool m_bIsEnabled{ true };
 
         const float m_ToleranceNodeCenter{ 20.f };
         GridComponent* m_GridComponent{};
