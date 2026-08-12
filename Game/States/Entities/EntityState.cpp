@@ -1,5 +1,7 @@
 #include "EntityState.hpp"
 
+#include "Components/MovementGridComponent.hpp"
+
 
 using namespace Game::States;
 
@@ -13,27 +15,21 @@ void EntityState::OnResume()
 {
     m_bIsPaused = false;
 
-    // TODO: finish the logic
-    /*
-    auto movementComponent = m_Owner->GetComponent<MovementComponent>();
+    const auto movementComponent = m_Owner->GetComponent<MovementGridComponent>();
     if(movementComponent)
     {
         movementComponent->Enable();
     }
-    */
 }
 
 void EntityState::OnSuspend()
 {
     m_bIsPaused = true;
 
-    // TODO: finish the logic
-    /*
-    auto movementComponent = m_Owner->GetComponent<MovementComponent>();
+    const auto movementComponent = m_Owner->GetComponent<MovementGridComponent>();
     if(movementComponent)
     {
         movementComponent->Disable();
     }
-    */
 }
 
