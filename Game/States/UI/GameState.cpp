@@ -22,17 +22,6 @@ GameState::GameState(bae::GameObject& selectionObject) :
 
 void GameState::OnEnter()
 {
-    // Added Sound Toggle
-    const bae::Keyboard& keyboard = bae::InputManager::GetInstance().GetKeyboard();
-
-    auto toggleMuteSoundsCommand = std::make_unique<ToggleMuteSoundsCommand>();
-    keyboard.AddKeyboardCommands(std::move(toggleMuteSoundsCommand), SDLK_F2, bae::InputManager::ButtonState::Down);
-
-
-    // todo: remove forceDamage
-    const auto player      = LevelManager::GetInstance().GetPlayers()[0].first;
-    auto removeLifeCommand = std::make_unique<ForceDamageCommand>(*player);
-    keyboard.AddKeyboardCommands(std::move(removeLifeCommand), SDLK_5, bae::InputManager::ButtonState::Down);
 }
 
 void GameState::OnExit()
