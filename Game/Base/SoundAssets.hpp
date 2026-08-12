@@ -17,6 +17,7 @@ namespace Game::Sounds
         StepHorizontal,
         StepVertical,
         ManOutOfMe,
+        Count // Dont Remove or Load Into g_sSoundEvents
     };
 
 

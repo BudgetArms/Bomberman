@@ -155,6 +155,19 @@ void Start()
     EnableLogMousePosition();
 }
 
+void CreateConsole()
+{
+    if(AllocConsole())
+    {
+        FILE* fp;
+
+        freopen_s(&fp, "CONOUT$", "w", stdout);
+        freopen_s(&fp, "CONOUT$", "w", stderr);
+        freopen_s(&fp, "CONIN$", "r", stdin);
+
+        std::cout << "Release Mode: Console created\n";
+    }
+}
 
 void LoadSounds()
 {
@@ -185,6 +198,22 @@ void LoadSounds()
         { gs::SoundAssets::StepVertical, soundSystem->LoadSound("Sounds/StepVertical.wav") },
         { gs::SoundAssets::ManOutOfMe, soundSystem->LoadSound("Sounds/StepVertical.wav") },
     };
+
+
+    const bool bAreAllSoundLoaded = Game::Sounds::g_sSoundEvents.size() ==
+            static_cast<std::size_t>(Game::Sounds::SoundAssets::Count);
+    [[maybe_unused]] size_t yes = static_cast<std::size_t>(Game::Sounds::SoundAssets::Count);
+
+    if(!bAreAllSoundLoaded)
+    {
+        const std::string errorMessage = std::string(FUNCTION_NAME) + " Failed Not All SoundEvents are Loaded \n";
+        #ifdef NDEBUG
+        CreateConsole();
+        #endif
+        std::cout << errorMessage;
+
+        assert(false && errorMessage.c_str());
+    }
 }
 
 void LoadSoundCommands()
