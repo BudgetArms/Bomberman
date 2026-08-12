@@ -155,6 +155,7 @@ void Start()
     EnableLogMousePosition();
 }
 
+#ifndef __EMSCRIPTEN__
 void CreateConsole()
 {
     if(AllocConsole())
@@ -168,6 +169,7 @@ void CreateConsole()
         std::cout << "Release Mode: Console created\n";
     }
 }
+#endif
 
 void LoadSounds()
 {
@@ -200,18 +202,20 @@ void LoadSounds()
     };
 
 
-    const bool bAreAllSoundLoaded = Game::Sounds::g_sSoundEvents.size() ==
-            static_cast<std::size_t>(Game::Sounds::SoundAssets::Count);
-    [[maybe_unused]] size_t yes = static_cast<std::size_t>(Game::Sounds::SoundAssets::Count);
+    const bool bAreAllSoundLoaded = Game::Sounds::g_sSoundEvents.size()
+            == static_cast<std::size_t>(Game::Sounds::SoundAssets::Count);
 
     if(!bAreAllSoundLoaded)
     {
         const std::string errorMessage = std::string(FUNCTION_NAME) + " Failed Not All SoundEvents are Loaded \n";
+
+        #ifndef __EMSCRIPTEN__
         #ifdef NDEBUG
         CreateConsole();
         #endif
-        std::cout << errorMessage;
+        #endif
 
+        std::cout << errorMessage;
         assert(false && errorMessage.c_str());
     }
 }
