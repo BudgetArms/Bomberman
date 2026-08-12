@@ -123,6 +123,10 @@ namespace Game
         void SpawnDoll(const glm::vec2& position);
         void SpawnMinvo(const glm::vec2& position);
 
+        void SpawnPlayers();
+        void SpawnEnemies();
+
+
         std::shared_ptr<bae::GameObject> GetBombermanBase(const std::string& gameObjectName,
                                                           const glm::vec2& spawnPosition);
 
@@ -133,6 +137,7 @@ namespace Game
         void SpawnDoor(const glm::vec2& position);
 
         static void AddControls(bae::GameObject& gameObject, bool bIsFirstPlayer);
+        void AddCommands();
 
         void SavePlayerData();
         void LoadPlayerData() const;

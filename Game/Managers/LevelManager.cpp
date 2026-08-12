@@ -24,6 +24,7 @@
 #include "Base/Events.hpp"
 #include "Commands/ForceDamageCommand.hpp"
 #include "Commands/MoveCommand.hpp"
+#include "Commands/ToggleMuteSoundsCommand.hpp"
 #include "Components/BombermanComponent.hpp"
 #include "Components/DoorComponent.hpp"
 #include "Components/HitboxComponent.hpp"
@@ -235,50 +236,24 @@ void LevelManager::RestartLevel()
 {
     ClearLevel();
 
-    // Spawn Temporary Blocks
+    // This is done to clear keyboard/controller commands,
+    // since remove command by type with template seems impossible,
+    // because Pimpl and templates not going well together
+    bae::InputManager::GetInstance().ClearCommands();
 
-    // Spawn Door
+    SpawnPlayers();
+    SpawnEnemies();
 
-    // Level Generation
+    // Add Commands
+    // Added Sound Toggle
+    const bae::Keyboard& keyboard = bae::InputManager::GetInstance().GetKeyboard();
+    auto toggleMuteSoundsCommand  = std::make_unique<ToggleMuteSoundsCommand>();
+    keyboard.AddKeyboardCommands(std::move(toggleMuteSoundsCommand), SDLK_F2, bae::InputManager::ButtonState::Down);
 
-    // Spawn Player(s)
-    switch(m_GameMode)
-    {
-        case GameMode::Singleplayer:
-            SpawnBomberman();
-            break;
-        case GameMode::CoOp:
-            SpawnBomberman();
-            SpawnBombermiss();
-            break;
-        case GameMode::Versus:
-            SpawnBomberman();
-            SpawnBalloomPlayer();
-            break;
-    }
 
-    // Spawn Enemies
-    for(const auto [enemyType, position] : m_EnemyStartPositions)
-    {
-        switch(enemyType)
-        {
-            case EnemyType::Balloom:
-                SpawnBalloom(ToPosition(position));
-                break;
-            case EnemyType::Oneal:
-                SpawnOneal(ToPosition(position));
-                break;
-            case EnemyType::Doll:
-                SpawnDoll(ToPosition(position));
-                break;
-            case EnemyType::Minvo:
-                SpawnMinvo(ToPosition(position));
-                break;
-            case EnemyType::BalloomPlayer:
-                std::cout << "This shouldn't be reached" << '\n';
-                break;
-        }
-    }
+    // todo: remove forceDamage
+    auto removeLifeCommand = std::make_unique<ForceDamageCommand>(*m_Bomberman);
+    keyboard.AddKeyboardCommands(std::move(removeLifeCommand), SDLK_5, bae::InputManager::ButtonState::Down);
 }
 
 void LevelManager::LoadLevelInfo(const std::filesystem::path& jsonFile)
@@ -487,6 +462,49 @@ void LevelManager::SpawnMinvo(const glm::vec2& position)
     scene->Add(minvo);
 }
 
+void LevelManager::SpawnPlayers()
+{
+    switch(m_GameMode)
+    {
+        case GameMode::Singleplayer:
+            SpawnBomberman();
+            break;
+        case GameMode::CoOp:
+            SpawnBomberman();
+            SpawnBombermiss();
+            break;
+        case GameMode::Versus:
+            SpawnBomberman();
+            SpawnBalloomPlayer();
+            break;
+    }
+}
+
+void LevelManager::SpawnEnemies()
+{
+    for(const auto [enemyType, position] : m_EnemyStartPositions)
+    {
+        switch(enemyType)
+        {
+            case EnemyType::Balloom:
+                SpawnBalloom(ToPosition(position));
+                break;
+            case EnemyType::Oneal:
+                SpawnOneal(ToPosition(position));
+                break;
+            case EnemyType::Doll:
+                SpawnDoll(ToPosition(position));
+                break;
+            case EnemyType::Minvo:
+                SpawnMinvo(ToPosition(position));
+                break;
+            case EnemyType::BalloomPlayer:
+                std::cout << "This shouldn't be reached" << '\n';
+                break;
+        }
+    }
+}
+
 
 std::shared_ptr<bae::GameObject> LevelManager::GetBombermanBase(const std::string& gameObjectName,
                                                                 const glm::vec2& spawnPosition)
@@ -636,13 +654,16 @@ void LevelManager::AddControls(bae::GameObject& gameObject, const bool bIsFirstP
     #endif
 }
 
+void LevelManager::AddCommands() {
+}
+
 void LevelManager::SavePlayerData()
 {
     // Save lives & Score
     m_BombermanInfo.Lives = m_Bomberman->GetComponent<LifeComponent>()->GetLives();
     // TODO: remove this test
     // m_BombermanInfo.Score = m_Bomberman->GetComponent<ScoreComponent>()->GetScore();
-    m_BombermanInfo.Score = 132;
+    m_BombermanInfo.Score = 192;
 
     if(m_Bombermiss)
     {
