@@ -1,14 +1,15 @@
 #include "BombermanStates.hpp"
 
+#include "Core/ServiceLocator.hpp"
+#include "Singletons/GameTime.hpp"
+#include "Sounds/SoundSystem.hpp"
+
 #include "Base/Events.hpp"
 #include "Base/SoundAssets.hpp"
 #include "Components/HitboxComponent.hpp"
 #include "Components/LifeComponent.hpp"
+#include "Components/MovementGridComponent.hpp"
 #include "Components/SpriteComponent.hpp"
-#include "Core/EventQueue.hpp"
-#include "Core/ServiceLocator.hpp"
-#include "Singletons/GameTime.hpp"
-#include "Sounds/SoundSystem.hpp"
 
 
 using namespace Game::States;
@@ -57,14 +58,22 @@ BombermanDyingState::BombermanDyingState(bae::GameObject& owner) :
 
 void BombermanDyingState::OnEnter()
 {
+    // Set Dying Sprite
     auto* spriteComp    = m_Owner->GetComponent<bae::SpriteComponent>();
     spriteComp->m_Index = 1;
 
+    // Disable Hitbox
     auto* hitboxComp                    = m_Owner->GetComponent<HitboxComponent>();
     hitboxComp->m_bAreCollisionsEnabled = false;
 
+    // Disable Movement
+    const auto movementComponent = m_Owner->GetComponent<MovementGridComponent>();
+    if(movementComponent)
+    {
+        movementComponent->Disable();
+    }
 
-    // Play Sound
+    // Play Dying Sound
     bae::SoundSystem& soundSystem   = bae::ServiceLocator::GetSoundSystem();
     const bae::SoundID startSoundID = Game::Sounds::GetSoundId(Sounds::SoundAssets::BombermanKilled);
 
