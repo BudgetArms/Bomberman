@@ -2,11 +2,12 @@
 
 #include "Components/Component.hpp"
 #include "Components/SpriteComponent.hpp"
+#include "Core/Subject.hpp"
 
 
 namespace Game
 {
-    class BombComponent final : public bae::Component
+    class BombComponent final : public bae::Component, public bae::Subject
     {
     public:
         explicit BombComponent(bae::GameObject& owner);
@@ -26,6 +27,8 @@ namespace Game
         bool m_bHasExploded{};
         const float m_TimeToExplode{ 2.f };
         const float m_SpriteChangeInterval{ 0.5f };
-        float m_ElapsedTime{};
+
+        float m_BombExplosionElapsedTime{};
+        float m_SpriteChangedElapsedTime{};
     };
 }

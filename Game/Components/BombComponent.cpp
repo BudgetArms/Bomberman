@@ -1,9 +1,12 @@
 #include "BombComponent.hpp"
 
+#include <glm/glm.hpp>
+
 #include "Core/Scene.hpp"
 #include "Singletons/GameTime.hpp"
 
 #include "Base/CommonManagerVariables.hpp"
+#include "Base/Events.hpp"
 #include "Components/FireComponent.hpp"
 #include "Components/HitboxComponent.hpp"
 #include "Managers/LevelManager.hpp"
@@ -12,8 +15,13 @@
 using namespace Game;
 
 BombComponent::BombComponent(bae::GameObject& owner) :
-    Component(owner)
+    Component(owner),
+    Subject(owner)
 {
+    m_Owner->AddComponent<bae::SpriteComponent>(*m_Owner, m_TexturePath, SDL_FRect(0, 0, 48, 16),
+                                                m_SpriteNrColumns, m_SpriteNrSprites);
+
+    m_SpriteComponent = m_Owner->GetComponent<bae::SpriteComponent>();
 }
 
 void BombComponent::Update()
@@ -23,10 +31,23 @@ void BombComponent::Update()
         return;
     }
 
-    m_ElapsedTime += bae::GameTime::GetInstance().GetDeltaTime();
-    if(m_ElapsedTime > m_TimeToExplode)
+    m_BombExplosionElapsedTime += bae::GameTime::GetInstance().GetDeltaTime();
+    if(m_BombExplosionElapsedTime > m_TimeToExplode)
     {
         m_bHasExploded = true;
+        SpawnFire();
+
+        NotifyObservers(GetEventHash(Events::BombExplosion));
+        GetOwner()->Destroy();
+        return;
+    }
+
+
+    m_SpriteChangedElapsedTime += bae::GameTime::GetInstance().GetDeltaTime();
+    if(m_SpriteChangedElapsedTime >= m_SpriteChangeInterval)
+    {
+        m_SpriteChangedElapsedTime = 0.f;
+        m_SpriteComponent->NextSprite();
     }
 }
 
