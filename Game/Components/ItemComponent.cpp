@@ -47,34 +47,56 @@ void ItemComponent::Notify(const unsigned eventHash, bae::Subject*, const std::a
     }
 }
 
-void ItemComponent::HandleCollision(HitboxComponent& otherHitboxComponent)
+void ItemComponent::HandleCollision(const HitboxComponent& otherHitboxComponent)
 {
     const auto otherGameObject = otherHitboxComponent.GetGameObject();
     LevelManager& levelManager = LevelManager::GetInstance();
 
     std::vector<std::pair<bae::GameObject*, PlayerType>> playersData = levelManager.GetPlayers();
-    for(const auto playerObject : playersData | std::views::keys)
+
+    auto GetPlayerObject = [&]() -> bae::GameObject*
     {
-        if(!playerObject)
+        for(bae::GameObject* playerObject : playersData | std::views::keys)
         {
-            throw std::runtime_error(FUNCTION_NAME + std::string(" Failed! Invalid Player!"));
+            if(playerObject == otherGameObject)
+            {
+                return playerObject;
+            }
         }
 
-        if(playerObject == otherGameObject)
-        {
-            std::cout << FUNCTION_NAME << " YESSS" << '\n';
-            m_bHasBeenPickedUp                                                   = true;
-            GetOwner()->GetComponent<HitboxComponent>()->m_bAreCollisionsEnabled = false;
+        return nullptr;
+    };
 
-            bae::SoundSystem& soundSystem   = bae::ServiceLocator::GetSoundSystem();
-            const bae::SoundID startSoundID = Game::Sounds::GetSoundId(Sounds::SoundAssets::PowerUp);
-            soundSystem.Play(startSoundID);
-
-            const auto scoreMap = levelManager.GetScoreMap();
-            const int itemScore = scoreMap.at(ScoreType::Pickup);
-            otherGameObject->GetComponent<ScoreComponent>()->AddScore(itemScore);
-
-            GetOwner()->Destroy();
-        }
+    const bae::GameObject* playerObject = GetPlayerObject();
+    if(!playerObject)
+    {
+        return;
     }
+
+    std::cout << FUNCTION_NAME << " YESSS" << '\n';
+    m_bHasBeenPickedUp                                                   = true;
+    GetOwner()->GetComponent<HitboxComponent>()->m_bAreCollisionsEnabled = false;
+
+    switch(m_ItemType)
+    {
+        case ItemType::Bomb:
+            LevelManager::GetInstance().IncreaseNrBombsAllowedContinuously();
+            break;
+        case ItemType::Fire:
+            LevelManager::GetInstance().IncreaseBombFireRange();
+            break;
+        case ItemType::RemoteControl:
+            LevelManager::GetInstance().EnabledRemoteControl();
+            break;
+    }
+
+    bae::SoundSystem& soundSystem   = bae::ServiceLocator::GetSoundSystem();
+    const bae::SoundID startSoundID = Game::Sounds::GetSoundId(Sounds::SoundAssets::PowerUp);
+    soundSystem.Play(startSoundID);
+
+    const auto scoreMap = levelManager.GetScoreMap();
+    const int itemScore = scoreMap.at(ScoreType::Pickup);
+    otherGameObject->GetComponent<ScoreComponent>()->AddScore(itemScore);
+
+    GetOwner()->Destroy();
 }

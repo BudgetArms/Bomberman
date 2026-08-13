@@ -31,6 +31,5 @@ namespace Game
 
         bae::GameObject* m_BombHandlerOwner;
         std::vector<bae::GameObject*> m_PlacedBombs{};
-        int m_NrBombAllowedContinuously{ 1 };
     };
 }

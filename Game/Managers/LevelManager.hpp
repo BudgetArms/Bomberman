@@ -50,9 +50,11 @@ namespace Game
         void LoadLevelInfo(const std::filesystem::path& jsonFile);
 
         [[nodiscard]] std::unordered_map<ScoreType, int> GetScoreMap() const;
+        [[nodiscard]] int GetNrBombsAllowContinuously() const;
         [[nodiscard]] int GetBombFireRange() const;
         [[nodiscard]] bool HasBombRemoteControl() const;
 
+        void IncreaseNrBombsAllowedContinuously();
         void IncreaseBombFireRange();
         void EnabledRemoteControl();
 
@@ -134,6 +136,7 @@ namespace Game
         int m_BombermissLives{};
         int m_BombermissScore{};
 
+        int m_NrBombsAllowedContinuously{ 1 };
         int m_BombFireRange{ 1 };
         bool m_bHasBombRemoteControl{};
         bae::GameObject* m_Bomberman{};

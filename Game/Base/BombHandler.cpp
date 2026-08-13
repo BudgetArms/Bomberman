@@ -39,7 +39,7 @@ void BombHandler::TryPlaceBomb()
         return;
     }
 
-    if(m_PlacedBombs.size() >= m_NrBombAllowedContinuously)
+    if(m_PlacedBombs.size() >= LevelManager::GetInstance().GetNrBombsAllowContinuously())
     {
         return;
     }

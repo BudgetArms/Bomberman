@@ -76,10 +76,11 @@ void LevelManager::StartGame(const GameMode gameMode)
     m_BombermissLives = 0;
     m_BombermissScore = 0;
 
-    m_BombFireRange         = 1;
-    m_bHasBombRemoteControl = false;
-    m_Bomberman             = nullptr;
-    m_Bombermiss            = nullptr;
+    m_NrBombsAllowedContinuously = 1;
+    m_BombFireRange              = 1;
+    m_bHasBombRemoteControl      = false;
+    m_Bomberman                  = nullptr;
+    m_Bombermiss                 = nullptr;
 
     m_Enemies.clear();
     m_GridComponent = nullptr;
@@ -117,10 +118,11 @@ void LevelManager::StopGame()
     m_BombermissLives = 0;
     m_BombermissScore = 0;
 
-    m_BombFireRange         = 1;
-    m_bHasBombRemoteControl = false;
-    m_Bomberman             = nullptr;
-    m_Bombermiss            = nullptr;
+    m_NrBombsAllowedContinuously = 1;
+    m_BombFireRange              = 1;
+    m_bHasBombRemoteControl      = false;
+    m_Bomberman                  = nullptr;
+    m_Bombermiss                 = nullptr;
 
     m_Enemies.clear();
 
@@ -348,6 +350,11 @@ std::unordered_map<ScoreType, int> LevelManager::GetScoreMap() const
     return m_CurrentLevelInfo.ScoreMap;
 }
 
+int LevelManager::GetNrBombsAllowContinuously() const
+{
+    return m_NrBombsAllowedContinuously;
+}
+
 int LevelManager::GetBombFireRange() const
 {
     return m_BombFireRange;
@@ -356,6 +363,11 @@ int LevelManager::GetBombFireRange() const
 bool LevelManager::HasBombRemoteControl() const
 {
     return m_bHasBombRemoteControl;
+}
+
+void LevelManager::IncreaseNrBombsAllowedContinuously()
+{
+    ++m_NrBombsAllowedContinuously;
 }
 
 void LevelManager::IncreaseBombFireRange()

@@ -17,7 +17,7 @@ namespace Game
         void Notify(unsigned eventHash, bae::Subject* subject, const std::any& eventData) override;
 
     private:
-        void HandleCollision(HitboxComponent& otherHitboxComponent);
+        void HandleCollision(const HitboxComponent& otherHitboxComponent);
 
 
         const std::string m_TexturePath{ "Textures/Items/Pickups.png" };
