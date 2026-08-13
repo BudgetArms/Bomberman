@@ -19,6 +19,11 @@ BombHandler::BombHandler(bae::GameObject& owner) :
 
 void BombHandler::UpdateBombs()
 {
+    if(!m_bIsEnabled)
+    {
+        return;
+    }
+
     // erase placed bomb is GameObject is invalid,
     // could use events for this, but time constraint
     std::erase_if(m_PlacedBombs, [](const bae::GameObject* bombObject)
@@ -29,6 +34,11 @@ void BombHandler::UpdateBombs()
 
 void BombHandler::TryPlaceBomb()
 {
+    if(!m_bIsEnabled)
+    {
+        return;
+    }
+
     if(m_PlacedBombs.size() >= m_NrBombAllowedContinuously)
     {
         return;
@@ -39,6 +49,11 @@ void BombHandler::TryPlaceBomb()
 
 void BombHandler::TryActivateBomb()
 {
+    if(!m_bIsEnabled)
+    {
+        return;
+    }
+
     if(!LevelManager::GetInstance().HasBombRemoteControl())
     {
         return;
@@ -56,6 +71,16 @@ void BombHandler::TryActivateBomb()
     }
 
     ActivateBomb();
+}
+
+void BombHandler::EnableBombHandler()
+{
+    m_bIsEnabled = true;
+}
+
+void BombHandler::DisableBombHandler()
+{
+    m_bIsEnabled = false;
 }
 
 void BombHandler::PlaceBomb()
@@ -86,6 +111,7 @@ void BombHandler::PlaceBomb()
 
 void BombHandler::ActivateBomb()
 {
+    std::cout << FUNCTION_NAME << '\n';
     const bae::GameObject* oldestBomb = m_PlacedBombs.front();
     oldestBomb->GetComponent<BombComponent>()->ForceExplode();
 }

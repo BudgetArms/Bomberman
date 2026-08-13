@@ -18,9 +18,15 @@ namespace Game
         virtual void TryPlaceBomb();
         virtual void TryActivateBomb();
 
+    private:
+        bool m_bIsEnabled{ true };
+
     protected:
         virtual void PlaceBomb();
         virtual void ActivateBomb();
+
+        virtual void EnableBombHandler();
+        virtual void DisableBombHandler();
 
 
         bae::GameObject* m_BombHandlerOwner;

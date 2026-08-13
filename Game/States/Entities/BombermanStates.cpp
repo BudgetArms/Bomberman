@@ -32,6 +32,7 @@ void BombermanAliveState::OnEnter()
 
 void BombermanAliveState::OnExit()
 {
+    DisableBombHandler();
 }
 
 std::unique_ptr<EntityState> BombermanAliveState::Update()
