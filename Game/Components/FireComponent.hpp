@@ -1,0 +1,36 @@
+#pragma once
+
+#include "Components/Component.hpp"
+#include "Components/SpriteComponent.hpp"
+#include "Core/Observer.hpp"
+
+#include "Base/DirectionEnum.hpp"
+#include "Components/HitboxComponent.hpp"
+
+
+namespace Game
+{
+    class FireComponent final : public bae::Component, public bae::Observer
+    {
+    public:
+        explicit FireComponent(bae::GameObject& owner);
+
+        void Update() override;
+        void Notify(unsigned eventHash, bae::Subject* subject, const std::any& eventData) override;
+
+    private:
+        void HandleCollision(const HitboxComponent& otherHitboxComponent);
+
+
+        const std::string m_FireCenterTexturePath{ "Textures/Items/FireCenter.png" };
+        const std::string m_FireTexturePath{ "Textures/Items/Fire.png" };
+        const int m_SpriteNrSprites{ 2 };
+        const int m_SpriteNrColumns{ 2 };
+
+        bae::SpriteComponent* m_SpriteComponent{};
+
+        std::unordered_map<Direction, bae::GameObject*> m_FireObjects{};
+
+        const float m_FireDuration{ 1.f };
+    };
+}

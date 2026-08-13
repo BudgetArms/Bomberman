@@ -44,6 +44,7 @@ add_executable(${PROJECT_NAME} ${TARGET_PARAM}
     "Components/BombComponent.cpp"
     "Components/BombermanComponent.cpp"
     "Components/DoorComponent.cpp"
+    "Components/FireComponent.cpp"
     "Components/GridComponent.cpp"
     "Components/HitboxComponent.cpp"
     "Components/ItemComponent.cpp"
