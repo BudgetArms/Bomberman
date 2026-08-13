@@ -19,10 +19,12 @@
 #include "Managers/SceneManager.hpp"
 #include "Wrappers/Controller.hpp"
 #include "Wrappers/Keyboard.hpp"
+#include "Wrappers/Mouse.hpp"
 
 #include "Base/CommonManagerVariables.hpp"
 #include "Base/Events.hpp"
 #include "Commands/ForceDamageCommand.hpp"
+#include "Commands/LogMousePositionCommand.hpp"
 #include "Commands/MoveCommand.hpp"
 #include "Commands/SkipLevelCommand.hpp"
 #include "Commands/ToggleMuteSoundsCommand.hpp"
@@ -712,6 +714,10 @@ void LevelManager::AddLevelCommands() const
     // todo: remove this
     auto removeLifeCommand = std::make_unique<ForceDamageCommand>(*m_Bomberman);
     keyboard.AddKeyboardCommands(std::move(removeLifeCommand), SDLK_5, bae::InputManager::ButtonState::Down);
+
+    const bae::Mouse& mouse  = bae::InputManager::GetInstance().GetMouse();
+    auto mousePressedCommand = std::make_unique<LogMousePositionCommand>();
+    mouse.AddMouseCommands(std::move(mousePressedCommand), SDL_BUTTON_RIGHT, bae::InputManager::ButtonState::Pressed);
 }
 
 void LevelManager::SavePlayerData()
