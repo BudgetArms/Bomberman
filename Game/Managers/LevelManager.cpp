@@ -308,6 +308,11 @@ void LevelManager::LoadLevelInfo(const std::filesystem::path& jsonFile)
     m_LoadedLevels.insert({ levelInfo.Index, levelInfo });
 }
 
+std::unordered_map<ScoreType, int> LevelManager::GetScoreMap() const
+{
+    return m_ScoreMap;
+}
+
 void LevelManager::CreateGrid()
 {
     auto* backgroundScene = bae::SceneManager::GetInstance().GetScene(g_LevelBackgroundName.data());
@@ -830,6 +835,7 @@ void LevelManager::LoadStartLevelData()
 
     m_DoorPosition = levelInfo.DoorPosition;
 
+    m_ScoreMap = levelInfo.ScoreMap;
 
     m_ItemPositions.clear();
     if(levelInfo.PickupBombPosition != bae::Graphs::GridPosition{})

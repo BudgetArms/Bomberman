@@ -92,6 +92,8 @@ namespace Game
 
         void LoadLevelInfo(const std::filesystem::path& jsonFile);
 
+        std::unordered_map<ScoreType, int> GetScoreMap() const;
+
 
         static constexpr std::string_view m_SaveFileName{ "Scores.json" };
         static constexpr std::string_view m_SaveEntryName{ "Name" };
