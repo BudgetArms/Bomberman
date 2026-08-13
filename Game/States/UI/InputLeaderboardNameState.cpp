@@ -4,13 +4,14 @@
 
 #include <nlohmann/json.hpp>
 
-#include "Base/CommonManagerVariables.hpp"
 #include "Core/Renderer.hpp"
-
-#include "Base/Events.hpp"
 #include "Core/Scene.hpp"
-#include "Managers/LevelManager.hpp"
 #include "Managers/SceneManager.hpp"
+
+#include "Base/CommonManagerVariables.hpp"
+#include "Base/Events.hpp"
+#include "Managers/LevelManager.hpp"
+#include "States/UI/LeaderboardState.hpp"
 #include "States/UI/MainMenuState.hpp"
 
 
@@ -145,7 +146,7 @@ std::unique_ptr<SceneState> InputLeaderboardNameState::Update()
 
     SaveScore();
 
-    return std::make_unique<MainMenuState>(*m_GameObject);
+    return std::make_unique<LeaderboardState>(*m_GameObject);
 }
 
 void InputLeaderboardNameState::Notify(const unsigned eventHash, bae::Subject*, const std::any&)
