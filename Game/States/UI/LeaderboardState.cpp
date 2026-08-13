@@ -23,6 +23,7 @@ LeaderboardState::LeaderboardState(bae::GameObject& selectionObject) :
 
 void LeaderboardState::OnEnter()
 {
+    ClearScene();
     ClearCommands();
     AddSelectionConfirmedCommands();
 

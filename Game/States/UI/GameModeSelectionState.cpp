@@ -3,10 +3,12 @@
 #include "Components/TextComponent.hpp"
 #include "Core/Renderer.hpp"
 #include "Core/Scene.hpp"
+#include "Managers/ResourceManager.hpp"
 #include "Managers/SceneManager.hpp"
 
 #include "Base/CommonManagerVariables.hpp"
 #include "Base/Events.hpp"
+#include "Components/TextureComponent.hpp"
 #include "Managers/LevelManager.hpp"
 #include "States/UI/GameState.hpp"
 #include "States/UI/MainMenuState.hpp"
@@ -58,10 +60,11 @@ void GameModeSelectionState::OnEnter()
     gameModeSelectionObject->AttachChild(versusObject.get(), false);
     gameModeSelectionObject->AttachChild(backObject.get(), false);
 
-    singlePlayerObject->AddComponent<bae::TextComponent>(*singlePlayerObject, "SinglePlayer");
-    coOpObject->AddComponent<bae::TextComponent>(*coOpObject, "Co-Op");
-    versusObject->AddComponent<bae::TextComponent>(*versusObject, "Versus");
-    backObject->AddComponent<bae::TextComponent>(*backObject, "Back");
+    const auto textFont = bae::ResourceManager::GetInstance().LoadFont("Fonts/JoystixMonospace.otf", 32);
+    singlePlayerObject->AddComponent<bae::TextComponent>(*singlePlayerObject, "SinglePlayer", textFont);
+    coOpObject->AddComponent<bae::TextComponent>(*coOpObject, "Co-Op", textFont);
+    versusObject->AddComponent<bae::TextComponent>(*versusObject, "Versus", textFont);
+    backObject->AddComponent<bae::TextComponent>(*backObject, "Back", textFont);
 
     // Enable center text
     singlePlayerObject->GetComponent<bae::TextComponent>()->m_bIsCenteredAtPosition = true;

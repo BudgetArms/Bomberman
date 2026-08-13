@@ -31,7 +31,7 @@ namespace Game::States
         GameModeSelection m_Selection{ GameModeSelection::SinglePlayer };
         bool m_bIsSelected{};
 
-        static constexpr float m_SelectorXPosition{ 330.f };
+        static constexpr float m_SelectorXPosition{ 290.f };
         static constexpr float m_SelectorYOffset{ -15.f };
 
         std::array<glm::vec2, 4> m_SelectorPositions{};

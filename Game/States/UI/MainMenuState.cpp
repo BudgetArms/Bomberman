@@ -1,8 +1,10 @@
 #include "MainMenuState.hpp"
 
 #include "Components/TextComponent.hpp"
+#include "Components/TextureComponent.hpp"
 #include "Core/Renderer.hpp"
 #include "Core/Scene.hpp"
+#include "Managers/ResourceManager.hpp"
 #include "Managers/SceneManager.hpp"
 
 #include "Base/CommonManagerVariables.hpp"
@@ -33,16 +35,27 @@ void MainMenuState::OnEnter()
 
     const bae::WindowSize windowSize = bae::Renderer::GetInstance().GetSDLWindowSize();
 
+    // Title
+    const auto titleFont   = bae::ResourceManager::GetInstance().LoadFont("Fonts/JoystixMonospace.otf", 56);
+    const auto titleObject = std::make_shared<bae::GameObject>("Title");
+    titleObject->SetWorldLocation({ windowSize.Width / 2.f, 50.f });
+
+    titleObject->AddComponent<bae::TextComponent>(*titleObject, "Bomberman", titleFont);
+    titleObject->GetComponent<bae::TextComponent>()->m_bIsCenteredAtPosition = true;
+    gameModeSelectionScene->Add(titleObject);
+
+
     const auto mainMenu = std::make_shared<bae::GameObject>("MainMenu");
     mainMenu->SetWorldLocation({
         static_cast<float>(windowSize.Width) / 2.f, static_cast<float>(windowSize.Height) / 2.f
     });
+    mainMenu->AddLocation({ 0, 50 });
 
     const auto playObject        = std::make_shared<bae::GameObject>("Play");
     const auto leaderboardObject = std::make_shared<bae::GameObject>("Leaderboard");
     const auto quitObject        = std::make_shared<bae::GameObject>("Quit");
 
-    constexpr float verticalPadding = 150.f;
+    constexpr float verticalPadding = 120.f;
 
     playObject->AddLocation({ 0, -verticalPadding });
     leaderboardObject->AddLocation({ 0, 0 });
@@ -53,9 +66,10 @@ void MainMenuState::OnEnter()
     mainMenu->AttachChild(leaderboardObject.get(), false);
     mainMenu->AttachChild(quitObject.get(), false);
 
-    playObject->AddComponent<bae::TextComponent>(*playObject, "Play");
-    leaderboardObject->AddComponent<bae::TextComponent>(*leaderboardObject, "Leaderboard");
-    quitObject->AddComponent<bae::TextComponent>(*quitObject, "Quit");
+    const auto textFont = bae::ResourceManager::GetInstance().LoadFont("Fonts/JoystixMonospace.otf", 32);
+    playObject->AddComponent<bae::TextComponent>(*playObject, "Play", textFont);
+    leaderboardObject->AddComponent<bae::TextComponent>(*leaderboardObject, "Leaderboard", textFont);
+    quitObject->AddComponent<bae::TextComponent>(*quitObject, "Quit", textFont);
 
     // Enable center text
     playObject->GetComponent<bae::TextComponent>()->m_bIsCenteredAtPosition        = true;

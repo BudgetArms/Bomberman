@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Components/TextureComponent.hpp"
 #include "States/UI/SceneState.hpp"
 
 
@@ -31,7 +30,7 @@ namespace Game::States
         StartMenuSelections m_Selection{ StartMenuSelections::Play };
         bool m_bIsSelected{};
 
-        static constexpr float m_SelectorXPosition{ 330.f };
+        static constexpr float m_SelectorXPosition{ 290.f };
         static constexpr float m_SelectorYOffset{ -15.f };
 
         std::array<glm::vec2, 3> m_SelectorPositions{};
