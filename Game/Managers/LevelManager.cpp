@@ -124,9 +124,26 @@ void LevelManager::RenderBackground() const
 
 void LevelManager::SkipLevel()
 {
+    if(!m_bHasGameStarted)
+    {
+        return;
+    }
+    if(m_CurrentLevel >= m_NrOfLevels)
+    {
+        return;
+    }
+
+
     SavePlayerData();
 
     ++m_CurrentLevel;
+    if(m_CurrentLevel >= m_NrOfLevels)
+    {
+        HandleGameOver();
+        return;
+    }
+
+    LoadNewLevelData();
     RestartLevel();
 }
 
@@ -245,15 +262,7 @@ void LevelManager::RestartLevel()
     SpawnEnemies();
 
     // Add Commands
-    // Added Sound Toggle
-    const bae::Keyboard& keyboard = bae::InputManager::GetInstance().GetKeyboard();
-    auto toggleMuteSoundsCommand  = std::make_unique<ToggleMuteSoundsCommand>();
-    keyboard.AddKeyboardCommands(std::move(toggleMuteSoundsCommand), SDLK_F2, bae::InputManager::ButtonState::Down);
-
-
-    // todo: remove forceDamage
-    auto removeLifeCommand = std::make_unique<ForceDamageCommand>(*m_Bomberman);
-    keyboard.AddKeyboardCommands(std::move(removeLifeCommand), SDLK_5, bae::InputManager::ButtonState::Down);
+    AddLevelCommands();
 }
 
 void LevelManager::LoadLevelInfo(const std::filesystem::path& jsonFile)
@@ -654,7 +663,16 @@ void LevelManager::AddControls(bae::GameObject& gameObject, const bool bIsFirstP
     #endif
 }
 
-void LevelManager::AddCommands() {
+void LevelManager::AddLevelCommands() const
+{
+    // Added Sound Toggle
+    const bae::Keyboard& keyboard = bae::InputManager::GetInstance().GetKeyboard();
+    auto toggleMuteSoundsCommand  = std::make_unique<ToggleMuteSoundsCommand>();
+    keyboard.AddKeyboardCommands(std::move(toggleMuteSoundsCommand), SDLK_F2, bae::InputManager::ButtonState::Down);
+
+    // todo: remove this
+    auto removeLifeCommand = std::make_unique<ForceDamageCommand>(*m_Bomberman);
+    keyboard.AddKeyboardCommands(std::move(removeLifeCommand), SDLK_5, bae::InputManager::ButtonState::Down);
 }
 
 void LevelManager::SavePlayerData()
@@ -769,17 +787,147 @@ void LevelManager::LoadStartLevelData()
 
     if(levelInfo.PickupBombPosition != bae::Graphs::GridPosition{})
     {
-        m_PickupPosition.insert({ PickupType::Bomb, levelInfo.PickupBombPosition });
+        m_PickupPosition.insert({ ItemType::Bomb, levelInfo.PickupBombPosition });
     }
 
     if(levelInfo.PickupFirePosition != bae::Graphs::GridPosition{})
     {
-        m_PickupPosition.insert({ PickupType::Fire, levelInfo.PickupFirePosition });
+        m_PickupPosition.insert({ ItemType::Fire, levelInfo.PickupFirePosition });
     }
 
     if(levelInfo.PickupRemoteControlPosition != bae::Graphs::GridPosition{})
     {
-        m_PickupPosition.insert({ PickupType::RemoteControl, levelInfo.PickupRemoteControlPosition });
+        m_PickupPosition.insert({ ItemType::RemoteControl, levelInfo.PickupRemoteControlPosition });
+    }
+
+
+    // Get Enemy Positions
+    auto InsertEnemyPosition = [&](const bae::Graphs::GridPosition gridPosition, EnemyType enemyType)
+    {
+        m_EnemyStartPositions.emplace_back(enemyType, gridPosition);
+    };
+
+
+    for(const bae::Graphs::GridPosition balloomGridPosition : levelInfo.BalloomPositions)
+    {
+        InsertEnemyPosition(balloomGridPosition, EnemyType::Balloom);
+    }
+
+    for(const bae::Graphs::GridPosition onealGridPosition : levelInfo.OnealPositions)
+    {
+        InsertEnemyPosition(onealGridPosition, EnemyType::Oneal);
+    }
+
+    for(const bae::Graphs::GridPosition dollGridPosition : levelInfo.DollPositions)
+    {
+        InsertEnemyPosition(dollGridPosition, EnemyType::Doll);
+    }
+
+    for(const bae::Graphs::GridPosition minvoGridPosition : levelInfo.MinvoPositions)
+    {
+        InsertEnemyPosition(minvoGridPosition, EnemyType::Minvo);
+    }
+
+    m_PermanentBlockPositions = levelInfo.PermanentBlockPositions;
+    m_TemporaryBlockPositions = levelInfo.TemporaryBlockPositions;
+}
+
+void LevelManager::LoadNewLevelData()
+{
+    if(!m_LoadedLevels.contains(m_CurrentLevel))
+    {
+        throw std::runtime_error(FUNCTION_NAME + std::string(" Failed To Find Level With Level Index: ")
+            + std::to_string(m_CurrentLevel));
+    }
+
+    const LevelInfo levelInfo = m_LoadedLevels[m_CurrentLevel];
+
+    m_GridInfo =
+    {
+        .NrColumns = levelInfo.GridNrColumns,
+        .NrRows    = levelInfo.GridNrRows,
+        .CellSize  = levelInfo.GridCellSize,
+        .Offset    = levelInfo.GridOffset,
+    };
+
+    m_HitboxDimension = levelInfo.HitboxDimensions;
+
+    m_BombermanInfo =
+    {
+        .StartPosition = levelInfo.BombermanPosition,
+        .Lives         = m_BombermanInfo.Lives,
+        .Speed         = levelInfo.BombermanSpeed,
+        .Score         = m_BombermanInfo.Score,
+    };
+
+    m_BombermissInfo =
+    {
+        .StartPosition = levelInfo.BombermissPosition,
+        .Lives         = m_BombermissInfo.Lives,
+        .Speed         = levelInfo.BombermissSpeed,
+        .Score         = m_BombermissInfo.Score,
+    };
+
+    m_BalloomPlayerInfo =
+    {
+        .StartPosition = levelInfo.BalloomPlayerPosition,
+        .Lives         = 0,
+        .Speed         = levelInfo.BalloomSpeed,
+        .Score         = 0
+    };
+
+
+    m_EnemySharedInfos =
+    {
+        {
+            EnemyType::Balloom,
+            SharedEnemyInfo
+            {
+                .Speed             = levelInfo.BalloomSpeed,
+                .DirectionUpChance = levelInfo.BalloomDirectionUpChance
+            }
+        },
+        {
+            EnemyType::Oneal,
+            SharedEnemyInfo
+            {
+                .Speed             = levelInfo.OnealSpeed,
+                .DirectionUpChance = levelInfo.OnealDirectionUpChance
+            }
+        },
+        {
+            EnemyType::Doll,
+            SharedEnemyInfo
+            {
+                .Speed             = levelInfo.DollSpeed,
+                .DirectionUpChance = levelInfo.DollDirectionUpChance
+            }
+        },
+        {
+            EnemyType::Minvo,
+            SharedEnemyInfo
+            {
+                .Speed             = levelInfo.MinvoSpeed,
+                .DirectionUpChance = levelInfo.MinvoDirectionUpChance
+            }
+        },
+    };
+
+    m_DoorPosition = levelInfo.DoorPosition;
+
+    if(levelInfo.PickupBombPosition != bae::Graphs::GridPosition{})
+    {
+        m_PickupPosition.insert({ ItemType::Bomb, levelInfo.PickupBombPosition });
+    }
+
+    if(levelInfo.PickupFirePosition != bae::Graphs::GridPosition{})
+    {
+        m_PickupPosition.insert({ ItemType::Fire, levelInfo.PickupFirePosition });
+    }
+
+    if(levelInfo.PickupRemoteControlPosition != bae::Graphs::GridPosition{})
+    {
+        m_PickupPosition.insert({ ItemType::RemoteControl, levelInfo.PickupRemoteControlPosition });
     }
 
 

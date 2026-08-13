@@ -33,7 +33,7 @@ namespace Game
         BalloomPlayer
     };
 
-    enum class PickupType
+    enum class ItemType
     {
         Bomb,
         Fire,
@@ -137,12 +137,13 @@ namespace Game
         void SpawnDoor(const glm::vec2& position);
 
         static void AddControls(bae::GameObject& gameObject, bool bIsFirstPlayer);
-        void AddCommands();
+        void AddLevelCommands() const;
 
         void SavePlayerData();
         void LoadPlayerData() const;
 
         void LoadStartLevelData();
+        void LoadNewLevelData();
 
         [[nodiscard]] glm::vec2 ToPosition(bae::Graphs::GridPosition gridPosition) const;
 
@@ -155,6 +156,7 @@ namespace Game
         std::unordered_map<int, LevelInfo> m_LoadedLevels{};
 
         static constexpr float m_GlobalScale{ 2.f };
+        static constexpr int m_NrOfLevels{ 2 }; // todo: change to 3
 
         bae::GameObject* m_Bomberman{};
         bae::GameObject* m_Bombermiss{};
@@ -180,7 +182,7 @@ namespace Game
 
         std::unordered_map<ScoreType, int> m_ScoreMap{};
 
-        std::unordered_map<PickupType, bae::Graphs::GridPosition> m_PickupPosition{};
+        std::unordered_map<ItemType, bae::Graphs::GridPosition> m_PickupPosition{};
 
         GridInfo m_GridInfo{};
         std::set<bae::Graphs::GridPosition> m_PermanentBlockPositions{};
