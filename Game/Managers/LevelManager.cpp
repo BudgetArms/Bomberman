@@ -24,6 +24,7 @@
 #include "Base/Events.hpp"
 #include "Commands/ForceDamageCommand.hpp"
 #include "Commands/MoveCommand.hpp"
+#include "Commands/SkipLevelCommand.hpp"
 #include "Commands/ToggleMuteSoundsCommand.hpp"
 #include "Components/BombermanComponent.hpp"
 #include "Components/DoorComponent.hpp"
@@ -669,6 +670,10 @@ void LevelManager::AddLevelCommands() const
     const bae::Keyboard& keyboard = bae::InputManager::GetInstance().GetKeyboard();
     auto toggleMuteSoundsCommand  = std::make_unique<ToggleMuteSoundsCommand>();
     keyboard.AddKeyboardCommands(std::move(toggleMuteSoundsCommand), SDLK_F2, bae::InputManager::ButtonState::Down);
+
+    // Skip Level
+    auto skipLevelCommand = std::make_unique<SkipLevelCommand>();
+    keyboard.AddKeyboardCommands(std::move(skipLevelCommand), SDLK_F1, bae::InputManager::ButtonState::Down);
 
     // todo: remove this
     auto removeLifeCommand = std::make_unique<ForceDamageCommand>(*m_Bomberman);

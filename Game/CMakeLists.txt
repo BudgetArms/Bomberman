@@ -38,6 +38,7 @@ add_executable(${PROJECT_NAME} ${TARGET_PARAM}
     "Commands/LogMousePositionCommand.cpp"
     "Commands/MoveCommand.cpp"
     "Commands/SelectionCommands.cpp"
+    "Commands/SkipLevelCommand.cpp"
     "Commands/ToggleMuteSoundsCommand.cpp"
 
     "Components/BombermanComponent.cpp"
