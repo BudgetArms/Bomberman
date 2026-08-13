@@ -83,6 +83,7 @@ namespace Game
 
         [[nodiscard]] GameMode GetGameMode() const;
         [[nodiscard]] int GetTotalScore();
+        [[nodiscard]] glm::vec2 GetHitboxDimension() const;
 
         [[nodiscard]] GridComponent* GetGridComponent() const;
 
@@ -93,7 +94,7 @@ namespace Game
 
         void LoadLevelInfo(const std::filesystem::path& jsonFile);
 
-        std::unordered_map<ScoreType, int> GetScoreMap() const;
+        [[nodiscard]] std::unordered_map<ScoreType, int> GetScoreMap() const;
 
 
         static constexpr std::string_view m_SaveFileName{ "Scores.json" };

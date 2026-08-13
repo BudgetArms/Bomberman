@@ -187,6 +187,11 @@ int LevelManager::GetTotalScore()
     return -1;
 }
 
+glm::vec2 LevelManager::GetHitboxDimension() const
+{
+    return m_HitboxDimension;
+}
+
 GridComponent* LevelManager::GetGridComponent() const
 {
     return m_GridComponent;
