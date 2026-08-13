@@ -70,15 +70,6 @@ void LevelManager::StartGame(const GameMode gameMode)
     m_Enemies.clear();
 
     LoadStartLevelData();
-
-    CreateGrid();
-
-    AddPermanentWalls();
-
-    SpawnDoor(ToPosition(m_DoorPosition));
-
-    AddTemporaryWalls();
-
     RestartLevel();
 }
 
@@ -833,6 +824,8 @@ void LevelManager::LoadStartLevelData()
 
     m_DoorPosition = levelInfo.DoorPosition;
 
+
+    m_ItemPositions.clear();
     if(levelInfo.PickupBombPosition != bae::Graphs::GridPosition{})
     {
         m_ItemPositions.insert({ ItemType::Bomb, levelInfo.PickupBombPosition });
@@ -856,6 +849,7 @@ void LevelManager::LoadStartLevelData()
     };
 
 
+    m_EnemyStartPositions.clear();
     for(const bae::Graphs::GridPosition balloomGridPosition : levelInfo.BalloomPositions)
     {
         InsertEnemyPosition(balloomGridPosition, EnemyType::Balloom);
@@ -963,6 +957,8 @@ void LevelManager::LoadNewLevelData()
 
     m_DoorPosition = levelInfo.DoorPosition;
 
+
+    m_ItemPositions.clear();
     if(levelInfo.PickupBombPosition != bae::Graphs::GridPosition{})
     {
         m_ItemPositions.insert({ ItemType::Bomb, levelInfo.PickupBombPosition });
@@ -986,6 +982,7 @@ void LevelManager::LoadNewLevelData()
     };
 
 
+    m_EnemyStartPositions.clear();
     for(const bae::Graphs::GridPosition balloomGridPosition : levelInfo.BalloomPositions)
     {
         InsertEnemyPosition(balloomGridPosition, EnemyType::Balloom);
