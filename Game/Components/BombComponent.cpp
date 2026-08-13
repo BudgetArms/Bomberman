@@ -62,7 +62,7 @@ void BombComponent::ForceExplode()
 
 void BombComponent::SpawnFire()
 {
-    bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
+    bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelBackgroundName.data());
 
     const glm::vec2 position = GetOwner()->GetWorldLocation();
 
