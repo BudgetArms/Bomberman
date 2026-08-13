@@ -86,6 +86,7 @@ namespace Game
 
         [[nodiscard]] GridComponent* GetGridComponent() const;
 
+        [[nodiscard]] glm::vec2 ToPosition(bae::Graphs::GridPosition gridPosition) const;
 
         void HandleEvent(unsigned int eventHash) override;
         void Notify(unsigned eventHash, bae::Subject* subject, const std::any& eventData) override;
@@ -127,7 +128,6 @@ namespace Game
 
         void SpawnItem(const glm::vec2& position, ItemType itemType);
 
-
         void SpawnPlayers();
         void SpawnEnemies();
 
@@ -151,8 +151,6 @@ namespace Game
 
         void LoadStartLevelData();
         void LoadNewLevelData();
-
-        [[nodiscard]] glm::vec2 ToPosition(bae::Graphs::GridPosition gridPosition) const;
 
 
         GameMode m_GameMode{ GameMode::Singleplayer };
