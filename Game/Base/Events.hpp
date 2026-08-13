@@ -25,6 +25,7 @@ namespace Game
         ScoreChanged,
         LivesChanged,
         LifeLost,
+        BombExplosion,
         CollisionEvent,
         SelectionDown,
         SelectionUp,
