@@ -1,8 +1,10 @@
 #include "ItemComponent.hpp"
 
 #include "Base/Events.hpp"
+#include "Base/SoundAssets.hpp"
 #include "Components/HitboxComponent.hpp"
 #include "Components/SpriteComponent.hpp"
+#include "Core/ServiceLocator.hpp"
 #include "Managers/LevelManager.hpp"
 
 
@@ -62,6 +64,11 @@ void ItemComponent::HandleCollision(HitboxComponent& otherHitboxComponent)
             std::cout << FUNCTION_NAME << " YESSS" << '\n';
             m_bHasBeenPickedUp                                                   = true;
             GetOwner()->GetComponent<HitboxComponent>()->m_bAreCollisionsEnabled = false;
+
+            bae::SoundSystem& soundSystem   = bae::ServiceLocator::GetSoundSystem();
+            const bae::SoundID startSoundID = Game::Sounds::GetSoundId(Sounds::SoundAssets::PowerUp);
+            soundSystem.Play(startSoundID);
+
             GetOwner()->Destroy();
         }
     }
