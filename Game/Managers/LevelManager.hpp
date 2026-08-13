@@ -18,50 +18,6 @@
 
 namespace Game
 {
-    enum class PlayerType
-    {
-        Bomberman,
-        Bombermiss
-    };
-
-    enum class EnemyType
-    {
-        Balloom,
-        Oneal,
-        Doll,
-        Minvo,
-        BalloomPlayer
-    };
-
-    enum class ItemType
-    {
-        Bomb,
-        Fire,
-        RemoteControl
-    };
-
-    struct GridInfo
-    {
-        int NrColumns{};
-        int NrRows{};
-        glm::ivec2 CellSize{};
-        glm::vec2 Offset{};
-    };
-
-    struct SharedEnemyInfo
-    {
-        float Speed{};
-        float DirectionUpChance{};
-    };
-
-    struct PlayerInfo
-    {
-        bae::Graphs::GridPosition StartPosition{};
-        int Lives{};
-        float Speed{};
-        int Score{};
-    };
-
     class LevelManager final : public bae::Singleton<LevelManager>, public bae::EventListener, public bae::Observer
     {
     public:
@@ -154,45 +110,31 @@ namespace Game
         void LoadNewLevelData();
 
 
+        static constexpr float m_GlobalScale{ 2.f };
+        static constexpr int m_NrOfLevels{ 2 }; // todo: change to 3
+
+        const std::string m_BackgroundTexturePath{ "Textures/Level/Playfield.png" };
+        bae::Texture2D* m_BackgroundTexture{};
+
         GameMode m_GameMode{ GameMode::Singleplayer };
         bool m_bHasGameStarted{};
 
-        int m_CurrentLevel{};
-
+        int m_NrCurrentLevel{};
         std::unordered_map<int, LevelInfo> m_LoadedLevels{};
+        LevelInfo m_CurrentLevelInfo{};
 
-        static constexpr float m_GlobalScale{ 2.f };
-        static constexpr int m_NrOfLevels{ 2 }; // todo: change to 3
+        int m_BombermanLives{};
+        int m_BombermanScore{};
+
+        int m_BombermissLives{};
+        int m_BombermissScore{};
 
         bae::GameObject* m_Bomberman{};
         bae::GameObject* m_Bombermiss{};
 
         std::unordered_map<bae::GameObject*, EnemyType> m_Enemies{};
 
-        const std::string m_BackgroundTexturePath{ "Textures/Level/Playfield.png" };
-        bae::Texture2D* m_BackgroundTexture{};
-
         GridComponent* m_GridComponent{};
-
-        glm::vec2 m_HitboxDimension{};
-
-        PlayerInfo m_BombermanInfo{};
-        PlayerInfo m_BombermissInfo{};
-        PlayerInfo m_BalloomPlayerInfo{};
-
-        std::vector<std::pair<EnemyType, bae::Graphs::GridPosition>> m_EnemyStartPositions{};
-
-        std::unordered_map<EnemyType, SharedEnemyInfo> m_EnemySharedInfos{};
-
-        bae::Graphs::GridPosition m_DoorPosition{};
-
-        std::unordered_map<ScoreType, int> m_ScoreMap{};
-
-        std::unordered_map<ItemType, bae::Graphs::GridPosition> m_ItemPositions{};
-
-        GridInfo m_GridInfo{};
-        std::set<bae::Graphs::GridPosition> m_PermanentBlockPositions{};
-        std::set<bae::Graphs::GridPosition> m_TemporaryBlockPositions{};
     };
 }
 
