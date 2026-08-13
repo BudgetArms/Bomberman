@@ -1,6 +1,10 @@
 ﻿{
   "Name": "Level 0",
   "Index": 0,
+  "Hitbox": {
+    "Width": 25,
+    "Height": 25
+  },
   "Grid": {
     "Columns": 29,
     "Rows": 11,
@@ -9,82 +13,128 @@
       "Height": 32
     },
     "Offset": {
-      "X": 48,
-      "Y": 48
+      "X": 48.0,
+      "Y": 48.0
     }
   },
-  "Hitbox": {
-    "Width": 25,
-    "Height": 25
-  },
   "Bomberman": {
-    "StartLives": 4,
-    "Speed": 100,
     "Position": {
       "Column": 7,
       "Row": 9
-    }
+    },
+    "StartLives": 4,
+    "Speed": 100.0,
+    "Score": 0
   },
   "Bombermiss": {
-    "StartLives": 4,
-    "Speed": 200,
     "Position": {
       "Column": 7,
       "Row": 8
-    }
+    },
+    "StartLives": 4,
+    "Speed": 200.0,
+    "Score": 0
   },
   "BalloomPlayer": {
-    "Speed": 300,
     "Position": {
       "Column": 7,
       "Row": 7
+    },
+    "StartLives": 0,
+    "Speed": 300.0,
+    "Score": 0
+  },
+  "SharedEnemyInfo": {
+    "Balloom": {
+      "Speed": 111,
+      "ChangeDirectionUpChance": 0.20
+    },
+    "Oneal": {
+      "Speed": 222,
+      "ChangeDirectionUpChance": 0.30
+    },
+    "Doll": {
+      "Speed": 333,
+      "ChangeDirectionUpChance": 0.10
+    },
+    "Minvo": {
+      "Speed": 444,
+      "ChangeDirectionUpChance": 0.20
     }
   },
-  "EnemySpeed": {
-    "Balloom": 111,
-    "Oneal": 222,
-    "Doll": 333,
-    "Minvo": 444
-  },
-  "EnemyChangeDirectionUp": {
-    "Balloom": 0.20,
-    "Oneal": 0.30,
-    "Doll": 0.10,
-    "Minvo": 0.20
+  "EnemyStartPositions": {
+    "Balloom": [
+      {
+        "Column": 4,
+        "Row": 0
+      },
+      {
+        "Column": 4,
+        "Row": 2
+      }
+    ],
+    "Oneal": [
+      {
+        "Column": 6,
+        "Row": 0
+      },
+      {
+        "Column": 6,
+        "Row": 2
+      }
+    ],
+    "Doll": [
+      {
+        "Column": 8,
+        "Row": 0
+      },
+      {
+        "Column": 8,
+        "Row": 2
+      }
+    ],
+    "Minvo": [
+      {
+        "Column": 10,
+        "Row": 0
+      },
+      {
+        "Column": 10,
+        "Row": 2
+      }
+    ]
   },
   "DoorPosition": {
     "Column": 6,
     "Row": 5
   },
   "ScoreMap": {
-    "Pickup": 1000,
-    "Balloom": 100,
-    "Oneal": 200,
-    "Doll": 400,
-    "Minvo": 800
+    "ItemPickup": 1000,
+    "BalloomKill": 100,
+    "OnealKill": 200,
+    "DollKill": 400,
+    "MinvoKill": 800
   },
-  "Pickups": {
-    "Bomb": {
-      "Column": 10,
-      "Row": 1
-    },
-    "Fire": {
-      "Column": 10,
-      "Row": 2
-    },
-    "RemoteControl": {
-      "Column": 10,
-      "Row": 3
-    }
+  "ItemPositions": {
+    "Bomb": [
+      {
+        "Column": 10,
+        "Row": 1
+      }
+    ],
+    "Fire": [
+      {
+        "Column": 10,
+        "Row": 2
+      }
+    ],
+    "RemoteControl": [
+      {
+        "Column": 10,
+        "Row": 3
+      }
+    ]
   },
-  "BalloomPositions": [
-  ],
-  "OnealPositions": [
-  ],
-  "DollPositions": [
-  ],
-  "MinvoPositions": [
-  ],
   "PermanentBlockPositions": [
     {
       "Column": 1,

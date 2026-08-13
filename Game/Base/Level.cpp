@@ -11,205 +11,177 @@ void Game::from_json(const nlohmann::json& json, LevelInfo& level)
         .Name  = json.at("Name"),
         .Index = json.at("Index"),
 
-        .GridNrColumns = json.at("Grid").at("Columns"),
-        .GridNrRows    = json.at("Grid").at("Rows"),
+        .HitboxDimension = GetPosFromJson(json.at("Hitbox")),
 
-        .GridCellSize =
+        .GridInfo =
         {
-            json.at("Grid").at("CellSize").at("Width"),
-            json.at("Grid").at("CellSize").at("Height")
-        },
-
-        .GridOffset =
-        {
-            json.at("Grid").at("Offset").at("X"),
-            json.at("Grid").at("Offset").at("Y")
+            .NrColumns = json.at("Grid").at("Columns"),
+            .NrRows    = json.at("Grid").at("Rows"),
+            .CellSize  = {
+                json.at("Grid").at("CellSize").at("Width"),
+                json.at("Grid").at("CellSize").at("Height"),
+            },
+            .Offset = GetPosFromJson(json.at("Grid").at("Offset"))
         },
 
-        .HitboxDimensions =
+        .BombermanInfo =
         {
-            json.at("Hitbox").at("Width"),
-            json.at("Hitbox").at("Height")
+            .StartPosition = GetGridPosFromJson(json.at("Bomberman").at("Position")),
+            .Lives         = json.at("Bomberman").at("StartLives"),
+            .Speed         = json.at("Bomberman").at("Speed"),
+            .Score         = json.at("Bomberman").at("Score")
         },
 
-        .BombermanStartLives =
+        .BombermissInfo =
         {
-            json.at("Bomberman").at("StartLives"),
-        },
-        .BombermanSpeed =
-        {
-            json.at("Bomberman").at("Speed"),
-        },
-        .BombermanPosition =
-        {
-            .Column = json.at("Bomberman").at("Position").at("Column"),
-            .Row    = json.at("Bomberman").at("Position").at("Row")
+            .StartPosition = GetGridPosFromJson(json.at("Bombermiss").at("Position")),
+            .Lives         = json.at("Bombermiss").at("StartLives"),
+            .Speed         = json.at("Bombermiss").at("Speed"),
+            .Score         = json.at("Bombermiss").at("Score")
         },
 
-        .BombermissStartLives =
+        .BalloomPlayerInfo =
         {
-            json.at("Bombermiss").at("StartLives"),
-        },
-        .BombermissSpeed =
-        {
-            json.at("Bombermiss").at("Speed"),
-        },
-        .BombermissPosition =
-        {
-            .Column = json.at("Bombermiss").at("Position").at("Column"),
-            .Row    = json.at("Bombermiss").at("Position").at("Row")
+            .StartPosition = GetGridPosFromJson(json.at("BalloomPlayer").at("Position")),
+            .Lives         = 0,
+            .Speed         = json.at("BalloomPlayer").at("Speed"),
+            .Score         = 0
         },
 
-        .BalloomPlayerSpeed =
+        .EnemySharedInfos =
         {
-            json.at("BalloomPlayer").at("Speed"),
-        },
-        .BalloomPlayerPosition =
-        {
-            .Column = json.at("BalloomPlayer").at("Position").at("Column"),
-            .Row    = json.at("BalloomPlayer").at("Position").at("Row"),
-        },
-
-        .BalloomSpeed =
-        {
-            json.at("EnemySpeed").at("Balloom"),
-        },
-        .OnealSpeed =
-        {
-            json.at("EnemySpeed").at("Oneal"),
-        },
-        .DollSpeed =
-        {
-            json.at("EnemySpeed").at("Doll"),
-        },
-        .MinvoSpeed =
-        {
-            json.at("EnemySpeed").at("Balloom"),
-        },
-
-        .BalloomDirectionUpChance =
-        {
-            json.at("EnemyChangeDirectionUp").at("Balloom"),
-        },
-        .OnealDirectionUpChance =
-        {
-            json.at("EnemyChangeDirectionUp").at("Oneal"),
-        },
-        .DollDirectionUpChance =
-        {
-            json.at("EnemyChangeDirectionUp").at("Doll"),
-        },
-        .MinvoDirectionUpChance =
-        {
-            json.at("EnemyChangeDirectionUp").at("Minvo"),
+            {
+                EnemyType::Balloom,
+                SharedEnemyInfo
+                {
+                    .Speed             = json.at("SharedEnemyInfo").at("Balloom").at("Speed"),
+                    .DirectionUpChance = json.at("SharedEnemyInfo").at("Balloom").at("ChangeDirectionUpChance"),
+                }
+            },
+            {
+                EnemyType::Oneal,
+                SharedEnemyInfo
+                {
+                    .Speed             = json.at("SharedEnemyInfo").at("Oneal").at("Speed"),
+                    .DirectionUpChance = json.at("SharedEnemyInfo").at("Oneal").at("ChangeDirectionUpChance"),
+                }
+            },
+            {
+                EnemyType::Doll,
+                SharedEnemyInfo
+                {
+                    .Speed             = json.at("SharedEnemyInfo").at("Doll").at("Speed"),
+                    .DirectionUpChance = json.at("SharedEnemyInfo").at("Doll").at("ChangeDirectionUpChance"),
+                }
+            },
+            {
+                EnemyType::Minvo,
+                SharedEnemyInfo
+                {
+                    .Speed             = json.at("SharedEnemyInfo").at("Minvo").at("Speed"),
+                    .DirectionUpChance = json.at("SharedEnemyInfo").at("Minvo").at("ChangeDirectionUpChance"),
+                }
+            },
         },
 
-        .DoorPosition =
-        {
-            .Column = json.at("DoorPosition").at("Column"),
-            .Row    = json.at("DoorPosition").at("Row"),
-        },
+        .EnemyStartPositions = {},
+
+        .DoorPosition = GetGridPosFromJson(json.at("DoorPosition")),
 
         .ScoreMap =
         {
             {
-                ScoreType::Pickup, json.at("ScoreMap").at("Pickup")
+                ScoreType::Pickup,
+                json.at("ScoreMap").at("ItemPickup")
             },
             {
-                ScoreType::BalloomKill, json.at("ScoreMap").at("Balloom")
+                ScoreType::BalloomKill,
+                json.at("ScoreMap").at("BalloomKill")
             },
             {
-                ScoreType::OnealKill, json.at("ScoreMap").at("Oneal")
+                ScoreType::OnealKill,
+                json.at("ScoreMap").at("OnealKill")
             },
             {
-                ScoreType::DollKill, json.at("ScoreMap").at("Doll")
+                ScoreType::DollKill,
+                json.at("ScoreMap").at("DollKill")
             },
             {
-                ScoreType::MinvoKill, json.at("ScoreMap").at("Minvo")
-            }
+                ScoreType::MinvoKill,
+                json.at("ScoreMap").at("MinvoKill")
+            },
         },
 
-        .PickupBombPosition =
-        {
-            .Column = json.at("Pickups").at("Bomb").at("Column"),
-            .Row    = json.at("Pickups").at("Bomb").at("Row"),
-        },
-        .PickupFirePosition =
-        {
-            .Column = json.at("Pickups").at("Fire").at("Column"),
-            .Row    = json.at("Pickups").at("Fire").at("Row"),
-        },
-        .PickupRemoteControlPosition =
-        {
-            .Column = json.at("Pickups").at("RemoteControl").at("Column"),
-            .Row    = json.at("Pickups").at("RemoteControl").at("Row"),
-        },
+        .ItemPositions = {},
+
+        .PermanentBlockPositions = {},
+        .TemporaryBlockPositions = {}
     };
 
-    for(const auto& balloomPosition : json.at("BalloomPositions"))
-    {
-        const bae::Graphs::GridPosition gridPosition
-        {
-            .Column = balloomPosition.at("Column"),
-            .Row    = balloomPosition.at("Row")
-        };
 
-        level.BalloomPositions.insert(gridPosition);
+    // Enemy Start Positions
+    for(const auto& balloomPosition : json.at("EnemyStartPositions").at("Balloom"))
+    {
+        level.EnemyStartPositions[EnemyType::Balloom].push_back(GetGridPosFromJson(balloomPosition));
+    }
+    for(const auto& onealPosition : json.at("EnemyStartPositions").at("Oneal"))
+    {
+        level.EnemyStartPositions[EnemyType::Oneal].push_back(GetGridPosFromJson(onealPosition));
+    }
+    for(const auto& dollPosition : json.at("EnemyStartPositions").at("Doll"))
+    {
+        level.EnemyStartPositions[EnemyType::Doll].push_back(GetGridPosFromJson(dollPosition));
+    }
+    for(const auto& minvoPosition : json.at("EnemyStartPositions").at("Minvo"))
+    {
+        level.EnemyStartPositions[EnemyType::Minvo].push_back(GetGridPosFromJson(minvoPosition));
     }
 
-    for(const auto& onealPosition : json.at("OnealPositions"))
+    // Item Positions
+    for(const auto& bombPosition : json.at("ItemPositions").at("Bomb"))
     {
-        const bae::Graphs::GridPosition gridPosition
-        {
-            .Column = onealPosition.at("Column"),
-            .Row    = onealPosition.at("Row")
-        };
-
-        level.OnealPositions.insert(gridPosition);
+        level.ItemPositions[ItemType::Bomb].push_back(GetGridPosFromJson(bombPosition));
     }
-
-    for(const auto& dollPosition : json.at("DollPositions"))
+    for(const auto& firePosition : json.at("ItemPositions").at("Fire"))
     {
-        const bae::Graphs::GridPosition gridPosition
-        {
-            .Column = dollPosition.at("Column"),
-            .Row    = dollPosition.at("Row")
-        };
-
-        level.DollPositions.insert(gridPosition);
+        level.ItemPositions[ItemType::Fire].push_back(GetGridPosFromJson(firePosition));
     }
-
-    for(const auto& minvoPosition : json.at("MinvoPositions"))
+    for(const auto& remoteControlPosition : json.at("ItemPositions").at("RemoteControl"))
     {
-        const bae::Graphs::GridPosition gridPosition
-        {
-            .Column = minvoPosition.at("Column"),
-            .Row    = minvoPosition.at("Row")
-        };
-
-        level.MinvoPositions.insert(gridPosition);
+        level.ItemPositions[ItemType::RemoteControl].push_back(GetGridPosFromJson(remoteControlPosition));
     }
 
 
+    // Permanent Blocks
     for(const auto& permanentBlockPosition : json.at("PermanentBlockPositions"))
     {
-        bae::Graphs::GridPosition gridPosition
-        {
-            .Column = permanentBlockPosition.at("Column"),
-            .Row    = permanentBlockPosition.at("Row"),
-        };
-
-        level.PermanentBlockPositions.insert(gridPosition);
+        level.PermanentBlockPositions.insert(GetGridPosFromJson(permanentBlockPosition));
     }
 
+    // Temporary Blocks
     for(const auto& temporaryBlockPosition : json.at("TemporaryBlockPositions"))
     {
-        bae::Graphs::GridPosition gridPosition
-        {
-            .Column = temporaryBlockPosition.at("Column"),
-            .Row    = temporaryBlockPosition.at("Row"),
-        };
-
-        level.TemporaryBlockPositions.insert(gridPosition);
+        level.TemporaryBlockPositions.insert(GetGridPosFromJson(temporaryBlockPosition));
     }
+}
+
+
+bae::Graphs::GridPosition Game::GetGridPosFromJson(nlohmann::basic_json<> data)
+{
+    return bae::Graphs::GridPosition
+    {
+        data.at("Column"),
+        data.at("Row"),
+    };
+}
+
+glm::vec2 Game::GetPosFromJson(nlohmann::basic_json<> data)
+{
+    auto it = data.begin();
+
+    return glm::vec2
+    {
+        (it++)->get<float>(),
+        (it++)->get<float>()
+    };
 }
