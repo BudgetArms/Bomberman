@@ -5,7 +5,6 @@
 #include "ScoreComponent.hpp"
 #include "Base/Events.hpp"
 #include "Components/SpriteComponent.hpp"
-#include "Core/EventQueue.hpp"
 #include "Managers/ResourceManager.hpp"
 #include "States/Entities/BombermanStates.hpp"
 
@@ -58,33 +57,9 @@ void BombermanComponent::UpdateToNewState(std::unique_ptr<States::EntityState> n
 
 void BombermanComponent::Notify(const unsigned eventHash, Subject*, const std::any& eventData)
 {
-    switch(GetEvent(eventHash))
+    if(GetEvent(eventHash) == Events::CollisionEvent)
     {
-        case Events::CollisionEvent:
-            HandleCollision(eventData);
-            break;
-        case Events::PlayerDied:
-        case Events::DirectionChanged:
-        case Events::GameWon:
-        case Events::GameOver:
-        case Events::LevelWon:
-        case Events::LevelLost:
-        case Events::BalloomDied:
-        case Events::OnealDied:
-        case Events::DollDied:
-        case Events::MinvoDied:
-        case Events::BeginLevel:
-        case Events::RestartLevel:
-        case Events::ScoreChanged:
-        case Events::LivesChanged:
-        case Events::LifeLost:
-        case Events::SelectionDown:
-        case Events::SelectionUp:
-        case Events::SelectionLeft:
-        case Events::SelectionRight:
-        case Events::SelectionConfirmed:
-        case Events::NoEvent:
-            break;
+        HandleCollision(eventData);
     }
 }
 
