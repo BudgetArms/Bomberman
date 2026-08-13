@@ -10,13 +10,15 @@
 #include "Components/LifeComponent.hpp"
 #include "Components/MovementGridComponent.hpp"
 #include "Components/SpriteComponent.hpp"
+#include "Managers/LevelManager.hpp"
 
 
 using namespace Game::States;
 
 
 BombermanAliveState::BombermanAliveState(bae::GameObject& owner) :
-    EntityState(owner)
+    EntityState(owner),
+    BombHandler(owner)
 {
 }
 
@@ -34,6 +36,8 @@ void BombermanAliveState::OnExit()
 
 std::unique_ptr<EntityState> BombermanAliveState::Update()
 {
+    UpdateBombs();
+
     if(m_bIsDying)
     {
         return std::make_unique<BombermanDyingState>(*m_Owner);

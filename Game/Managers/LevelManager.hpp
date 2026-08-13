@@ -51,8 +51,10 @@ namespace Game
 
         [[nodiscard]] std::unordered_map<ScoreType, int> GetScoreMap() const;
         [[nodiscard]] int GetBombFireRange() const;
+        [[nodiscard]] bool HasBombRemoteControl() const;
 
         void IncreaseBombFireRange();
+        void EnabledRemoteControl();
 
 
         static constexpr std::string_view m_SaveFileName{ "Scores.json" };
@@ -61,6 +63,8 @@ namespace Game
         static constexpr std::string_view m_SinglePlayerName{ "Singleplayer" };
         static constexpr std::string_view m_CoOpName{ "Co-Op" };
         static constexpr std::string_view m_VersusName{ "Versus" };
+
+        static constexpr float m_GlobalScale{ 2.f };
 
     private:
         void HandleBomberDeath(const bae::GameObject& object);
@@ -112,7 +116,6 @@ namespace Game
         void LoadNewLevelData();
 
 
-        static constexpr float m_GlobalScale{ 2.f };
         static constexpr int m_NrOfLevels{ 2 }; // todo: change to 3
 
         const std::string m_BackgroundTexturePath{ "Textures/Level/Playfield.png" };
@@ -132,6 +135,7 @@ namespace Game
         int m_BombermissScore{};
 
         int m_BombFireRange{ 1 };
+        bool m_bHasBombRemoteControl{};
         bae::GameObject* m_Bomberman{};
         bae::GameObject* m_Bombermiss{};
 

@@ -1,11 +1,12 @@
 #pragma once
 #include "EntityState.hpp"
+#include "Base/BombHandler.hpp"
 #include "Core/Observer.hpp"
 
 
 namespace Game::States
 {
-    class BombermanAliveState final : public EntityState, public bae::Observer
+    class BombermanAliveState final : public EntityState, public bae::Observer, public BombHandler
     {
     public:
         explicit BombermanAliveState(bae::GameObject& owner);

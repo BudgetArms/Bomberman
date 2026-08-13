@@ -24,6 +24,9 @@ namespace Game
         void HandleCollision(const std::any& eventData) const;
         void HandleEnemyCollision(bae::GameObject* gameObject) const;
 
+        void TryPlaceBomb() const;
+        void TryActivateBomb() const;
+
     private:
         std::unique_ptr<States::EntityState> m_State{};
     };

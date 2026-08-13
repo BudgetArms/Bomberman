@@ -74,9 +74,10 @@ void LevelManager::StartGame(const GameMode gameMode)
     m_BombermissLives = 0;
     m_BombermissScore = 0;
 
-    m_BombFireRange = 1;
-    m_Bomberman     = nullptr;
-    m_Bombermiss    = nullptr;
+    m_BombFireRange         = 1;
+    m_bHasBombRemoteControl = false;
+    m_Bomberman             = nullptr;
+    m_Bombermiss            = nullptr;
 
     m_Enemies.clear();
     m_GridComponent = nullptr;
@@ -114,9 +115,10 @@ void LevelManager::StopGame()
     m_BombermissLives = 0;
     m_BombermissScore = 0;
 
-    m_BombFireRange = 1;
-    m_Bomberman     = nullptr;
-    m_Bombermiss    = nullptr;
+    m_BombFireRange         = 1;
+    m_bHasBombRemoteControl = false;
+    m_Bomberman             = nullptr;
+    m_Bombermiss            = nullptr;
 
     m_Enemies.clear();
 
@@ -349,9 +351,19 @@ int LevelManager::GetBombFireRange() const
     return m_BombFireRange;
 }
 
+bool LevelManager::HasBombRemoteControl() const
+{
+    return m_bHasBombRemoteControl;
+}
+
 void LevelManager::IncreaseBombFireRange()
 {
     ++m_BombFireRange;
+}
+
+void LevelManager::EnabledRemoteControl()
+{
+    m_bHasBombRemoteControl = true;
 }
 
 void LevelManager::CreateGrid()

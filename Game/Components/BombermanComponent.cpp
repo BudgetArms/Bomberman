@@ -108,3 +108,25 @@ void BombermanComponent::HandleEnemyCollision(bae::GameObject*) const
         lifeComp->RemoveLife();
     }
 }
+
+void BombermanComponent::TryPlaceBomb() const
+{
+    const auto bombHandler = dynamic_cast<BombHandler*>(m_State.get());
+    if(!bombHandler)
+    {
+        return;
+    }
+
+    bombHandler->TryPlaceBomb();
+}
+
+void BombermanComponent::TryActivateBomb() const
+{
+    const auto bombHandler = dynamic_cast<BombHandler*>(m_State.get());
+    if(!bombHandler)
+    {
+        return;
+    }
+
+    bombHandler->TryActivateBomb();
+}

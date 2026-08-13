@@ -44,6 +44,7 @@ namespace Game
         { Events::GameOver, bae::HashSDBM("GameOver") },
         { Events::LevelWon, bae::HashSDBM("LevelWon") },
         { Events::LevelLost, bae::HashSDBM("LevelLost") },
+        { Events::BombExplosion, bae::HashSDBM("BombExplosion") },
         { Events::BalloomDied, bae::HashSDBM("BalloomDied") },
         { Events::OnealDied, bae::HashSDBM("OnealDied") },
         { Events::DollDied, bae::HashSDBM("DollDied") },
@@ -74,7 +75,10 @@ namespace Game
 
         if(eventPairIt == g_EventsMap.end())
         {
-            std::cout << FUNCTION_NAME << " Failed! Not Implemented" << '\n';
+            const std::string errorMessage = std::string(FUNCTION_NAME) + " Failed! Not Implemented" + '\n';
+            std::cout << errorMessage;
+
+            assert(false && errorMessage.c_str());
             return bae::HashSDBM("NoEvent");
         }
 
@@ -93,7 +97,11 @@ namespace Game
 
         if(eventPairIt == g_EventsMap.end())
         {
-            std::cout << FUNCTION_NAME << " Failed! Not Implemented" << '\n';
+            const std::string errorMessage = std::string(FUNCTION_NAME) + " Failed! Not Implemented" + '\n';
+            std::cout << errorMessage;
+
+            assert(false && errorMessage.c_str());
+            throw std::runtime_error(errorMessage);
             return Events::NoEvent;
         }
 
