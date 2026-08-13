@@ -123,8 +123,13 @@ namespace Game
         void SpawnDoll(const glm::vec2& position);
         void SpawnMinvo(const glm::vec2& position);
 
+        void SpawnItem(const glm::vec2& position, ItemType itemType);
+
+
         void SpawnPlayers();
         void SpawnEnemies();
+
+        void SpawnItems();
 
 
         std::shared_ptr<bae::GameObject> GetBombermanBase(const std::string& gameObjectName,
@@ -182,7 +187,7 @@ namespace Game
 
         std::unordered_map<ScoreType, int> m_ScoreMap{};
 
-        std::unordered_map<ItemType, bae::Graphs::GridPosition> m_PickupPosition{};
+        std::unordered_map<ItemType, bae::Graphs::GridPosition> m_ItemPositions{};
 
         GridInfo m_GridInfo{};
         std::set<bae::Graphs::GridPosition> m_PermanentBlockPositions{};

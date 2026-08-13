@@ -29,6 +29,7 @@
 #include "Components/BombermanComponent.hpp"
 #include "Components/DoorComponent.hpp"
 #include "Components/HitboxComponent.hpp"
+#include "Components/ItemComponent.hpp"
 #include "Components/LifeComponent.hpp"
 #include "Components/LifeDisplayComponent.hpp"
 #include "Components/MovementGridComponent.hpp"
@@ -97,7 +98,7 @@ void LevelManager::StopGame()
     m_EnemyStartPositions     = {};
     m_EnemySharedInfos        = {};
     m_DoorPosition            = {};
-    m_PickupPosition          = {};
+    m_ItemPositions           = {};
     m_GridInfo                = {};
     m_PermanentBlockPositions = {};
     m_TemporaryBlockPositions = {};
@@ -472,6 +473,26 @@ void LevelManager::SpawnMinvo(const glm::vec2& position)
     scene->Add(minvo);
 }
 
+void LevelManager::SpawnItem(const glm::vec2& position, const ItemType itemType)
+{
+    bae::Scene* scene = bae::SceneManager::GetInstance().GetScene(g_LevelBackgroundName.data());
+
+    const auto item = std::make_shared<bae::GameObject>("Item");
+    item->SetWorldLocation(position);
+    item->SetWorldScale({ m_GlobalScale, m_GlobalScale });
+
+    item->AddComponent<ItemComponent>(*item, itemType);
+    const auto itemComp = item->GetComponent<ItemComponent>();
+
+    const glm::vec2 offset = -m_HitboxDimension / 2.f;
+
+    item->AddComponent<HitboxComponent>(*item, m_HitboxDimension, offset);
+    item->GetComponent<HitboxComponent>()->SetVisibility(false);
+    item->GetComponent<HitboxComponent>()->AddObserver(itemComp);
+
+    scene->Add(item);
+}
+
 void LevelManager::SpawnPlayers()
 {
     switch(m_GameMode)
@@ -512,6 +533,14 @@ void LevelManager::SpawnEnemies()
                 std::cout << "This shouldn't be reached" << '\n';
                 break;
         }
+    }
+}
+
+void LevelManager::SpawnItems()
+{
+    for(const auto [itemType, position] : m_ItemPositions)
+    {
+        SpawnItem(ToPosition(position), itemType);
     }
 }
 
@@ -792,17 +821,17 @@ void LevelManager::LoadStartLevelData()
 
     if(levelInfo.PickupBombPosition != bae::Graphs::GridPosition{})
     {
-        m_PickupPosition.insert({ ItemType::Bomb, levelInfo.PickupBombPosition });
+        m_ItemPositions.insert({ ItemType::Bomb, levelInfo.PickupBombPosition });
     }
 
     if(levelInfo.PickupFirePosition != bae::Graphs::GridPosition{})
     {
-        m_PickupPosition.insert({ ItemType::Fire, levelInfo.PickupFirePosition });
+        m_ItemPositions.insert({ ItemType::Fire, levelInfo.PickupFirePosition });
     }
 
     if(levelInfo.PickupRemoteControlPosition != bae::Graphs::GridPosition{})
     {
-        m_PickupPosition.insert({ ItemType::RemoteControl, levelInfo.PickupRemoteControlPosition });
+        m_ItemPositions.insert({ ItemType::RemoteControl, levelInfo.PickupRemoteControlPosition });
     }
 
 
@@ -922,17 +951,17 @@ void LevelManager::LoadNewLevelData()
 
     if(levelInfo.PickupBombPosition != bae::Graphs::GridPosition{})
     {
-        m_PickupPosition.insert({ ItemType::Bomb, levelInfo.PickupBombPosition });
+        m_ItemPositions.insert({ ItemType::Bomb, levelInfo.PickupBombPosition });
     }
 
     if(levelInfo.PickupFirePosition != bae::Graphs::GridPosition{})
     {
-        m_PickupPosition.insert({ ItemType::Fire, levelInfo.PickupFirePosition });
+        m_ItemPositions.insert({ ItemType::Fire, levelInfo.PickupFirePosition });
     }
 
     if(levelInfo.PickupRemoteControlPosition != bae::Graphs::GridPosition{})
     {
-        m_PickupPosition.insert({ ItemType::RemoteControl, levelInfo.PickupRemoteControlPosition });
+        m_ItemPositions.insert({ ItemType::RemoteControl, levelInfo.PickupRemoteControlPosition });
     }
 
 
