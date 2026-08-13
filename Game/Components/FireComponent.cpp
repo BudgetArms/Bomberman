@@ -6,6 +6,7 @@
 #include "Base/Events.hpp"
 #include "Components/LifeComponent.hpp"
 #include "Managers/LevelManager.hpp"
+#include "Singletons/GameTime.hpp"
 
 
 using namespace Game;
@@ -18,16 +19,18 @@ FireComponent::FireComponent(bae::GameObject& owner) :
                                                 m_SpriteNrColumns, m_SpriteNrSprites);
 
     m_SpriteComponent = m_Owner->GetComponent<bae::SpriteComponent>();
-
-    auto& levelManager           = LevelManager::GetInstance();
-    GridComponent* gridComponent = levelManager.GetGridComponent();
-
-    [[nodiscard]] const bae::Graphs::GridPosition gridPosition = gridComponent->GetGridPosition(
-        m_Owner->GetWorldLocation());
 }
 
 void FireComponent::Update()
 {
+    m_ElapsedTime += bae::GameTime::GetInstance().GetDeltaTime();
+    if(m_ElapsedTime >= m_FireDuration)
+    {
+        const auto hitboxComp               = m_Owner->GetComponent<HitboxComponent>();
+        hitboxComp->m_bAreCollisionsEnabled = false;
+
+        GetOwner()->Destroy();
+    }
 }
 
 void FireComponent::Notify(const unsigned eventHash, bae::Subject*, const std::any& eventData)

@@ -32,5 +32,6 @@ namespace Game
         std::unordered_map<Direction, bae::GameObject*> m_FireObjects{};
 
         const float m_FireDuration{ 1.f };
+        float m_ElapsedTime{};
     };
 }
