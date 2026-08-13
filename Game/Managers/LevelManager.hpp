@@ -51,6 +51,9 @@ namespace Game
         void LoadLevelInfo(const std::filesystem::path& jsonFile);
 
         [[nodiscard]] std::unordered_map<ScoreType, int> GetScoreMap() const;
+        [[nodiscard]] int GetBombFireRange() const;
+
+        void IncreaseBombFireRange();
 
 
         static constexpr std::string_view m_SaveFileName{ "Scores.json" };
@@ -129,6 +132,7 @@ namespace Game
         int m_BombermissLives{};
         int m_BombermissScore{};
 
+        int m_BombFireRange{ 1 };
         bae::GameObject* m_Bomberman{};
         bae::GameObject* m_Bombermiss{};
 

@@ -344,6 +344,16 @@ std::unordered_map<ScoreType, int> LevelManager::GetScoreMap() const
     return m_CurrentLevelInfo.ScoreMap;
 }
 
+int LevelManager::GetBombFireRange() const
+{
+    return m_BombFireRange;
+}
+
+void LevelManager::IncreaseBombFireRange()
+{
+    ++m_BombFireRange;
+}
+
 void LevelManager::CreateGrid()
 {
     auto* backgroundScene = bae::SceneManager::GetInstance().GetScene(g_LevelBackgroundName.data());
