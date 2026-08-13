@@ -79,16 +79,10 @@ void LoadSounds();
 void LoadSoundCommands();
 
 void CreateAllScenes();
-
-void LoadStartMenu();
-
 void LoadManagers();
 
-void LoadDAEBackground();
 void LoadFpsCounterScene();
 void LoadGameNameScene();
-
-void EnableLogMousePosition();
 
 
 int main(int, char*[])
@@ -145,14 +139,10 @@ void Start()
 
     CreateAllScenes();
 
-    // LoadStartMenu();
     LoadManagers();
 
-    // LoadDAEBackground();
     // LoadFpsCounterScene();
     // LoadGameNameScene();
-
-    EnableLogMousePosition();
 }
 
 #ifndef __EMSCRIPTEN__
@@ -238,52 +228,6 @@ void CreateAllScenes()
     bae::SceneManager::GetInstance().CreateScene(Game::g_SelectionObjectSceneName.data());
 }
 
-void LoadStartMenu()
-{
-    auto* startMenuScene = bae::SceneManager::GetInstance().GetScene(Game::g_ScenesManagerSceneName.data());
-
-    bae::Renderer::GetInstance().SetBackgroundColor(bae::Utils::Color::Black);
-
-    const bae::WindowSize windowSize = bae::Renderer::GetInstance().GetSDLWindowSize();
-
-    const auto startMenuObject = std::make_shared<bae::GameObject>("StartMenu");
-    startMenuObject->SetWorldLocation({
-        static_cast<float>(windowSize.Width) / 2.f, static_cast<float>(windowSize.Height) / 2.f
-    });
-
-    const auto singlePlayerObject = std::make_shared<bae::GameObject>("SinglePlayer");
-    const auto coOpObject         = std::make_shared<bae::GameObject>("CoOp");
-    const auto versusObject       = std::make_shared<bae::GameObject>("Versus");
-
-    constexpr float verticalPadding = 150.f;
-
-
-    singlePlayerObject->AddLocation({ 0, -verticalPadding });
-    coOpObject->AddLocation({ 0, 0 });
-    versusObject->AddLocation({ 0, verticalPadding });
-
-    // AttachChild, but don't freeze position
-    startMenuObject->AttachChild(singlePlayerObject.get(), false);
-    startMenuObject->AttachChild(coOpObject.get(), false);
-    startMenuObject->AttachChild(versusObject.get(), false);
-
-    singlePlayerObject->AddComponent<bae::TextComponent>(*singlePlayerObject, "SinglePlayer");
-    coOpObject->AddComponent<bae::TextComponent>(*coOpObject, "Co-Op");
-    versusObject->AddComponent<bae::TextComponent>(*versusObject, "Versus");
-
-    // Enable center text
-    singlePlayerObject->GetComponent<bae::TextComponent>()->m_bIsCenteredAtPosition = true;
-    coOpObject->GetComponent<bae::TextComponent>()->m_bIsCenteredAtPosition         = true;
-    versusObject->GetComponent<bae::TextComponent>()->m_bIsCenteredAtPosition       = true;
-
-    // Add Objects to Scene
-    startMenuScene->Add(startMenuObject);
-    startMenuScene->Add(singlePlayerObject);
-    startMenuScene->Add(coOpObject);
-    startMenuScene->Add(versusObject);
-}
-
-
 void LoadManagers()
 {
     Game::ScenesManager& scenesManager = Game::ScenesManager::GetInstance();
@@ -298,36 +242,8 @@ void LoadManagers()
     auto& levelManager = Game::LevelManager::GetInstance();
 
     levelManager.LoadLevelInfo("Levels/Level_0.json");
+    levelManager.LoadLevelInfo("Levels/Level_1.json");
 }
-
-void LoadDAEBackground()
-{
-    auto& backgroundScene = bae::SceneManager::GetInstance().CreateScene("Background Scene");
-
-    const auto backgroundTexture = std::make_shared<bae::GameObject>("BackgroundTexture");
-    backgroundTexture->AddComponent<bae::TextureComponent>(*backgroundTexture, "Textures/background.png");
-    backgroundScene.Add(backgroundTexture);
-
-
-    const auto backgroundLogoTexture = std::make_shared<bae::GameObject>("Background Logo Texture");
-    backgroundLogoTexture->AddComponent<bae::TextureComponent>(*backgroundLogoTexture, "Textures/logo.png");
-    const auto backgroundLogoTextureComp = backgroundLogoTexture->GetComponent<bae::TextureComponent>();
-
-    const bae::WindowSize windowSize = bae::Renderer::GetInstance().GetSDLWindowSize();
-
-    backgroundLogoTextureComp->m_bIsCenteredAtPosition = true;
-    backgroundLogoTexture->SetWorldLocation(
-        {
-            static_cast<float>(windowSize.Width) / 2,
-            static_cast<float>(windowSize.Height) / 2
-        }
-    );
-
-    backgroundScene.Add(backgroundLogoTexture);
-
-    bae::Utils::DrawCircle({ 0, 0 }, 1000, bae::Utils::Color::Blue);
-}
-
 
 void LoadFpsCounterScene()
 {
@@ -356,12 +272,3 @@ void LoadGameNameScene()
 
     gameNameScene.Add(gameName);
 }
-
-void EnableLogMousePosition()
-{
-    const bae::Mouse& mouse = bae::InputManager::GetInstance().GetMouse();
-
-    auto mousePressedCommand = std::make_unique<Game::LogMousePositionCommand>();
-    mouse.AddMouseCommands(std::move(mousePressedCommand), SDL_BUTTON_RIGHT, bae::InputManager::ButtonState::Pressed);
-}
-
