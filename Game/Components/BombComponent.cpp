@@ -51,6 +51,15 @@ void BombComponent::Update()
     }
 }
 
+void BombComponent::ForceExplode()
+{
+    m_bHasExploded = true;
+    SpawnFire();
+
+    NotifyObservers(GetEventHash(Events::BombExplosion));
+    GetOwner()->Destroy();
+}
+
 void BombComponent::SpawnFire()
 {
     bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
@@ -59,7 +68,7 @@ void BombComponent::SpawnFire()
 
     const auto fire = std::make_shared<bae::GameObject>("Fire");
     fire->SetWorldLocation(position);
-    fire->SetWorldScale({ 2.f, 2.f });
+    fire->SetWorldScale({ LevelManager::m_GlobalScale, LevelManager::m_GlobalScale });
 
     fire->AddComponent<FireComponent>(*fire);
     const auto fireComp = fire->GetComponent<FireComponent>();
