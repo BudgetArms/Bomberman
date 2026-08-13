@@ -10,7 +10,9 @@
 
 #include "Base/CommonManagerVariables.hpp"
 #include "Base/Events.hpp"
+#include "Components/TextComponent.hpp"
 #include "Managers/LevelManager.hpp"
+#include "Managers/ResourceManager.hpp"
 #include "States/UI/LeaderboardState.hpp"
 #include "States/UI/MainMenuState.hpp"
 
@@ -34,8 +36,28 @@ void InputLeaderboardNameState::OnEnter()
     AddSelectionDownUpCommands();
     AddSelectionLeftRightCommands();
 
-
+    auto* inputLeaderboardNameScene  = bae::SceneManager::GetInstance().GetScene(g_ScenesManagerSceneName.data());
     const bae::WindowSize windowSize = bae::Renderer::GetInstance().GetSDLWindowSize();
+
+    // Title
+    const auto titleFont   = bae::ResourceManager::GetInstance().LoadFont("Fonts/JoystixMonospace.otf", 49);
+    const auto titleObject = std::make_shared<bae::GameObject>("Title");
+    titleObject->SetWorldLocation({ windowSize.Width / 2.f, 50.f });
+
+    titleObject->AddComponent<bae::TextComponent>(*titleObject, "Input Name", titleFont);
+    titleObject->GetComponent<bae::TextComponent>()->m_bIsCenteredAtPosition = true;
+    inputLeaderboardNameScene->Add(titleObject);
+
+
+    const auto scoreFont   = bae::ResourceManager::GetInstance().LoadFont("Fonts/JoystixMonospace.otf", 32);
+    const auto scoreObject = std::make_shared<bae::GameObject>("Score");
+    scoreObject->SetWorldLocation({ windowSize.Width / 2.f, 90.f });
+
+    const std::string scoreText{ "Score: " + std::to_string(m_Score) };
+    scoreObject->AddComponent<bae::TextComponent>(*scoreObject, scoreText, scoreFont);
+    scoreObject->GetComponent<bae::TextComponent>()->m_bIsCenteredAtPosition = true;
+    inputLeaderboardNameScene->Add(scoreObject);
+
 
     const auto inputNameMenu = std::make_shared<bae::GameObject>("Input LeaderboardName Object");
     inputNameMenu->SetWorldLocation({
@@ -110,7 +132,6 @@ void InputLeaderboardNameState::OnEnter()
 
     inputNameMenu->AttachChild(selectorObject.get(), false);
 
-    auto* inputLeaderboardNameScene = bae::SceneManager::GetInstance().GetScene(g_ScenesManagerSceneName.data());
 
     inputLeaderboardNameScene->Add(inputNameMenu);
 
