@@ -244,7 +244,10 @@ void LevelManager::HandleGameOver()
 
 void LevelManager::ClearLevel()
 {
-    const bae::Scene* scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
+    const bae::Scene* scene = bae::SceneManager::GetInstance().GetScene(g_LevelBackgroundName.data());
+    scene->RemoveAll();
+
+    scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
     scene->RemoveAll();
 
     m_Bomberman  = nullptr;
@@ -254,6 +257,17 @@ void LevelManager::ClearLevel()
 void LevelManager::RestartLevel()
 {
     ClearLevel();
+
+    CreateGrid();
+
+    AddPermanentWalls();
+
+    SpawnDoor(ToPosition(m_DoorPosition));
+
+    SpawnItems();
+
+    AddTemporaryWalls();
+
 
     // This is done to clear keyboard/controller commands,
     // since remove command by type with template seems impossible,
