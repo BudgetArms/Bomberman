@@ -1,5 +1,6 @@
 #include "ItemComponent.hpp"
 
+#include "ScoreComponent.hpp"
 #include "Base/Events.hpp"
 #include "Base/SoundAssets.hpp"
 #include "Components/HitboxComponent.hpp"
@@ -68,6 +69,10 @@ void ItemComponent::HandleCollision(HitboxComponent& otherHitboxComponent)
             bae::SoundSystem& soundSystem   = bae::ServiceLocator::GetSoundSystem();
             const bae::SoundID startSoundID = Game::Sounds::GetSoundId(Sounds::SoundAssets::PowerUp);
             soundSystem.Play(startSoundID);
+
+            const auto scoreMap = levelManager.GetScoreMap();
+            const int itemScore = scoreMap.at(ScoreType::Pickup);
+            otherGameObject->GetComponent<ScoreComponent>()->AddScore(itemScore);
 
             GetOwner()->Destroy();
         }
