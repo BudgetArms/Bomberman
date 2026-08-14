@@ -1,11 +1,12 @@
 #include "BombermanComponent.hpp"
 
-#include "HitboxComponent.hpp"
-#include "LifeComponent.hpp"
-#include "ScoreComponent.hpp"
-#include "Base/Events.hpp"
-#include "Components/SpriteComponent.hpp"
 #include "Managers/ResourceManager.hpp"
+
+#include "Base/Events.hpp"
+#include "Components/EnemyComponent.hpp"
+#include "Components/HitboxComponent.hpp"
+#include "Components/LifeComponent.hpp"
+#include "Components/ScoreComponent.hpp"
 #include "States/Entities/BombermanStates.hpp"
 
 
@@ -20,8 +21,6 @@ BombermanComponent::BombermanComponent(bae::GameObject& owner) :
     m_Owner->AddComponent<LifeComponent>(*m_Owner, 4, 3.f);
 
     m_Owner->AddComponent<ScoreComponent>(*m_Owner);
-    m_Owner->GetComponent<ScoreComponent>()->AddObserver(this);
-
 
     m_State = std::make_unique<States::BombermanAliveState>(owner);
     m_State->OnEnter();
@@ -51,59 +50,6 @@ void BombermanComponent::UpdateToNewState(std::unique_ptr<States::EntityState> n
     m_State->OnEnter();
 }
 
-void BombermanComponent::Notify(const unsigned eventHash, Subject*, const std::any& eventData)
-{
-    if(GetEvent(eventHash) == Events::CollisionEvent)
-    {
-        HandleCollision(eventData);
-    }
-}
-
-void BombermanComponent::HandleCollision(const std::any& eventData) const
-{
-    if(!eventData.has_value())
-    {
-        throw std::runtime_error(FUNCTION_NAME + std::string(" Failed to Get EventData"));
-    }
-
-    const auto otherHitbox = std::any_cast<HitboxComponent*>(eventData);
-    if(!otherHitbox)
-    {
-        throw std::runtime_error(FUNCTION_NAME + std::string(" Failed! Invalid EventData GameObject!"));
-    }
-
-    /*
-    bae::GameObject* otherObject = otherHitbox->GetGameObject();
-    if(const auto itemComp = otherObject->GetComponent<ItemComponent>())
-    {
-        HandleItemCollision(*itemComp);
-    }
-    else if(IsEnemy(otherObject))
-    {
-        HandleEnemyCollision(otherObject);
-    }
-    */
-}
-
-
-void BombermanComponent::HandleEnemyCollision(bae::GameObject*) const
-{
-    const auto lifeComp = m_Owner->GetComponent<LifeComponent>();
-    if(!lifeComp)
-    {
-        throw std::runtime_error(FUNCTION_NAME + std::string(" Failed to Get LifeComponent!"));
-    }
-
-    if(lifeComp->IsInvincible())
-    {
-        std::cout << "Invincible???????\n";
-    }
-    else
-    {
-        std::cout << "Removed Life\n";
-        lifeComp->RemoveLife();
-    }
-}
 
 void BombermanComponent::TryPlaceBomb() const
 {
