@@ -47,6 +47,7 @@ add_executable(${PROJECT_NAME} ${TARGET_PARAM}
     "Components/BombComponent.cpp"
     "Components/BombermanComponent.cpp"
     "Components/DoorComponent.cpp"
+    "Components/EnemyComponent.cpp"
     "Components/FireComponent.cpp"
     "Components/GridComponent.cpp"
     "Components/HitboxComponent.cpp"
@@ -65,6 +66,7 @@ add_executable(${PROJECT_NAME} ${TARGET_PARAM}
     "Managers/ScenesManager.cpp"
 
     "States/Entities/BombermanStates.cpp"
+    "States/Entities/EnemyStates.cpp"
     "States/Entities/EntityState.cpp"
 
     "States/UI/GameModeSelectionState.cpp"

@@ -1,0 +1,52 @@
+#pragma once
+
+#include "Core/Observer.hpp"
+
+#include "States/Entities/EntityState.hpp"
+
+
+namespace Game::States
+{
+    class EnemyAliveState final : public EntityState, public bae::Observer
+    {
+    public:
+        explicit EnemyAliveState(bae::GameObject& owner);
+
+        void OnEnter() override;
+        void OnExit() override;
+
+        std::unique_ptr<EntityState> Update() override;
+
+        void Notify(unsigned eventHash, bae::Subject* subject, const std::any& eventData) override;
+
+    private:
+        bool m_bIsDying{ false };
+    };
+
+    class EnemyDyingState final : public EntityState
+    {
+    public:
+        explicit EnemyDyingState(bae::GameObject& owner);
+
+        void OnEnter() override;
+        void OnExit() override;
+
+        std::unique_ptr<EntityState> Update() override;
+
+    private:
+        float m_AccumulatedTime{};
+        static constexpr float m_DeathDelay{ 4.f };
+    };
+
+    class EnemyDeadState final : public EntityState
+    {
+    public:
+        explicit EnemyDeadState(bae::GameObject& owner);
+
+        void OnEnter() override;
+        void OnExit() override;
+
+        std::unique_ptr<EntityState> Update() override;
+    };
+}
+
