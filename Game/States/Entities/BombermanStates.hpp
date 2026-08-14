@@ -36,7 +36,7 @@ namespace Game::States
 
     private:
         float m_AccumulatedTime{};
-        static constexpr float m_DeathDelay{ 0.5f };
+        static constexpr float m_DeathDelay{ 3.f };
     };
 
     class BombermanDeadState final : public EntityState
