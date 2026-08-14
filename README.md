@@ -8,6 +8,19 @@ An NES Bomberman (1987) clone. <br>
 
 Game Engine: [BudgetArmsEngine](https://github.com/BudgetArms/BudgetArmsEngine)<br>
 
+# Guide
+Menu Controls:
+- Accept J
+- W/S to go Up/Down
+
+Game Controls:
+Move: WASD / Arrows
+Place Bomb: F / 0 Keypad
+Remote Detonate: G / Period Keypad
+
+F1: Skip Level
+F2: Mute Sound
+
 
 ## Design patterns
 
