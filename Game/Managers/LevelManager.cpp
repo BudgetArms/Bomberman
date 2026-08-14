@@ -428,6 +428,9 @@ void LevelManager::SpawnBomberman()
     bomberman->AddComponent<bae::SpriteComponent>(*bomberman, "Textures/Characters/Bomberman.png",
                                                   SDL_FRect(0, 0, 32, 16), 2, 1);
 
+    // MovementGrid
+    bomberman->AddComponent<MovementGridComponent>(*bomberman);
+
     // Observer
     bomberman->GetComponent<BombermanComponent>()->AddObserver(this);
 
@@ -465,9 +468,13 @@ void LevelManager::SpawnBombermiss()
 
     const auto bombermiss = GetBombermanBase(spawnPosition, PlayerType::Bombermiss);
 
+
     // Sprite
     bombermiss->AddComponent<bae::SpriteComponent>(*bombermiss, "Textures/Characters/Bombermiss.png",
                                                    SDL_FRect(0, 0, 32, 16), 2, 1);
+
+    // MovementGrid
+    bombermiss->AddComponent<MovementGridComponent>(*bombermiss);
 
     // Observer
     bombermiss->GetComponent<BombermanComponent>()->AddObserver(this);
@@ -506,6 +513,9 @@ void LevelManager::SpawnBalloomPlayer()
     balloomPlayer->AddComponent<bae::SpriteComponent>(*balloomPlayer, "Textures/Characters/Enemies.png",
                                                       SDL_FRect(0, 0, 32, 16), 2, 1);
 
+    // MovementGrid
+    balloomPlayer->AddComponent<MovementGridComponent>(*balloomPlayer);
+
     m_Enemies.insert({ balloomPlayer.get(), EnemyType::BalloomPlayer });
 
     m_BalloomPlayer = balloomPlayer.get();
@@ -515,6 +525,7 @@ void LevelManager::SpawnBalloomPlayer()
 
     // Controls
     AddControls(*balloomPlayer, false, true);
+
 
     scene->Add(balloomPlayer);
 }
@@ -529,6 +540,11 @@ void LevelManager::SpawnBalloom(const glm::vec2& position)
     // Sprite
     balloom->AddComponent<bae::SpriteComponent>(*balloom, "Textures/Characters/Enemies.png",
                                                 SDL_FRect(0, 0, 32, 16), 2, 1);
+
+    // MovementGrid
+    balloom->AddComponent<MovementGridComponent>(*balloom);
+
+    balloom->GetComponent<EnemyComponent>()->SetSpriteAndGridComponent();
 
     m_Enemies.insert({ balloom.get(), EnemyType::Balloom });
 
@@ -545,6 +561,11 @@ void LevelManager::SpawnOneal(const glm::vec2& position)
     oneal->AddComponent<bae::SpriteComponent>(*oneal, "Textures/Characters/Enemies.png",
                                               SDL_FRect(0, 16, 32, 16), 2, 1);
 
+    // MovementGrid
+    oneal->AddComponent<MovementGridComponent>(*oneal);
+
+    oneal->GetComponent<EnemyComponent>()->SetSpriteAndGridComponent();
+
     m_Enemies.insert({ oneal.get(), EnemyType::Oneal });
     scene->Add(oneal);
 }
@@ -559,6 +580,11 @@ void LevelManager::SpawnDoll(const glm::vec2& position)
     doll->AddComponent<bae::SpriteComponent>(*doll, "Textures/Characters/Enemies.png",
                                              SDL_FRect(0, 32, 32, 16), 2, 1);
 
+    // MovementGrid
+    doll->AddComponent<MovementGridComponent>(*doll);
+
+    doll->GetComponent<EnemyComponent>()->SetSpriteAndGridComponent();
+
     m_Enemies.insert({ doll.get(), EnemyType::Doll });
     scene->Add(doll);
 }
@@ -572,6 +598,11 @@ void LevelManager::SpawnMinvo(const glm::vec2& position)
     // Sprite
     minvo->AddComponent<bae::SpriteComponent>(*minvo, "Textures/Characters/Enemies.png",
                                               SDL_FRect(0, 48, 32, 16), 2, 1);
+
+    // MovementGrid
+    minvo->AddComponent<MovementGridComponent>(*minvo);
+
+    minvo->GetComponent<EnemyComponent>()->SetSpriteAndGridComponent();
 
     m_Enemies.insert({ minvo.get(), EnemyType::Minvo });
     scene->Add(minvo);
@@ -806,8 +837,6 @@ void LevelManager::AddControls(bae::GameObject& gameObject, const bool bIsFirstP
 
     constexpr auto moveOnGridButtonState = bae::InputManager::ButtonState::Pressed;
     constexpr auto downButtonState       = bae::InputManager::ButtonState::Down;
-
-    gameObject.AddComponent<MovementGridComponent>(gameObject);
 
     auto keyboardMoveOnGridLeftCommand  = std::make_unique<MoveCommand>(gameObject, Direction::Left);
     auto keyboardMoveOnGridRightCommand = std::make_unique<MoveCommand>(gameObject, Direction::Right);
