@@ -167,8 +167,7 @@ void LoadSounds()
 
     #if __EMSCRIPTEN__
 
-    bae::ServiceLocator::RegisterSoundSystem(std::make_unique<bae::LoggingSoundSystem>(
-        std::make_unique<bae::SoLoudSoundSystem>()));
+    bae::ServiceLocator::RegisterSoundSystem(std::make_unique<bae::SoLoudSoundSystem>());
 
     #else
 
