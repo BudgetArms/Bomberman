@@ -17,15 +17,19 @@
 using namespace Game::States;
 
 
-EnemyAliveState::EnemyAliveState(bae::GameObject& owner) :
+EnemyAliveState::EnemyAliveState(bae::GameObject& owner, const EnemyType enemyType) :
     EntityState(owner)
 {
     const std::unordered_map<EnemyType, SharedEnemyInfo> sharedEnemyInfo
             = LevelManager::GetInstance().GetEnemySharedInfo();
 
-    const EnemyType enemyType        = m_Owner->GetComponent<EnemyComponent>()->GetType();
-    const SharedEnemyInfo& enemyInfo = sharedEnemyInfo.at(enemyType);
+    SharedEnemyInfo enemyInfo{};
+    if(!sharedEnemyInfo.contains(enemyType) || enemyType == EnemyType::BalloomPlayer)
+    {
+        return;
+    }
 
+    enemyInfo       = sharedEnemyInfo.at(enemyType);
     m_EnemyMovement = std::make_unique<EnemyMovement>(owner, enemyInfo.Speed, enemyInfo.Intelligence,
                                                       enemyInfo.DirectionUpChance);
 }
@@ -47,7 +51,10 @@ std::unique_ptr<EntityState> EnemyAliveState::Update()
         return std::make_unique<EnemyDyingState>(*m_Owner);
     }
 
-    m_EnemyMovement->Update();
+    if(m_EnemyMovement)
+    {
+        m_EnemyMovement->Update();
+    }
 
     return nullptr;
 }

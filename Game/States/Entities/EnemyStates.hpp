@@ -1,9 +1,10 @@
 #pragma once
 
-#include "Base/EnemyMovement.hpp"
-#include "Components/HitboxComponent.hpp"
 #include "Core/Observer.hpp"
 
+#include "Base/EnemyMovement.hpp"
+#include "Base/Level.hpp"
+#include "Components/HitboxComponent.hpp"
 #include "States/Entities/EntityState.hpp"
 
 
@@ -12,7 +13,7 @@ namespace Game::States
     class EnemyAliveState final : public EntityState, public bae::Observer
     {
     public:
-        explicit EnemyAliveState(bae::GameObject& owner);
+        explicit EnemyAliveState(bae::GameObject& owner, EnemyType enemyType);
 
         void OnEnter() override;
         void OnExit() override;

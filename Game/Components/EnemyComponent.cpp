@@ -23,7 +23,7 @@ EnemyComponent::EnemyComponent(bae::GameObject& owner, const EnemyType enemyType
     // Movement
     m_Owner->AddComponent<MovementGridComponent>(*m_Owner);
 
-    m_State = std::make_unique<States::EnemyAliveState>(*m_Owner);
+    m_State = std::make_unique<States::EnemyAliveState>(*m_Owner, enemyType);
     m_State->OnEnter();
 }
 
