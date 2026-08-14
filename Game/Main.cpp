@@ -243,6 +243,7 @@ void LoadManagers()
 
     levelManager.LoadLevelInfo("Levels/Level_0.json");
     levelManager.LoadLevelInfo("Levels/Level_1.json");
+    levelManager.LoadLevelInfo("Levels/Level_Testing.json");
 }
 
 void LoadFpsCounterScene()

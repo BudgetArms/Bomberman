@@ -1,0 +1,99 @@
+﻿{
+  "Name": "Level Testing",
+  "Index": 2,
+  "Hitbox": {
+    "Width": 25,
+    "Height": 25
+  },
+  "Grid": {
+    "Columns": 29,
+    "Rows": 11,
+    "CellSize": {
+      "Width": 32,
+      "Height": 32
+    },
+    "Offset": {
+      "X": 48,
+      "Y": 48
+    }
+  },
+  "Bomberman": {
+    "Position": {
+      "Column": 0,
+      "Row": 0
+    },
+    "StartLives": 4,
+    "Speed": 100,
+    "Score": 0
+  },
+  "Bombermiss": {
+    "Position": {
+      "Column": 0,
+      "Row": 1
+    },
+    "StartLives": 4,
+    "Speed": 200,
+    "Score": 0
+  },
+  "BalloomPlayer": {
+    "Position": {
+      "Column": 7,
+      "Row": 7
+    },
+    "StartLives": 0,
+    "Speed": 300
+  },
+  "SharedEnemyInfo": {
+    "Balloom": {
+      "Speed": 111,
+      "ChangeDirectionUpChance": 0.20
+    },
+    "Oneal": {
+      "Speed": 222,
+      "ChangeDirectionUpChance": 0.30
+    },
+    "Doll": {
+      "Speed": 333,
+      "ChangeDirectionUpChance": 0.10
+    },
+    "Minvo": {
+      "Speed": 444,
+      "ChangeDirectionUpChance": 0.20
+    }
+  },
+  "EnemyStartPositions": {
+    "Balloom": [
+    ],
+    "Oneal": [
+    ],
+    "Doll": [
+    ],
+    "Minvo": [
+    ]
+  },
+  "DoorPosition": {
+    "Column": 2,
+    "Row": 2
+  },
+  "ScoreMap": {
+    "ItemPickup": 1000,
+    "BalloomKill": 100,
+    "OnealKill": 200,
+    "DollKill": 400,
+    "MinvoKill": 800
+  },
+  "ItemPositions": {
+    "Bomb": [
+    ],
+    "Fire": [
+    ],
+    "RemoteControl": [
+    ]
+  },
+  "PermanentBlockPositions": [
+  ],
+  "TemporaryBlockPositions": [
+  ]
+}
+
+
