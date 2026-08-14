@@ -1,11 +1,12 @@
 #include "ItemComponent.hpp"
 
-#include "ScoreComponent.hpp"
+#include "Components/SpriteComponent.hpp"
+#include "Core/ServiceLocator.hpp"
+
 #include "Base/Events.hpp"
 #include "Base/SoundAssets.hpp"
 #include "Components/HitboxComponent.hpp"
-#include "Components/SpriteComponent.hpp"
-#include "Core/ServiceLocator.hpp"
+#include "Components/ScoreComponent.hpp"
 #include "Managers/LevelManager.hpp"
 
 
@@ -30,21 +31,23 @@ void ItemComponent::Notify(const unsigned eventHash, bae::Subject*, const std::a
         return;
     }
 
-    if(GetEvent(eventHash) == Events::CollisionEvent)
+    if(GetEvent(eventHash) != Events::CollisionEvent)
     {
-        if(!eventData.has_value())
-        {
-            throw std::runtime_error(FUNCTION_NAME + std::string(" Failed to Get EventData"));
-        }
-
-        const auto otherHitbox = std::any_cast<HitboxComponent*>(eventData);
-        if(!otherHitbox)
-        {
-            throw std::runtime_error(FUNCTION_NAME + std::string(" Failed! Invalid EventData GameObject!"));
-        }
-
-        HandleCollision(*otherHitbox);
+        return;
     }
+
+    if(!eventData.has_value())
+    {
+        throw std::runtime_error(FUNCTION_NAME + std::string(" Failed to Get EventData"));
+    }
+
+    const auto otherHitbox = std::any_cast<HitboxComponent*>(eventData);
+    if(!otherHitbox)
+    {
+        throw std::runtime_error(FUNCTION_NAME + std::string(" Failed! Invalid EventData GameObject!"));
+    }
+
+    HandleCollision(*otherHitbox);
 }
 
 void ItemComponent::HandleCollision(const HitboxComponent& otherHitboxComponent)
