@@ -21,6 +21,7 @@ EnemyAliveState::EnemyAliveState(bae::GameObject& owner) :
 
 void EnemyAliveState::OnEnter()
 {
+    m_Owner->GetComponent<LifeComponent>()->AddObserver(this);
 }
 
 void EnemyAliveState::OnExit()
@@ -39,12 +40,7 @@ std::unique_ptr<EntityState> EnemyAliveState::Update()
 
 void EnemyAliveState::Notify(const unsigned eventHash, bae::Subject*, const std::any&)
 {
-    const Events event = GetEvent(eventHash);
-    if(event == Events::BalloomDied ||
-        event == Events::OnealDied ||
-        event == Events::DollDied ||
-        event == Events::MinvoDied
-    )
+    if(GetEvent(eventHash) == Events::LivesChanged)
     {
         m_bIsDying = true;
     }
