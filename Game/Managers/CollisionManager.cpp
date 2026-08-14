@@ -24,42 +24,36 @@ void CollisionManager::HandleCollisions() const
 
     for(size_t i = 0; i < m_HitboxObjects.size(); ++i)
     {
-        if(!m_HitboxObjects[i] || m_HitboxObjects[i]->IsMarkedForDeletion() ||
-            !m_HitboxObjects[i]->HasComponent<HitboxComponent>() ||
-            !m_HitboxObjects[i]->GetComponent<HitboxComponent>()->m_bAreCollisionsEnabled
-        )
+        if(!m_HitboxObjects[i] || m_HitboxObjects[i]->IsMarkedForDeletion())
         {
             continue;
         }
 
         hitboxComponentA = m_HitboxObjects[i]->GetComponent<HitboxComponent>();
-        if(!hitboxComponentA)
+        if(!hitboxComponentA || !hitboxComponentA->m_bAreCollisionsEnabled)
         {
             continue;
         }
 
         for(size_t j = i + 1; j < m_HitboxObjects.size(); ++j)
         {
-            if(!m_HitboxObjects[j] || m_HitboxObjects[j]->IsMarkedForDeletion() ||
-                !m_HitboxObjects[j]->HasComponent<HitboxComponent>() ||
-                !m_HitboxObjects[j]->GetComponent<HitboxComponent>()->m_bAreCollisionsEnabled
-            )
+            if(!m_HitboxObjects[j] || m_HitboxObjects[j]->IsMarkedForDeletion())
             {
                 continue;
             }
 
             hitboxComponentB = m_HitboxObjects[j]->GetComponent<HitboxComponent>();
-            if(!hitboxComponentB)
+            if(!hitboxComponentB || !hitboxComponentB->m_bAreCollisionsEnabled)
             {
                 continue;
             }
+
 
             const SDL_FRect hitboxA = hitboxComponentA->GetHitbox();
             const SDL_FRect hitboxB = hitboxComponentB->GetHitbox();
             if(SDL_HasRectIntersectionFloat(&hitboxA, &hitboxB))
             {
                 SendHitboxesNotifications(hitboxComponentA, hitboxComponentB);
-                return;
             }
         }
     }
