@@ -312,6 +312,7 @@ void LevelManager::ClearLevel()
 
     m_Bomberman  = nullptr;
     m_Bombermiss = nullptr;
+    m_Enemies.clear();
 }
 
 void LevelManager::RestartLevel()
