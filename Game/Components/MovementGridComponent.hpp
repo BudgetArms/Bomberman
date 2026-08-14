@@ -14,7 +14,7 @@ namespace Game
     public:
         explicit MovementGridComponent(bae::GameObject& owner);
 
-        void Update() override;
+        void FixedUpdate() override;
 
         void Enable();
         void Disable();
@@ -41,7 +41,7 @@ namespace Game
 
         bool m_bIsEnabled{ true };
 
-        const float m_ToleranceNodeCenter{ 20.f };
+        const float m_ToleranceNodeCenter{ 5.f };
         GridComponent* m_GridComponent{};
         Direction m_DirectionThisFrame{};
         Direction m_LastCorrectDirection{};

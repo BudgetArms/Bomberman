@@ -20,7 +20,7 @@ MovementGridComponent::MovementGridComponent(bae::GameObject& owner) :
     m_GridComponent          = levelManager.GetGridComponent();
 }
 
-void MovementGridComponent::Update()
+void MovementGridComponent::FixedUpdate()
 {
     if(!m_bIsEnabled)
     {
@@ -127,7 +127,7 @@ bool MovementGridComponent::CanMoveInDirection(const Direction direction) const
 
 void MovementGridComponent::ApplyMovement()
 {
-    const float directionMoved = m_Speed * bae::GameTime::GetInstance().GetDeltaTime();
+    const float directionMoved = m_Speed * bae::GameTime::GetFixedTimeStep();
     switch(m_DirectionThisFrame)
     {
         case Direction::Left:
