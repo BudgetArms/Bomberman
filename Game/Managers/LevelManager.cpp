@@ -733,7 +733,8 @@ void LevelManager::SpawnItems()
 }
 
 
-std::shared_ptr<bae::GameObject> LevelManager::GetBombermanBase(const glm::vec2& spawnPosition, PlayerType playerType)
+std::shared_ptr<bae::GameObject> LevelManager::GetBombermanBase(const glm::vec2& spawnPosition,
+                                                                const PlayerType playerType)
 {
     // Get Player Name
     std::string gameObjectName{};
@@ -810,9 +811,10 @@ std::shared_ptr<bae::GameObject> LevelManager::GetEnemyBase(const glm::vec2& spa
     enemy->AddComponent<EnemyComponent>(*enemy, enemyType);
 
     // Hitbox
-    const glm::vec2 offset = -m_CurrentLevelInfo.HitboxDimension / 2.f;
-    enemy->AddComponent<HitboxComponent>(*enemy, m_CurrentLevelInfo.HitboxDimension, offset);
-    enemy->GetComponent<HitboxComponent>()->SetVisibility(m_bShowHitboxes);
+    auto hitboxComp = enemy->GetComponent<HitboxComponent>();
+    hitboxComp->SetDimensions(m_CurrentLevelInfo.HitboxDimension);
+    hitboxComp->SetVisibility(m_bShowHitboxes);
+    hitboxComp->SetOffset({ -m_CurrentLevelInfo.HitboxDimension / 2.f });
 
     return enemy;
 }
@@ -1011,4 +1013,3 @@ glm::vec2 LevelManager::ToPosition(const bae::Graphs::GridPosition gridPosition)
 {
     return m_GridComponent->GetPosition(gridPosition);
 }
-
