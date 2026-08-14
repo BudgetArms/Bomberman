@@ -20,9 +20,6 @@ BombermanComponent::BombermanComponent(bae::GameObject& owner) :
     m_Owner->AddComponent<LifeComponent>(*m_Owner, 4, 3.f);
     m_Owner->GetComponent<LifeComponent>()->AddObserver(this);
 
-    m_Owner->AddComponent<bae::SpriteComponent>(*m_Owner, "Textures/Characters/Bomberman.png",
-                                                SDL_FRect(0, 0, 32, 16), 2, 1);
-
     m_Owner->AddComponent<ScoreComponent>(*m_Owner);
     m_Owner->GetComponent<ScoreComponent>()->AddObserver(this);
 

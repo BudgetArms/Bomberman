@@ -24,9 +24,6 @@ BombermanAliveState::BombermanAliveState(bae::GameObject& owner) :
 
 void BombermanAliveState::OnEnter()
 {
-    auto* spriteComp    = m_Owner->GetComponent<bae::SpriteComponent>();
-    spriteComp->m_Index = 0;
-
     m_Owner->GetComponent<LifeComponent>()->AddObserver(this);
 }
 
