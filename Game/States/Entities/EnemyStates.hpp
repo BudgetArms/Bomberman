@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Components/HitboxComponent.hpp"
 #include "Core/Observer.hpp"
 
 #include "States/Entities/EntityState.hpp"
@@ -20,6 +21,9 @@ namespace Game::States
         void Notify(unsigned eventHash, bae::Subject* subject, const std::any& eventData) override;
 
     private:
+        static void HandleCollision(const HitboxComponent& otherHitboxComponent);
+
+
         bool m_bIsDying{ false };
     };
 

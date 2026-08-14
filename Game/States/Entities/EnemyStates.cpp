@@ -22,6 +22,7 @@ EnemyAliveState::EnemyAliveState(bae::GameObject& owner) :
 void EnemyAliveState::OnEnter()
 {
     m_Owner->GetComponent<LifeComponent>()->AddObserver(this);
+    m_Owner->GetComponent<HitboxComponent>()->AddObserver(this);
 }
 
 void EnemyAliveState::OnExit()
@@ -38,12 +39,61 @@ std::unique_ptr<EntityState> EnemyAliveState::Update()
     return nullptr;
 }
 
-void EnemyAliveState::Notify(const unsigned eventHash, bae::Subject*, const std::any&)
+void EnemyAliveState::Notify(const unsigned eventHash, bae::Subject*, const std::any& eventData)
 {
-    if(GetEvent(eventHash) == Events::LivesChanged)
+    const Events event = GetEvent(eventHash);
+    if(event == Events::LivesChanged)
     {
         m_bIsDying = true;
     }
+
+    if(event != Events::CollisionEvent)
+    {
+        return;
+    }
+
+
+    if(!eventData.has_value())
+    {
+        throw std::runtime_error(FUNCTION_NAME + std::string(" Failed to Get EventData"));
+    }
+
+    const auto otherHitbox = std::any_cast<HitboxComponent*>(eventData);
+    if(!otherHitbox)
+    {
+        throw std::runtime_error(FUNCTION_NAME + std::string(" Failed! Invalid EventData GameObject!"));
+    }
+
+    HandleCollision(*otherHitbox);
+}
+
+void EnemyAliveState::HandleCollision(const HitboxComponent& otherHitboxComponent)
+{
+    const auto otherGameObject = otherHitboxComponent.GetGameObject();
+    LevelManager& levelManager = LevelManager::GetInstance();
+
+    std::vector<std::pair<bae::GameObject*, PlayerType>> playersData = levelManager.GetPlayers();
+
+    auto GetPlayerObject = [&]() -> bae::GameObject*
+    {
+        for(bae::GameObject* playerObject : playersData | std::views::keys)
+        {
+            if(playerObject == otherGameObject)
+            {
+                return playerObject;
+            }
+        }
+
+        return nullptr;
+    };
+
+    const bae::GameObject* playerObject = GetPlayerObject();
+    if(!playerObject)
+    {
+        return;
+    }
+
+    playerObject->GetComponent<LifeComponent>()->RemoveLife();
 }
 
 
