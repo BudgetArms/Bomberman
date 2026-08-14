@@ -1,5 +1,6 @@
 #include "FireComponent.hpp"
 
+#include "TemporaryWallComponent.hpp"
 #include "Base/CommonManagerVariables.hpp"
 #include "Components/SpriteComponent.hpp"
 #include "Core/Subject.hpp"
@@ -26,6 +27,7 @@ FireComponent::FireComponent(bae::GameObject& owner) :
     // Add Hitbox
     const glm::vec2 offset = -m_HitboxDimension / 2.f;
     m_Owner->AddComponent<HitboxComponent>(*m_Owner, m_HitboxDimension, offset);
+    m_Owner->GetComponent<HitboxComponent>()->SetVisibility(true);
     m_Owner->GetComponent<HitboxComponent>()->AddObserver(this);
 
     AddFireChildren();
@@ -45,29 +47,38 @@ void FireComponent::Update()
 
 void FireComponent::Notify(const unsigned eventHash, bae::Subject*, const std::any& eventData)
 {
-    if(GetEvent(eventHash) == Events::CollisionEvent)
+    if(GetEvent(eventHash) != Events::CollisionEvent)
     {
-        if(!eventData.has_value())
-        {
-            throw std::runtime_error(FUNCTION_NAME + std::string(" Failed to Get EventData"));
-        }
-
-        const auto otherHitbox = std::any_cast<HitboxComponent*>(eventData);
-        if(!otherHitbox)
-        {
-            throw std::runtime_error(FUNCTION_NAME + std::string(" Failed! Invalid EventData GameObject!"));
-        }
-
-        HandleCollision(*otherHitbox);
+        return;
     }
+
+    if(!eventData.has_value())
+    {
+        throw std::runtime_error(FUNCTION_NAME + std::string(" Failed to Get EventData"));
+    }
+
+    const auto otherHitbox = std::any_cast<HitboxComponent*>(eventData);
+    if(!otherHitbox)
+    {
+        throw std::runtime_error(FUNCTION_NAME + std::string(" Failed! Invalid EventData GameObject!"));
+    }
+
+    HandleCollision(*otherHitbox);
 }
 
 void FireComponent::HandleCollision(const HitboxComponent& otherHitboxComponent)
 {
-    LevelManager& levelManager             = LevelManager::GetInstance();
+    // Checks and handles it, if it's player
+    HandleIfPlayerCollision(otherHitboxComponent);
+    HandleIfTemporaryWallCollision(otherHitboxComponent);
+}
+
+void FireComponent::HandleIfPlayerCollision(const HitboxComponent& otherHitboxComponent)
+{
     const bae::GameObject* otherGameObject = otherHitboxComponent.GetGameObject();
 
-    std::vector<std::pair<bae::GameObject*, PlayerType>> playersData = levelManager.GetPlayers();
+    std::vector<std::pair<bae::GameObject*, PlayerType>> playersData =
+            LevelManager::GetInstance().GetPlayers();
 
     auto GetPlayerObject = [&]() -> bae::GameObject*
     {
@@ -90,6 +101,15 @@ void FireComponent::HandleCollision(const HitboxComponent& otherHitboxComponent)
 
     std::cout << FUNCTION_NAME << " Fire" << '\n';
     playerObject->GetComponent<LifeComponent>()->RemoveLife();
+}
+
+void FireComponent::HandleIfTemporaryWallCollision(const HitboxComponent& otherHitboxComponent)
+{
+    bae::GameObject* otherGameObject = otherHitboxComponent.GetGameObject();
+    if(otherGameObject->GetComponent<TemporaryWallComponent>())
+    {
+        otherGameObject->Destroy();
+    }
 }
 
 void FireComponent::AddFireChild(const Direction directionFire, const int childFireRange)
