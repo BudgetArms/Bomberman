@@ -392,7 +392,6 @@ void LevelManager::CreateGrid()
     gridObject->AddComponent<GridComponent>(*gridObject, gridInfo.NrColumns, gridInfo.NrRows, gridInfo.CellSize);
 
     m_GridComponent = gridObject->GetComponent<GridComponent>();
-    m_GridComponent->SetRenderConnections(true);
 
     backgroundScene->Add(gridObject);
 }
