@@ -46,22 +46,22 @@
   },
   "SharedEnemyInfo": {
     "Balloom": {
-      "Speed": 111,
+      "Speed": 40,
       "ChangeDirectionUpChance": 0.20,
       "Intelligence": 1
     },
     "Oneal": {
-      "Speed": 222,
+      "Speed": 40,
       "ChangeDirectionUpChance": 0.30,
       "Intelligence": 2
     },
     "Doll": {
-      "Speed": 333,
+      "Speed": 50,
       "ChangeDirectionUpChance": 0.10,
       "Intelligence": 1
     },
     "Minvo": {
-      "Speed": 444,
+      "Speed": 60,
       "ChangeDirectionUpChance": 0.20,
       "Intelligence": 2
     }
@@ -78,34 +78,10 @@
       }
     ],
     "Oneal": [
-      {
-        "Column": 6,
-        "Row": 0
-      },
-      {
-        "Column": 6,
-        "Row": 2
-      }
     ],
     "Doll": [
-      {
-        "Column": 8,
-        "Row": 0
-      },
-      {
-        "Column": 8,
-        "Row": 2
-      }
     ],
     "Minvo": [
-      {
-        "Column": 10,
-        "Row": 0
-      },
-      {
-        "Column": 10,
-        "Row": 2
-      }
     ]
   },
   "DoorPosition": {
