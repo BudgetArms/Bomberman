@@ -376,6 +376,11 @@ void LevelManager::LoadLevelInfo(const std::filesystem::path& jsonFile)
     m_LoadedLevels.insert({ levelInfo.Index, levelInfo });
 }
 
+std::unordered_map<EnemyType, SharedEnemyInfo> LevelManager::GetEnemySharedInfo() const
+{
+    return m_CurrentLevelInfo.EnemySharedInfos;
+}
+
 std::unordered_map<ScoreType, int> LevelManager::GetScoreMap() const
 {
     return m_CurrentLevelInfo.ScoreMap;

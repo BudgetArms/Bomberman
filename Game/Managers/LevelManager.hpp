@@ -49,6 +49,7 @@ namespace Game
 
         void LoadLevelInfo(const std::filesystem::path& jsonFile);
 
+        [[nodiscard]] std::unordered_map<EnemyType, SharedEnemyInfo> GetEnemySharedInfo() const;
         [[nodiscard]] std::unordered_map<ScoreType, int> GetScoreMap() const;
         [[nodiscard]] int GetNrBombsAllowContinuously() const;
         [[nodiscard]] int GetBombFireRange() const;
