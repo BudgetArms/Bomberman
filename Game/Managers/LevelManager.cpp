@@ -499,7 +499,7 @@ void LevelManager::SpawnBalloomPlayer()
     m_Enemies.insert({ balloom.get(), EnemyType::BalloomPlayer });
 
     // Controls
-    AddControls(*balloom, false);
+    AddControls(*balloom, false, true);
 
     scene->Add(balloom);
 }
@@ -729,7 +729,7 @@ void LevelManager::SpawnDoor(const glm::vec2& position)
     scene->Add(door);
 }
 
-void LevelManager::AddControls(bae::GameObject& gameObject, const bool bIsFirstPlayer)
+void LevelManager::AddControls(bae::GameObject& gameObject, const bool bIsFirstPlayer, const bool bIsEnemy)
 {
     const bae::Keyboard& keyboard     = bae::InputManager::GetInstance().GetKeyboard();
     const bae::Controller* controller = bae::InputManager::GetInstance().GetController(!bIsFirstPlayer);
@@ -757,8 +757,8 @@ void LevelManager::AddControls(bae::GameObject& gameObject, const bool bIsFirstP
     auto keyboardMoveOnGridDownCommand  = std::make_unique<MoveCommand>(gameObject, Direction::Down);
     auto keyboardMoveOnGridUpCommand    = std::make_unique<MoveCommand>(gameObject, Direction::Up);
 
-    auto keyboardPlacedBombCommand        = std::make_unique<PlaceBombCommand>(gameObject);
-    auto keyboardRemoteControlBombCommand = std::make_unique<RemoteControlBombCommand>(gameObject);
+    [[maybe_unused]] auto keyboardPlacedBombCommand        = std::make_unique<PlaceBombCommand>(gameObject);
+    [[maybe_unused]] auto keyboardRemoteControlBombCommand = std::make_unique<RemoteControlBombCommand>(gameObject);
 
     if(bIsFirstPlayer)
     {
@@ -767,8 +767,11 @@ void LevelManager::AddControls(bae::GameObject& gameObject, const bool bIsFirstP
         keyboard.AddKeyboardCommands(std::move(keyboardMoveOnGridDownCommand), SDLK_S, moveOnGridButtonState);
         keyboard.AddKeyboardCommands(std::move(keyboardMoveOnGridUpCommand), SDLK_W, moveOnGridButtonState);
 
-        keyboard.AddKeyboardCommands(std::move(keyboardPlacedBombCommand), SDLK_F, downButtonState);
-        keyboard.AddKeyboardCommands(std::move(keyboardRemoteControlBombCommand), SDLK_G, downButtonState);
+        if(!bIsEnemy)
+        {
+            keyboard.AddKeyboardCommands(std::move(keyboardPlacedBombCommand), SDLK_F, downButtonState);
+            keyboard.AddKeyboardCommands(std::move(keyboardRemoteControlBombCommand), SDLK_G, downButtonState);
+        }
     }
     else
     {
@@ -777,8 +780,11 @@ void LevelManager::AddControls(bae::GameObject& gameObject, const bool bIsFirstP
         keyboard.AddKeyboardCommands(std::move(keyboardMoveOnGridDownCommand), SDLK_DOWN, moveOnGridButtonState);
         keyboard.AddKeyboardCommands(std::move(keyboardMoveOnGridUpCommand), SDLK_UP, moveOnGridButtonState);
 
-        keyboard.AddKeyboardCommands(std::move(keyboardPlacedBombCommand), SDLK_0, downButtonState);
-        keyboard.AddKeyboardCommands(std::move(keyboardRemoteControlBombCommand), SDLK_PERIOD, downButtonState);
+        if(!bIsEnemy)
+        {
+            keyboard.AddKeyboardCommands(std::move(keyboardPlacedBombCommand), SDLK_KP_0, downButtonState);
+            keyboard.AddKeyboardCommands(std::move(keyboardRemoteControlBombCommand), SDLK_KP_PERIOD, downButtonState);
+        }
     }
 
     [[maybe_unused]] auto controllerMoveOnGridLeftCommand  = std::make_unique<MoveCommand>(gameObject, Direction::Left);
@@ -800,10 +806,13 @@ void LevelManager::AddControls(bae::GameObject& gameObject, const bool bIsFirstP
     controller->AddControllerCommands(std::move(controllerMoveOnGridUpCommand), XINPUT_GAMEPAD_DPAD_UP,
                                       moveOnGridButtonState);
 
-    controller->AddControllerCommands(std::move(controllerPlacedBombCommand), XINPUT_GAMEPAD_A,
-                                      downButtonState);
-    controller->AddControllerCommands(std::move(controllerRemoteControlBombCommand), XINPUT_GAMEPAD_B,
-                                      downButtonState);
+    if(!bIsEnemy)
+    {
+        controller->AddControllerCommands(std::move(controllerPlacedBombCommand), XINPUT_GAMEPAD_A,
+                                          downButtonState);
+        controller->AddControllerCommands(std::move(controllerRemoteControlBombCommand), XINPUT_GAMEPAD_B,
+                                          downButtonState);
+    }
 
 
     #endif

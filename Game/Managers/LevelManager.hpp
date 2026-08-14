@@ -108,7 +108,7 @@ namespace Game
         void SpawnTemporaryWall(const glm::vec2& position);
         void SpawnDoor(const glm::vec2& position);
 
-        static void AddControls(bae::GameObject& gameObject, bool bIsFirstPlayer);
+        static void AddControls(bae::GameObject& gameObject, bool bIsFirstPlayer, bool bIsEnemy = false);
         void AddLevelCommands() const;
 
         void SavePlayerData();
