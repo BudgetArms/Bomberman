@@ -845,12 +845,15 @@ void LevelManager::SpawnDoor(const glm::vec2& position)
     door->SetWorldLocation(position);
     door->SetWorldScale({ m_GlobalScale, m_GlobalScale });
 
+    door->AddComponent<DoorComponent>(*door);
+
+    const auto doorComp    = door->GetComponent<DoorComponent>();
     const glm::vec2 offset = -m_CurrentLevelInfo.HitboxDimension / 2.f;
 
     door->AddComponent<HitboxComponent>(*door, m_CurrentLevelInfo.HitboxDimension, offset);
+    door->GetComponent<HitboxComponent>()->AddObserver(doorComp);
     door->GetComponent<HitboxComponent>()->SetVisibility(m_bShowHitboxes);
-
-    door->AddComponent<DoorComponent>(*door);
+    door->GetComponent<HitboxComponent>()->SetVisibility(true);
 
     scene->Add(door);
 }
