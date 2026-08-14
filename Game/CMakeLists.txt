@@ -55,6 +55,7 @@ add_executable(${PROJECT_NAME} ${TARGET_PARAM}
     "Components/LifeDisplayComponent.cpp"
     "Components/ManagersComponent.cpp"
     "Components/MovementGridComponent.cpp"
+    "Components/RenderCenterComponent.cpp"
     "Components/ScoreComponent.cpp"
     "Components/ScoreDisplayComponent.cpp"
     "Components/TemporaryWallComponent.cpp"
