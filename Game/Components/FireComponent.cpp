@@ -69,7 +69,7 @@ void FireComponent::Notify(const unsigned eventHash, bae::Subject*, const std::a
     HandleCollision(*otherHitbox);
 }
 
-void FireComponent::HandleCollision(const HitboxComponent& otherHitboxComponent) const
+void FireComponent::HandleCollision(const HitboxComponent& otherHitboxComponent)
 {
     HandleIfPlayerCollision(otherHitboxComponent);
     HandleIfEnemyCollision(otherHitboxComponent);
@@ -106,17 +106,17 @@ void FireComponent::HandleIfPlayerCollision(const HitboxComponent& otherHitboxCo
     m_Owner->GetComponent<HitboxComponent>()->m_bAreCollisionsEnabled = false;
 }
 
-void FireComponent::HandleIfEnemyCollision(const HitboxComponent& otherHitboxComponent) const
+void FireComponent::HandleIfEnemyCollision(const HitboxComponent& otherHitboxComponent)
 {
-    [[maybe_unused]] const bae::GameObject* otherGameObject = otherHitboxComponent.GetGameObject();
-    [[maybe_unused]] const auto gridComponent               = LevelManager::GetInstance().GetGridComponent();
+    [[maybe_unused]] bae::GameObject* otherGameObject = otherHitboxComponent.GetGameObject();
+    [[maybe_unused]] const auto gridComponent         = LevelManager::GetInstance().GetGridComponent();
 
     if(!m_Instigator || m_Instigator->IsMarkedForDeletion())
     {
         return;
     }
 
-    const auto enemyComp = otherGameObject->GetComponent<EnemyComponent>();
+    auto enemyComp = otherGameObject->GetComponent<EnemyComponent>();
     if(!enemyComp)
     {
         return;
@@ -124,6 +124,8 @@ void FireComponent::HandleIfEnemyCollision(const HitboxComponent& otherHitboxCom
 
     const int score = enemyComp->GetScore();
     m_Instigator->GetComponent<ScoreComponent>()->AddScore(score);
+
+    LevelManager::GetInstance().RemoveEnemy(otherGameObject);
 
     otherGameObject->GetComponent<LifeComponent>()->RemoveLife();
 }

@@ -22,9 +22,9 @@ namespace Game
         void Notify(unsigned eventHash, bae::Subject* subject, const std::any& eventData) override;
 
     private:
-        void HandleCollision(const HitboxComponent& otherHitboxComponent) const;
+        void HandleCollision(const HitboxComponent& otherHitboxComponent);
         void HandleIfPlayerCollision(const HitboxComponent& otherHitboxComponent) const;
-        void HandleIfEnemyCollision(const HitboxComponent& otherHitboxComponent) const;
+        void HandleIfEnemyCollision(const HitboxComponent& otherHitboxComponent);
         static void HandleIfTemporaryWallCollision(const HitboxComponent& otherHitboxComponent);
 
         void AddFireChild(Direction directionFire, int childFireRange);

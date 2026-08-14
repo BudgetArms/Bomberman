@@ -416,6 +416,11 @@ void LevelManager::EnabledRemoteControl()
     m_bHasBombRemoteControl = true;
 }
 
+void LevelManager::RemoveEnemy(bae::GameObject* enemyObject)
+{
+    m_Enemies.erase(enemyObject);
+}
+
 void LevelManager::CreateGrid()
 {
     auto* backgroundScene = bae::SceneManager::GetInstance().GetScene(g_LevelBackgroundName.data());

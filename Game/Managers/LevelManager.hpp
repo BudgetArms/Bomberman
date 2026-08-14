@@ -59,6 +59,8 @@ namespace Game
         void IncreaseBombFireRange();
         void EnabledRemoteControl();
 
+        void RemoveEnemy(bae::GameObject* enemyObject);
+
 
         static constexpr std::string_view m_SaveFileName{ "Scores.json" };
         static constexpr std::string_view m_SaveEntryName{ "Name" };
