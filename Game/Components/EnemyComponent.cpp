@@ -20,8 +20,10 @@ EnemyComponent::EnemyComponent(bae::GameObject& owner, const EnemyType enemyType
     // Hitbox
     m_Owner->AddComponent<HitboxComponent>(*m_Owner, glm::vec2{}, glm::vec2{});
 
-    m_State = std::make_unique<States::EnemyAliveState>(*m_Owner);
+    // Movement
+    m_Owner->AddComponent<MovementGridComponent>(*m_Owner);
 
+    m_State = std::make_unique<States::EnemyAliveState>(*m_Owner);
     m_State->OnEnter();
 }
 

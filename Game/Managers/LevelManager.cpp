@@ -541,9 +541,6 @@ void LevelManager::SpawnBalloomPlayer()
     balloomPlayer->AddComponent<bae::SpriteComponent>(*balloomPlayer, "Textures/Characters/Enemies.png",
                                                       SDL_FRect(0, 0, 32, 16), 2, 1);
 
-    // MovementGrid
-    balloomPlayer->AddComponent<MovementGridComponent>(*balloomPlayer);
-
     // Observer
     balloomPlayer->GetComponent<EnemyComponent>()->AddObserver(this);
 
@@ -566,9 +563,6 @@ void LevelManager::SpawnBalloom(const glm::vec2& position)
     balloom->AddComponent<bae::SpriteComponent>(*balloom, "Textures/Characters/Enemies.png",
                                                 SDL_FRect(0, 0, 32, 16), 2, 1);
 
-    // MovementGrid
-    balloom->AddComponent<MovementGridComponent>(*balloom);
-
     // Observer
     balloom->GetComponent<EnemyComponent>()->AddObserver(this);
 
@@ -588,9 +582,6 @@ void LevelManager::SpawnOneal(const glm::vec2& position)
     // Sprite
     oneal->AddComponent<bae::SpriteComponent>(*oneal, "Textures/Characters/Enemies.png",
                                               SDL_FRect(0, 16, 32, 16), 2, 1);
-
-    // MovementGrid
-    oneal->AddComponent<MovementGridComponent>(*oneal);
 
     // Observer
     oneal->GetComponent<EnemyComponent>()->AddObserver(this);
@@ -612,9 +603,6 @@ void LevelManager::SpawnDoll(const glm::vec2& position)
     doll->AddComponent<bae::SpriteComponent>(*doll, "Textures/Characters/Enemies.png",
                                              SDL_FRect(0, 32, 32, 16), 2, 1);
 
-    // MovementGrid
-    doll->AddComponent<MovementGridComponent>(*doll);
-
     // Observer
     doll->GetComponent<EnemyComponent>()->AddObserver(this);
 
@@ -634,9 +622,6 @@ void LevelManager::SpawnMinvo(const glm::vec2& position)
     // Sprite
     minvo->AddComponent<bae::SpriteComponent>(*minvo, "Textures/Characters/Enemies.png",
                                               SDL_FRect(0, 48, 32, 16), 2, 1);
-
-    // MovementGrid
-    minvo->AddComponent<MovementGridComponent>(*minvo);
 
     // Observer
     minvo->GetComponent<EnemyComponent>()->AddObserver(this);
