@@ -447,7 +447,7 @@ void LevelManager::SpawnBomberman()
 
     const bae::Keyboard& keyboard = bae::InputManager::GetInstance().GetKeyboard();
 
-    auto command = std::make_unique<ForceDamageCommand>(*bomberman.get());
+    auto command = std::make_unique<ForceDamageCommand>(*bomberman);
     keyboard.AddKeyboardCommands(std::move(command), SDLK_6, bae::InputManager::ButtonState::Down);
 
     scene->Add(bomberman);
@@ -594,7 +594,7 @@ void LevelManager::SpawnPlayers()
 
 void LevelManager::SpawnEnemies()
 {
-    for(const auto [enemyType, positions] : m_CurrentLevelInfo.EnemyStartPositions)
+    for(const auto& [enemyType, positions] : m_CurrentLevelInfo.EnemyStartPositions)
     {
         switch(enemyType)
         {
@@ -631,7 +631,7 @@ void LevelManager::SpawnEnemies()
 
 void LevelManager::SpawnItems()
 {
-    for(const auto [itemType, positions] : m_CurrentLevelInfo.ItemPositions)
+    for(const auto& [itemType, positions] : m_CurrentLevelInfo.ItemPositions)
     {
         for(const auto position : positions)
         {
