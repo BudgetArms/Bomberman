@@ -27,6 +27,7 @@ add_executable(${PROJECT_NAME} ${TARGET_PARAM}
     "Base/BombHandler.cpp"
     "Base/CommonManagerVariables.hpp"
     "Base/DirectionEnum.hpp"
+    "Base/EnemyMovement.cpp"
     "Base/GameMode.hpp"
     "Base/Level.cpp"
     "Base/LevelGraphNode.cpp"
