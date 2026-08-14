@@ -17,6 +17,11 @@ using namespace Game::States;
 EnemyAliveState::EnemyAliveState(bae::GameObject& owner) :
     EntityState(owner)
 {
+    float m_Speed                   = 100.f;
+    int m_Intelligence              = 1;
+    float m_ChangeDirectionUpChance = 0.20f;
+
+    m_EnemyMovement = std::make_unique<EnemyMovement>(owner, m_Speed, m_Intelligence, m_ChangeDirectionUpChance);
 }
 
 void EnemyAliveState::OnEnter()
@@ -35,6 +40,8 @@ std::unique_ptr<EntityState> EnemyAliveState::Update()
     {
         return std::make_unique<EnemyDyingState>(*m_Owner);
     }
+
+    m_EnemyMovement->Update();
 
     return nullptr;
 }

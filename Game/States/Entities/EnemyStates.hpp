@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Base/EnemyMovement.hpp"
 #include "Components/HitboxComponent.hpp"
 #include "Core/Observer.hpp"
 
@@ -24,6 +25,7 @@ namespace Game::States
         static void HandleCollision(const HitboxComponent& otherHitboxComponent);
 
 
+        std::unique_ptr<EnemyMovement> m_EnemyMovement{};
         bool m_bIsDying{ false };
     };
 
