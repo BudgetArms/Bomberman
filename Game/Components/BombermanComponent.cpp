@@ -18,7 +18,6 @@ BombermanComponent::BombermanComponent(bae::GameObject& owner) :
 {
     bae::ResourceManager::GetInstance().LoadFont("Fonts/Lingua.otf", 32);
     m_Owner->AddComponent<LifeComponent>(*m_Owner, 4, 3.f);
-    m_Owner->GetComponent<LifeComponent>()->AddObserver(this);
 
     m_Owner->AddComponent<ScoreComponent>(*m_Owner);
     m_Owner->GetComponent<ScoreComponent>()->AddObserver(this);
