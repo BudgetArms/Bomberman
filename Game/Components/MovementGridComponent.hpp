@@ -24,6 +24,9 @@ namespace Game
 
         [[nodiscard]] bool CanMoveInDirection(Direction direction) const;
 
+        [[nodiscard]] bool IsAtNodeCenter() const;
+
+
         float m_Speed{ 100.f };
         bool m_bIsDebuggingEnabled{};
 
@@ -31,9 +34,6 @@ namespace Game
         void ApplyMovement();
 
         void LockOnGrid() const;
-
-
-        [[nodiscard]] bool IsAtNodeCenter() const;
 
         [[nodiscard]] static bool IsOppositeDirection(Direction direction, Direction oppositeDirection);
 
