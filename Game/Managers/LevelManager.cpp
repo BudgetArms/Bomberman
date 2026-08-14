@@ -237,14 +237,44 @@ void LevelManager::HandleEvent(const unsigned int)
 
 void LevelManager::Notify(const unsigned eventHash, bae::Subject* subject, const std::any&)
 {
-    if(GetEvent(eventHash) == Events::PlayerDied)
+    const Events event = GetEvent(eventHash);
+    if(event == Events::PlayerDied)
     {
         if(subject->GetGameObject() == m_Bomberman ||
             subject->GetGameObject() == m_Bombermiss)
         {
             HandleBomberDeath(*subject->GetGameObject());
         }
+        return;
     }
+
+    if(event == Events::BalloomPlayerDied)
+    {
+        if(subject->GetGameObject() == m_BalloomPlayer)
+        {
+            SpawnBalloomPlayer();
+        }
+        return;
+    }
+
+    if(event == Events::BalloomDied ||
+        event == Events::OnealDied ||
+        event == Events::DollDied ||
+        event == Events::MinvoDied
+    )
+    {
+        if(!m_Enemies.contains(subject->GetGameObject()))
+        {
+            std::cout << FUNCTION_NAME << "this should never be reached" << '\n';
+            return;
+        }
+
+        m_Enemies.erase(subject->GetGameObject());
+        subject->GetGameObject()->Destroy();
+        return;
+    }
+
+    std::cout << "Event\n";
 }
 
 void LevelManager::HandleBomberDeath(const bae::GameObject& object)
@@ -423,6 +453,7 @@ void LevelManager::SpawnBomberman()
 
 
     const auto bomberman = GetBombermanBase(spawnPosition, PlayerType::Bomberman);
+    m_Bomberman = bomberman.get();
 
     // Sprite
     bomberman->AddComponent<bae::SpriteComponent>(*bomberman, "Textures/Characters/Bomberman.png",
@@ -446,8 +477,6 @@ void LevelManager::SpawnBomberman()
     // Score Display
     bomberman->GetComponent<ScoreDisplayComponent>()->SetPosition(glm::vec2{ 176, 432 });
 
-    // Set Bomberman
-    m_Bomberman = bomberman.get();
 
     // Controls
     AddControls(*bomberman, true);
@@ -467,7 +496,7 @@ void LevelManager::SpawnBombermiss()
     const glm::vec2 spawnPosition = ToPosition(m_CurrentLevelInfo.BombermissInfo.StartPosition);
 
     const auto bombermiss = GetBombermanBase(spawnPosition, PlayerType::Bombermiss);
-
+    m_Bombermiss          = bombermiss.get();
 
     // Sprite
     bombermiss->AddComponent<bae::SpriteComponent>(*bombermiss, "Textures/Characters/Bombermiss.png",
@@ -491,10 +520,6 @@ void LevelManager::SpawnBombermiss()
     // Score Display
     bombermiss->GetComponent<ScoreDisplayComponent>()->SetPosition(glm::vec2{ 810, 432 });
 
-
-    // Set Bombermiss
-    m_Bombermiss = bombermiss.get();
-
     // Controls
     AddControls(*bombermiss, false);
 
@@ -508,6 +533,8 @@ void LevelManager::SpawnBalloomPlayer()
     const glm::vec2 spawnPosition = ToPosition(m_CurrentLevelInfo.BalloomPlayerInfo.StartPosition);
 
     const auto balloomPlayer = GetEnemyBase(spawnPosition, EnemyType::BalloomPlayer);
+    m_Enemies.insert({ balloomPlayer.get(), EnemyType::BalloomPlayer });
+    m_BalloomPlayer = balloomPlayer.get();
 
     // Sprite
     balloomPlayer->AddComponent<bae::SpriteComponent>(*balloomPlayer, "Textures/Characters/Enemies.png",
@@ -515,10 +542,6 @@ void LevelManager::SpawnBalloomPlayer()
 
     // MovementGrid
     balloomPlayer->AddComponent<MovementGridComponent>(*balloomPlayer);
-
-    m_Enemies.insert({ balloomPlayer.get(), EnemyType::BalloomPlayer });
-
-    m_BalloomPlayer = balloomPlayer.get();
 
     // Observer
     balloomPlayer->GetComponent<EnemyComponent>()->AddObserver(this);
@@ -536,6 +559,7 @@ void LevelManager::SpawnBalloom(const glm::vec2& position)
     bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
 
     const auto balloom = GetEnemyBase(position, EnemyType::Balloom);
+    m_Enemies.insert({ balloom.get(), EnemyType::Balloom });
 
     // Sprite
     balloom->AddComponent<bae::SpriteComponent>(*balloom, "Textures/Characters/Enemies.png",
@@ -544,9 +568,11 @@ void LevelManager::SpawnBalloom(const glm::vec2& position)
     // MovementGrid
     balloom->AddComponent<MovementGridComponent>(*balloom);
 
-    balloom->GetComponent<EnemyComponent>()->SetSpriteAndGridComponent();
+    // Observer
+    balloom->GetComponent<EnemyComponent>()->AddObserver(this);
 
-    m_Enemies.insert({ balloom.get(), EnemyType::Balloom });
+    // Set Sprite & Grid
+    balloom->GetComponent<EnemyComponent>()->SetSpriteAndGridComponent();
 
     scene->Add(balloom);
 }
@@ -556,6 +582,7 @@ void LevelManager::SpawnOneal(const glm::vec2& position)
     bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
 
     const auto oneal = GetEnemyBase(position, EnemyType::Oneal);
+    m_Enemies.insert({ oneal.get(), EnemyType::Oneal });
 
     // Sprite
     oneal->AddComponent<bae::SpriteComponent>(*oneal, "Textures/Characters/Enemies.png",
@@ -564,9 +591,12 @@ void LevelManager::SpawnOneal(const glm::vec2& position)
     // MovementGrid
     oneal->AddComponent<MovementGridComponent>(*oneal);
 
+    // Observer
+    oneal->GetComponent<EnemyComponent>()->AddObserver(this);
+
+    // Set Sprite & Grid
     oneal->GetComponent<EnemyComponent>()->SetSpriteAndGridComponent();
 
-    m_Enemies.insert({ oneal.get(), EnemyType::Oneal });
     scene->Add(oneal);
 }
 
@@ -575,6 +605,7 @@ void LevelManager::SpawnDoll(const glm::vec2& position)
     bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
 
     const auto doll = GetEnemyBase(position, EnemyType::Doll);
+    m_Enemies.insert({ doll.get(), EnemyType::Doll });
 
     // Sprite
     doll->AddComponent<bae::SpriteComponent>(*doll, "Textures/Characters/Enemies.png",
@@ -583,9 +614,12 @@ void LevelManager::SpawnDoll(const glm::vec2& position)
     // MovementGrid
     doll->AddComponent<MovementGridComponent>(*doll);
 
+    // Observer
+    doll->GetComponent<EnemyComponent>()->AddObserver(this);
+
+    // Set Sprite & Grid
     doll->GetComponent<EnemyComponent>()->SetSpriteAndGridComponent();
 
-    m_Enemies.insert({ doll.get(), EnemyType::Doll });
     scene->Add(doll);
 }
 
@@ -594,6 +628,7 @@ void LevelManager::SpawnMinvo(const glm::vec2& position)
     bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
 
     const auto minvo = GetEnemyBase(position, EnemyType::Minvo);
+    m_Enemies.insert({ minvo.get(), EnemyType::Minvo });
 
     // Sprite
     minvo->AddComponent<bae::SpriteComponent>(*minvo, "Textures/Characters/Enemies.png",
@@ -602,9 +637,12 @@ void LevelManager::SpawnMinvo(const glm::vec2& position)
     // MovementGrid
     minvo->AddComponent<MovementGridComponent>(*minvo);
 
+    // Observer
+    minvo->GetComponent<EnemyComponent>()->AddObserver(this);
+
+    // Set Sprite & Grid
     minvo->GetComponent<EnemyComponent>()->SetSpriteAndGridComponent();
 
-    m_Enemies.insert({ minvo.get(), EnemyType::Minvo });
     scene->Add(minvo);
 }
 
