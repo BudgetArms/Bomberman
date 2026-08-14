@@ -1,11 +1,14 @@
 #pragma once
 
+#include <array>
+
 #include "Components/Component.hpp"
 #include "Components/SpriteComponent.hpp"
 #include "Core/Observer.hpp"
 
 #include "Base/DirectionEnum.hpp"
 #include "Components/HitboxComponent.hpp"
+#include "Graphs/GridGraph.hpp"
 
 
 namespace Game
@@ -23,6 +26,10 @@ namespace Game
 
         void AddFireChild(Direction directionFire, int childFireRange);
 
+        void AddFireChildren();
+
+        static Direction GetDirectionFromGridPos(const bae::Graphs::GridPosition& gridPos);
+
 
         const std::string m_FireCenterTexturePath{ "Textures/Items/FireCenter.png" };
         const std::string m_FireTexturePath{ "Textures/Items/Fire.png" };
@@ -38,5 +45,14 @@ namespace Game
         const glm::vec2 m_HitboxDimension{ 30.f, 30.f };
         const float m_FireDuration{ 1.f };
         float m_ElapsedTime{};
+
+
+        static constexpr std::array<bae::Graphs::GridPosition, 4> m_Directions
+        {
+            bae::Graphs::GridPosition{ 1, 0 },
+            bae::Graphs::GridPosition{ -1, 0 },
+            bae::Graphs::GridPosition{ 0, 1 },
+            bae::Graphs::GridPosition{ 0, -1 }
+        };
     };
 }

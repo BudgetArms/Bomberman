@@ -17,6 +17,7 @@ using namespace Game;
 FireComponent::FireComponent(bae::GameObject& owner) :
     Component(owner)
 {
+    // Add Sprite
     m_Owner->AddComponent<bae::SpriteComponent>(*m_Owner, m_FireCenterTexturePath, SDL_FRect(0, 0, 32, 16),
                                                 m_SpriteNrColumns, m_SpriteNrSprites);
 
@@ -27,13 +28,7 @@ FireComponent::FireComponent(bae::GameObject& owner) :
     m_Owner->AddComponent<HitboxComponent>(*m_Owner, m_HitboxDimension, offset);
     m_Owner->GetComponent<HitboxComponent>()->AddObserver(this);
 
-
-    [[maybe_unused]] int fireRange = LevelManager::GetInstance().GetBombFireRange();
-
-    AddFireChild(Direction::Up, 1);
-    AddFireChild(Direction::Down, 1);
-    AddFireChild(Direction::Left, 1);
-    AddFireChild(Direction::Right, 1);
+    AddFireChildren();
 }
 
 void FireComponent::Update()
@@ -139,3 +134,58 @@ void FireComponent::AddFireChild(const Direction directionFire, const int childF
     bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelBackgroundName.data());
     scene->Add(childFire);
 }
+
+void FireComponent::AddFireChildren()
+{
+    GridComponent* gridComp                        = LevelManager::GetInstance().GetGridComponent();
+    const bae::Graphs::GridPosition centerPosition = gridComp->GetClosestValidNodePosition(m_Owner->GetWorldLocation());
+    const int fireRange                            = LevelManager::GetInstance().GetBombFireRange();
+
+
+    for(const bae::Graphs::GridPosition directionGridPos : m_Directions)
+    {
+        const Direction currentDirection = GetDirectionFromGridPos(directionGridPos);
+
+        bae::Graphs::GridPosition childGridPos = centerPosition;
+        for(int i = 1; i <= fireRange; ++i)
+        {
+            childGridPos.Column += directionGridPos.Column;
+            childGridPos.Row    += directionGridPos.Row;
+
+            // If Node doesn't exist, aka permanent wall, skip
+            if(!gridComp->IsValidGridPosition(childGridPos))
+            {
+                break;
+            }
+
+            AddFireChild(currentDirection, i);
+        }
+    }
+}
+
+Direction FireComponent::GetDirectionFromGridPos(const bae::Graphs::GridPosition& gridPos)
+{
+    if(gridPos.Column == 1 && gridPos.Row == 0)
+    {
+        return Direction::Right;
+    }
+
+    if(gridPos.Column == -1 && gridPos.Row == 0)
+    {
+        return Direction::Left;
+    }
+
+    if(gridPos.Column == 0 && gridPos.Row == -1)
+    {
+        return Direction::Up;
+    }
+
+    if(gridPos.Column == 0 && gridPos.Row == 1)
+    {
+        return Direction::Down;
+    }
+
+
+    throw std::runtime_error(FUNCTION_NAME + std::string(" Failed, Invalid grid direction!"));
+}
+
