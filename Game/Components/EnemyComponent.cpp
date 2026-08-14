@@ -1,7 +1,7 @@
 #include "EnemyComponent.hpp"
 
-#include "LifeComponent.hpp"
 #include "Base/Events.hpp"
+#include "Components/LifeComponent.hpp"
 #include "Managers/LevelManager.hpp"
 #include "States/Entities/EnemyStates.hpp"
 
@@ -16,6 +16,9 @@ EnemyComponent::EnemyComponent(bae::GameObject& owner, const EnemyType enemyType
 {
     // Life
     m_Owner->AddComponent<LifeComponent>(*m_Owner, 1, 3.f);
+
+    // Hitbox
+    m_Owner->AddComponent<HitboxComponent>(*m_Owner, glm::vec2{}, glm::vec2{});
 
     m_State = std::make_unique<States::EnemyAliveState>(*m_Owner);
 

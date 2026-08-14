@@ -20,8 +20,6 @@ namespace Game
 
         void SetSpriteAndGridComponent();
 
-        void Kill();
-
         [[nodiscard]] EnemyType GetType() const;
         [[nodiscard]] int GetScore() const;
 
