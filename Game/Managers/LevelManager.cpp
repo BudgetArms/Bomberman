@@ -453,7 +453,7 @@ void LevelManager::SpawnBomberman()
 
 
     const auto bomberman = GetBombermanBase(spawnPosition, PlayerType::Bomberman);
-    m_Bomberman = bomberman.get();
+    m_Bomberman          = bomberman.get();
 
     // Sprite
     bomberman->AddComponent<bae::SpriteComponent>(*bomberman, "Textures/Characters/Bomberman.png",
@@ -752,13 +752,11 @@ std::shared_ptr<bae::GameObject> LevelManager::GetBombermanBase(const glm::vec2&
     bomberman->SetWorldScale({ m_GlobalScale, m_GlobalScale });
 
     bomberman->AddComponent<BombermanComponent>(*bomberman);
-    const auto bombermanComp = bomberman->GetComponent<BombermanComponent>();
 
     // Hitbox
     const glm::vec2 offset = -m_CurrentLevelInfo.HitboxDimension / 2.f;
     bomberman->AddComponent<HitboxComponent>(*bomberman, m_CurrentLevelInfo.HitboxDimension, offset);
     bomberman->GetComponent<HitboxComponent>()->SetVisibility(m_bShowHitboxes);
-    bomberman->GetComponent<HitboxComponent>()->AddObserver(bombermanComp);
 
     // Score Display
     auto text = std::make_unique<bae::Text2D>("XXX");
@@ -966,9 +964,7 @@ void LevelManager::SavePlayerData()
 {
     // Save lives & Score
     m_BombermanLives = m_Bomberman->GetComponent<LifeComponent>()->GetLives();
-    // TODO: remove this test
-    // m_BombermanScore = m_Bomberman->GetComponent<ScoreComponent>()->GetScore();
-    m_BombermanScore = 192;
+    m_BombermanScore = m_Bomberman->GetComponent<ScoreComponent>()->GetScore();
 
     if(m_Bombermiss)
     {
