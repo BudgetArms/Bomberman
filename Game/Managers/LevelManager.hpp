@@ -120,6 +120,7 @@ namespace Game
 
         static constexpr int m_NrOfLevels{ 2 }; // todo: change to 3
 
+        const bool m_bShowHitboxes{ false };
         const std::string m_BackgroundTexturePath{ "Textures/Level/Playfield.png" };
         bae::Texture2D* m_BackgroundTexture{};
 

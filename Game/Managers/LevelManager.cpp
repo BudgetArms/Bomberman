@@ -568,7 +568,7 @@ void LevelManager::SpawnItem(const glm::vec2& position, const ItemType itemType)
     const glm::vec2 offset = -m_CurrentLevelInfo.HitboxDimension / 2.f;
 
     item->AddComponent<HitboxComponent>(*item, m_CurrentLevelInfo.HitboxDimension, offset);
-    item->GetComponent<HitboxComponent>()->SetVisibility(false);
+    item->GetComponent<HitboxComponent>()->SetVisibility(m_bShowHitboxes);
     item->GetComponent<HitboxComponent>()->AddObserver(itemComp);
 
     scene->Add(item);
@@ -654,7 +654,7 @@ std::shared_ptr<bae::GameObject> LevelManager::GetBombermanBase(const std::strin
     const glm::vec2 offset = -m_CurrentLevelInfo.HitboxDimension / 2.f;
 
     bomberman->AddComponent<HitboxComponent>(*bomberman, m_CurrentLevelInfo.HitboxDimension, offset);
-    bomberman->GetComponent<HitboxComponent>()->SetVisibility(false);
+    bomberman->GetComponent<HitboxComponent>()->SetVisibility(m_bShowHitboxes);
     bomberman->GetComponent<HitboxComponent>()->AddObserver(bombermanComp);
 
     // Score Display
@@ -688,7 +688,7 @@ std::shared_ptr<bae::GameObject> LevelManager::GetEnemyBase(const std::string& g
     const glm::vec2 offset = -m_CurrentLevelInfo.HitboxDimension / 2.f;
 
     enemy->AddComponent<HitboxComponent>(*enemy, m_CurrentLevelInfo.HitboxDimension, offset);
-    enemy->GetComponent<HitboxComponent>()->SetVisibility(false);
+    enemy->GetComponent<HitboxComponent>()->SetVisibility(m_bShowHitboxes);
 
     return enemy;
 }
@@ -704,7 +704,7 @@ void LevelManager::SpawnTemporaryWall(const glm::vec2& position)
     const glm::vec2 offset = -m_CurrentLevelInfo.HitboxDimension / 2.f;
 
     temporaryWall->AddComponent<HitboxComponent>(*temporaryWall, m_CurrentLevelInfo.HitboxDimension, offset);
-    temporaryWall->GetComponent<HitboxComponent>()->SetVisibility(false);
+    temporaryWall->GetComponent<HitboxComponent>()->SetVisibility(m_bShowHitboxes);
 
     temporaryWall->AddComponent<TemporaryWallComponent>(*temporaryWall);
 
@@ -722,7 +722,7 @@ void LevelManager::SpawnDoor(const glm::vec2& position)
     const glm::vec2 offset = -m_CurrentLevelInfo.HitboxDimension / 2.f;
 
     door->AddComponent<HitboxComponent>(*door, m_CurrentLevelInfo.HitboxDimension, offset);
-    door->GetComponent<HitboxComponent>()->SetVisibility(false);
+    door->GetComponent<HitboxComponent>()->SetVisibility(m_bShowHitboxes);
 
     door->AddComponent<DoorComponent>(*door);
 
