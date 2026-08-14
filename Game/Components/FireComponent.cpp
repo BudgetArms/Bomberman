@@ -15,8 +15,9 @@
 using namespace Game;
 
 
-FireComponent::FireComponent(bae::GameObject& owner) :
-    Component(owner)
+FireComponent::FireComponent(bae::GameObject& owner, bae::GameObject& instigatorObject) :
+    Component(owner),
+    m_Instigator{ &instigatorObject }
 {
     // Add Sprite
     m_Owner->AddComponent<bae::SpriteComponent>(*m_Owner, m_FireCenterTexturePath, SDL_FRect(0, 0, 32, 16),

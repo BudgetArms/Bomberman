@@ -103,7 +103,7 @@ void BombHandler::PlaceBomb()
     bomb->AddComponent<HitboxComponent>(*bomb, hitboxDimension, offset);
     bomb->GetComponent<HitboxComponent>()->SetVisibility(false);
 
-    bomb->AddComponent<BombComponent>(*bomb);
+    bomb->AddComponent<BombComponent>(*bomb, *m_BombHandlerOwner);
 
     m_PlacedBombs.push_back(bomb.get());
     scene->Add(bomb);

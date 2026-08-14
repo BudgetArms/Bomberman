@@ -10,7 +10,7 @@ namespace Game
     class BombComponent final : public bae::Component, public bae::Subject
     {
     public:
-        explicit BombComponent(bae::GameObject& owner);
+        explicit BombComponent(bae::GameObject& owner, bae::GameObject& instigatorObject);
 
         void Update() override;
 
@@ -25,6 +25,7 @@ namespace Game
         const int m_SpriteNrColumns{ 3 };
 
         bae::SpriteComponent* m_SpriteComponent{};
+        bae::GameObject* m_Instigator;
 
         bool m_bHasExploded{};
         const float m_TimeToExplode{ 2.f };

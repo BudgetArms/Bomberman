@@ -16,9 +16,10 @@
 
 using namespace Game;
 
-BombComponent::BombComponent(bae::GameObject& owner) :
+BombComponent::BombComponent(bae::GameObject& owner, bae::GameObject& instigatorObject) :
     Component(owner),
-    Subject(owner)
+    Subject(owner),
+    m_Instigator{ &instigatorObject }
 {
     m_Owner->AddComponent<bae::SpriteComponent>(*m_Owner, m_TexturePath, SDL_FRect(0, 0, 48, 16),
                                                 m_SpriteNrColumns, m_SpriteNrSprites);
@@ -78,7 +79,7 @@ void BombComponent::SpawnFire()
     fire->SetWorldLocation(position);
     fire->SetWorldScale({ LevelManager::m_GlobalScale, LevelManager::m_GlobalScale });
 
-    fire->AddComponent<FireComponent>(*fire);
+    fire->AddComponent<FireComponent>(*fire, *m_Instigator);
 
     scene->Add(fire);
 }

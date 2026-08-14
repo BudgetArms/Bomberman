@@ -16,7 +16,7 @@ namespace Game
     class FireComponent final : public bae::Component, public bae::Observer
     {
     public:
-        explicit FireComponent(bae::GameObject& owner);
+        explicit FireComponent(bae::GameObject& owner, bae::GameObject& instigatorObject);
 
         void Update() override;
         void Notify(unsigned eventHash, bae::Subject* subject, const std::any& eventData) override;
@@ -39,6 +39,7 @@ namespace Game
         const int m_SpriteNrColumns{ 2 };
 
         bae::SpriteComponent* m_SpriteComponent{};
+        bae::GameObject* m_Instigator;
 
         std::unordered_map<Direction, bae::GameObject*> m_FireObjects{};
 
