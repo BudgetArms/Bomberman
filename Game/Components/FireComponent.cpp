@@ -1,5 +1,7 @@
 #include "FireComponent.hpp"
 
+#include "EnemyComponent.hpp"
+#include "ScoreComponent.hpp"
 #include "TemporaryWallComponent.hpp"
 #include "Base/CommonManagerVariables.hpp"
 #include "Components/SpriteComponent.hpp"
@@ -67,14 +69,14 @@ void FireComponent::Notify(const unsigned eventHash, bae::Subject*, const std::a
     HandleCollision(*otherHitbox);
 }
 
-void FireComponent::HandleCollision(const HitboxComponent& otherHitboxComponent)
+void FireComponent::HandleCollision(const HitboxComponent& otherHitboxComponent) const
 {
-    // Checks and handles it, if it's player
     HandleIfPlayerCollision(otherHitboxComponent);
+    HandleIfEnemyCollision(otherHitboxComponent);
     HandleIfTemporaryWallCollision(otherHitboxComponent);
 }
 
-void FireComponent::HandleIfPlayerCollision(const HitboxComponent& otherHitboxComponent)
+void FireComponent::HandleIfPlayerCollision(const HitboxComponent& otherHitboxComponent) const
 {
     const bae::GameObject* otherGameObject = otherHitboxComponent.GetGameObject();
 
@@ -94,14 +96,36 @@ void FireComponent::HandleIfPlayerCollision(const HitboxComponent& otherHitboxCo
         return nullptr;
     };
 
-    bae::GameObject* playerObject = GetPlayerObject();
+    const bae::GameObject* playerObject = GetPlayerObject();
     if(!playerObject)
     {
         return;
     }
 
-    std::cout << FUNCTION_NAME << " Fire" << '\n';
     playerObject->GetComponent<LifeComponent>()->RemoveLife();
+    m_Owner->GetComponent<HitboxComponent>()->m_bAreCollisionsEnabled = false;
+}
+
+void FireComponent::HandleIfEnemyCollision(const HitboxComponent& otherHitboxComponent) const
+{
+    [[maybe_unused]] const bae::GameObject* otherGameObject = otherHitboxComponent.GetGameObject();
+    [[maybe_unused]] const auto gridComponent               = LevelManager::GetInstance().GetGridComponent();
+
+    if(!m_Instigator || m_Instigator->IsMarkedForDeletion())
+    {
+        return;
+    }
+
+    const auto enemyComp = otherGameObject->GetComponent<EnemyComponent>();
+    if(!enemyComp)
+    {
+        return;
+    }
+
+    const int score = enemyComp->GetScore();
+    m_Instigator->GetComponent<ScoreComponent>()->AddScore(score);
+
+    otherGameObject->GetComponent<LifeComponent>()->RemoveLife();
 }
 
 void FireComponent::HandleIfTemporaryWallCollision(const HitboxComponent& otherHitboxComponent)
@@ -111,7 +135,7 @@ void FireComponent::HandleIfTemporaryWallCollision(const HitboxComponent& otherH
     const bae::Graphs::GridPosition gridPosition = gridComponent->GetGridPosition(otherGameObject->GetWorldLocation());
 
 
-    if(otherGameObject->GetComponent<TemporaryWallComponent>())
+    if(otherGameObject->HasComponent<TemporaryWallComponent>())
     {
         LevelManager::GetInstance().GetGridComponent()->SetNodeType(gridPosition, LevelNodeType::Nothing);
 
