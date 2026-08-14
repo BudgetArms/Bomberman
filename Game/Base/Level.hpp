@@ -53,6 +53,7 @@ namespace Game
     {
         float Speed{};
         float DirectionUpChance{};
+        int Intelligence{};
     };
 
     struct PlayerInfo

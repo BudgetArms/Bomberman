@@ -56,6 +56,7 @@ void Game::from_json(const nlohmann::json& json, LevelInfo& level)
                 {
                     .Speed             = json.at("SharedEnemyInfo").at("Balloom").at("Speed"),
                     .DirectionUpChance = json.at("SharedEnemyInfo").at("Balloom").at("ChangeDirectionUpChance"),
+                    .Intelligence      = json.at("SharedEnemyInfo").at("Balloom").at("Intelligence"),
                 }
             },
             {
@@ -64,6 +65,7 @@ void Game::from_json(const nlohmann::json& json, LevelInfo& level)
                 {
                     .Speed             = json.at("SharedEnemyInfo").at("Oneal").at("Speed"),
                     .DirectionUpChance = json.at("SharedEnemyInfo").at("Oneal").at("ChangeDirectionUpChance"),
+                    .Intelligence      = json.at("SharedEnemyInfo").at("Oneal").at("Intelligence"),
                 }
             },
             {
@@ -72,6 +74,7 @@ void Game::from_json(const nlohmann::json& json, LevelInfo& level)
                 {
                     .Speed             = json.at("SharedEnemyInfo").at("Doll").at("Speed"),
                     .DirectionUpChance = json.at("SharedEnemyInfo").at("Doll").at("ChangeDirectionUpChance"),
+                    .Intelligence      = json.at("SharedEnemyInfo").at("Doll").at("Intelligence"),
                 }
             },
             {
@@ -80,6 +83,7 @@ void Game::from_json(const nlohmann::json& json, LevelInfo& level)
                 {
                     .Speed             = json.at("SharedEnemyInfo").at("Minvo").at("Speed"),
                     .DirectionUpChance = json.at("SharedEnemyInfo").at("Minvo").at("ChangeDirectionUpChance"),
+                    .Intelligence      = json.at("SharedEnemyInfo").at("Minvo").at("Intelligence"),
                 }
             },
         },

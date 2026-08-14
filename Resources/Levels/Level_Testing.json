@@ -46,19 +46,23 @@
   "SharedEnemyInfo": {
     "Balloom": {
       "Speed": 111,
-      "ChangeDirectionUpChance": 0.20
+      "ChangeDirectionUpChance": 0.20,
+      "Intelligence": 1
     },
     "Oneal": {
       "Speed": 222,
-      "ChangeDirectionUpChance": 0.30
+      "ChangeDirectionUpChance": 0.30,
+      "Intelligence": 2
     },
     "Doll": {
       "Speed": 333,
-      "ChangeDirectionUpChance": 0.10
+      "ChangeDirectionUpChance": 0.10,
+      "Intelligence": 1
     },
     "Minvo": {
       "Speed": 444,
-      "ChangeDirectionUpChance": 0.20
+      "ChangeDirectionUpChance": 0.20,
+      "Intelligence": 2
     }
   },
   "EnemyStartPositions": {
