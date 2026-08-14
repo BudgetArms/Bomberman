@@ -113,5 +113,5 @@ void BombHandler::ActivateBomb()
 {
     std::cout << FUNCTION_NAME << '\n';
     const bae::GameObject* oldestBomb = m_PlacedBombs.front();
-    oldestBomb->GetComponent<BombComponent>()->ForceExplode();
+    oldestBomb->GetComponent<BombComponent>()->Explode();
 }

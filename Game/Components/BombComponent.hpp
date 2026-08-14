@@ -14,7 +14,7 @@ namespace Game
 
         void Update() override;
 
-        void ForceExplode();
+        void Explode();
 
     private:
         void SpawnFire();

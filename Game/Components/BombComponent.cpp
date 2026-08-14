@@ -7,8 +7,10 @@
 
 #include "Base/CommonManagerVariables.hpp"
 #include "Base/Events.hpp"
+#include "Base/SoundAssets.hpp"
 #include "Components/FireComponent.hpp"
 #include "Components/HitboxComponent.hpp"
+#include "Core/ServiceLocator.hpp"
 #include "Managers/LevelManager.hpp"
 
 
@@ -22,6 +24,11 @@ BombComponent::BombComponent(bae::GameObject& owner) :
                                                 m_SpriteNrColumns, m_SpriteNrSprites);
 
     m_SpriteComponent = m_Owner->GetComponent<bae::SpriteComponent>();
+
+    // Play BombLay Sound
+    bae::SoundSystem& soundSystem = bae::ServiceLocator::GetSoundSystem();
+    const bae::SoundID soundId    = Game::Sounds::GetSoundId(Sounds::SoundAssets::BombLay);
+    soundSystem.Play(soundId);
 }
 
 void BombComponent::Update()
@@ -34,11 +41,7 @@ void BombComponent::Update()
     m_BombExplosionElapsedTime += bae::GameTime::GetInstance().GetDeltaTime();
     if(m_BombExplosionElapsedTime > m_TimeToExplode)
     {
-        m_bHasExploded = true;
-        SpawnFire();
-
-        NotifyObservers(GetEventHash(Events::BombExplosion));
-        GetOwner()->Destroy();
+        Explode();
         return;
     }
 
@@ -51,10 +54,15 @@ void BombComponent::Update()
     }
 }
 
-void BombComponent::ForceExplode()
+void BombComponent::Explode()
 {
     m_bHasExploded = true;
     SpawnFire();
+
+    // Play BombExplosion Sound
+    bae::SoundSystem& soundSystem = bae::ServiceLocator::GetSoundSystem();
+    const bae::SoundID soundId    = Game::Sounds::GetSoundId(Sounds::SoundAssets::BombExplosion);
+    soundSystem.Play(soundId);
 
     NotifyObservers(GetEventHash(Events::BombExplosion));
     GetOwner()->Destroy();

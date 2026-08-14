@@ -79,11 +79,9 @@ void BombermanDyingState::OnEnter()
     }
 
     // Play Dying Sound
-    bae::SoundSystem& soundSystem   = bae::ServiceLocator::GetSoundSystem();
-    const bae::SoundID startSoundID = Game::Sounds::GetSoundId(Sounds::SoundAssets::BombermanKilled);
-
-    const bae::ActiveSoundID playingSoundID = soundSystem.Play(startSoundID);
-    soundSystem.SetVolume(playingSoundID, 1.f);
+    bae::SoundSystem& soundSystem = bae::ServiceLocator::GetSoundSystem();
+    const bae::SoundID soundId    = Game::Sounds::GetSoundId(Sounds::SoundAssets::BombermanKilled);
+    soundSystem.Play(soundId);
 }
 
 void BombermanDyingState::OnExit()

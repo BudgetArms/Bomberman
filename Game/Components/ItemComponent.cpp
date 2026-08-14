@@ -90,9 +90,10 @@ void ItemComponent::HandleCollision(const HitboxComponent& otherHitboxComponent)
             break;
     }
 
-    bae::SoundSystem& soundSystem   = bae::ServiceLocator::GetSoundSystem();
-    const bae::SoundID startSoundID = Game::Sounds::GetSoundId(Sounds::SoundAssets::PowerUp);
-    soundSystem.Play(startSoundID);
+    // Play Powerup Sound
+    bae::SoundSystem& soundSystem = bae::ServiceLocator::GetSoundSystem();
+    const bae::SoundID soundId    = Game::Sounds::GetSoundId(Sounds::SoundAssets::PowerUp);
+    soundSystem.Play(soundId);
 
     const auto scoreMap = levelManager.GetScoreMap();
     const int itemScore = scoreMap.at(ScoreType::Pickup);
