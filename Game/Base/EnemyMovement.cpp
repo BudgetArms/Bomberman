@@ -54,7 +54,7 @@ void EnemyMovement::Update()
 
 void EnemyMovement::ChooseDirection()
 {
-    if(m_Intelligence < m_IntelligenceTresshold)
+    if(m_Intelligence < m_IntelligenceThreshold)
     {
         ChooseRandomDirection();
         return;

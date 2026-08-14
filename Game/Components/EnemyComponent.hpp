@@ -33,8 +33,6 @@ namespace Game
         MovementGridComponent* m_MovementGridComponent{};
 
         EnemyType m_EnemyType;
-
-        bool m_bIsDying{ false };
     };
 }
 

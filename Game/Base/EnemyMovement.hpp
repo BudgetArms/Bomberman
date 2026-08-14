@@ -40,7 +40,7 @@ namespace Game
         bae::GameObject* m_Owner;
         MovementGridComponent* m_MovementComponent{};
 
-        const int m_IntelligenceTresshold{ 2 };
+        const int m_IntelligenceThreshold{ 2 };
         int m_Intelligence{};
 
         Direction m_CurrentDirection{ Direction::Right };
