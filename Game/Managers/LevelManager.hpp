@@ -99,11 +99,8 @@ namespace Game
         void SpawnItems();
 
 
-        std::shared_ptr<bae::GameObject> GetBombermanBase(const std::string& gameObjectName,
-                                                          const glm::vec2& spawnPosition);
-
-        std::shared_ptr<bae::GameObject> GetEnemyBase(const std::string& gameObjectName,
-                                                      const glm::vec2& spawnPosition);
+        std::shared_ptr<bae::GameObject> GetBombermanBase(const glm::vec2& spawnPosition, PlayerType playerType);
+        std::shared_ptr<bae::GameObject> GetEnemyBase(const glm::vec2& spawnPosition, EnemyType enemyType);
 
         void SpawnTemporaryWall(const glm::vec2& position);
         void SpawnDoor(const glm::vec2& position);
@@ -142,6 +139,7 @@ namespace Game
         bool m_bHasBombRemoteControl{};
         bae::GameObject* m_Bomberman{};
         bae::GameObject* m_Bombermiss{};
+        bae::GameObject* m_BalloomPlayer{};
 
         std::unordered_map<bae::GameObject*, EnemyType> m_Enemies{};
 

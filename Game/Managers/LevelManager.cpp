@@ -32,6 +32,7 @@
 #include "Commands/ToggleMuteSoundsCommand.hpp"
 #include "Components/BombermanComponent.hpp"
 #include "Components/DoorComponent.hpp"
+#include "Components/EnemyComponent.hpp"
 #include "Components/HitboxComponent.hpp"
 #include "Components/ItemComponent.hpp"
 #include "Components/LifeComponent.hpp"
@@ -238,7 +239,6 @@ void LevelManager::Notify(const unsigned eventHash, bae::Subject* subject, const
 {
     if(GetEvent(eventHash) == Events::PlayerDied)
     {
-        std::cout << FUNCTION_NAME << '\t';
         if(subject->GetGameObject() == m_Bomberman ||
             subject->GetGameObject() == m_Bombermiss)
         {
@@ -421,7 +421,12 @@ void LevelManager::SpawnBomberman()
 
     const glm::vec2 spawnPosition = ToPosition(m_CurrentLevelInfo.BombermanInfo.StartPosition);
 
-    const auto bomberman = GetBombermanBase("Bomberman", spawnPosition);
+
+    const auto bomberman = GetBombermanBase(spawnPosition, PlayerType::Bomberman);
+
+    // Sprite
+    bomberman->AddComponent<bae::SpriteComponent>(*bomberman, "Textures/Characters/Bomberman.png",
+                                                  SDL_FRect(0, 0, 32, 16), 2, 1);
 
     // Observer
     bomberman->GetComponent<BombermanComponent>()->AddObserver(this);
@@ -458,7 +463,11 @@ void LevelManager::SpawnBombermiss()
 
     const glm::vec2 spawnPosition = ToPosition(m_CurrentLevelInfo.BombermissInfo.StartPosition);
 
-    const auto bombermiss = GetBombermanBase("Bombermiss", spawnPosition);
+    const auto bombermiss = GetBombermanBase(spawnPosition, PlayerType::Bombermiss);
+
+    // Sprite
+    bombermiss->AddComponent<bae::SpriteComponent>(*bombermiss, "Textures/Characters/Bombermiss.png",
+                                                   SDL_FRect(0, 0, 32, 16), 2, 1);
 
     // Observer
     bombermiss->GetComponent<BombermanComponent>()->AddObserver(this);
@@ -491,16 +500,23 @@ void LevelManager::SpawnBalloomPlayer()
 
     const glm::vec2 spawnPosition = ToPosition(m_CurrentLevelInfo.BalloomPlayerInfo.StartPosition);
 
-    const auto balloom = GetEnemyBase("Balloom Player", spawnPosition);
-    balloom->AddComponent<bae::SpriteComponent>(*balloom, "Textures/Characters/Enemies.png",
-                                                SDL_FRect(0, 0, 32, 16), 2, 1);
+    const auto balloomPlayer = GetEnemyBase(spawnPosition, EnemyType::BalloomPlayer);
 
-    m_Enemies.insert({ balloom.get(), EnemyType::BalloomPlayer });
+    // Sprite
+    balloomPlayer->AddComponent<bae::SpriteComponent>(*balloomPlayer, "Textures/Characters/Enemies.png",
+                                                      SDL_FRect(0, 0, 32, 16), 2, 1);
+
+    m_Enemies.insert({ balloomPlayer.get(), EnemyType::BalloomPlayer });
+
+    m_BalloomPlayer = balloomPlayer.get();
+
+    // Observer
+    balloomPlayer->GetComponent<EnemyComponent>()->AddObserver(this);
 
     // Controls
-    AddControls(*balloom, false, true);
+    AddControls(*balloomPlayer, false, true);
 
-    scene->Add(balloom);
+    scene->Add(balloomPlayer);
 }
 
 
@@ -508,7 +524,9 @@ void LevelManager::SpawnBalloom(const glm::vec2& position)
 {
     bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
 
-    const auto balloom = GetEnemyBase("Balloom", position);
+    const auto balloom = GetEnemyBase(position, EnemyType::Balloom);
+
+    // Sprite
     balloom->AddComponent<bae::SpriteComponent>(*balloom, "Textures/Characters/Enemies.png",
                                                 SDL_FRect(0, 0, 32, 16), 2, 1);
 
@@ -521,7 +539,9 @@ void LevelManager::SpawnOneal(const glm::vec2& position)
 {
     bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
 
-    const auto oneal = GetEnemyBase("Oneal", position);
+    const auto oneal = GetEnemyBase(position, EnemyType::Oneal);
+
+    // Sprite
     oneal->AddComponent<bae::SpriteComponent>(*oneal, "Textures/Characters/Enemies.png",
                                               SDL_FRect(0, 16, 32, 16), 2, 1);
 
@@ -533,7 +553,9 @@ void LevelManager::SpawnDoll(const glm::vec2& position)
 {
     bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
 
-    const auto doll = GetEnemyBase("Doll", position);
+    const auto doll = GetEnemyBase(position, EnemyType::Doll);
+
+    // Sprite
     doll->AddComponent<bae::SpriteComponent>(*doll, "Textures/Characters/Enemies.png",
                                              SDL_FRect(0, 32, 32, 16), 2, 1);
 
@@ -545,7 +567,9 @@ void LevelManager::SpawnMinvo(const glm::vec2& position)
 {
     bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
 
-    const auto minvo = GetEnemyBase("Minvo", position);
+    const auto minvo = GetEnemyBase(position, EnemyType::Minvo);
+
+    // Sprite
     minvo->AddComponent<bae::SpriteComponent>(*minvo, "Textures/Characters/Enemies.png",
                                               SDL_FRect(0, 48, 32, 16), 2, 1);
 
@@ -640,9 +664,20 @@ void LevelManager::SpawnItems()
 }
 
 
-std::shared_ptr<bae::GameObject> LevelManager::GetBombermanBase(const std::string& gameObjectName,
-                                                                const glm::vec2& spawnPosition)
+std::shared_ptr<bae::GameObject> LevelManager::GetBombermanBase(const glm::vec2& spawnPosition, PlayerType playerType)
 {
+    // Get Player Name
+    std::string gameObjectName{};
+    switch(playerType)
+    {
+        case PlayerType::Bomberman:
+            gameObjectName = "Bomberman";
+            break;
+        case PlayerType::Bombermiss:
+            gameObjectName = "Bombermiss";
+            break;
+    }
+
     const auto bomberman = std::make_shared<bae::GameObject>(gameObjectName);
     bomberman->SetWorldLocation(spawnPosition);
     bomberman->SetWorldScale({ m_GlobalScale, m_GlobalScale });
@@ -650,8 +685,8 @@ std::shared_ptr<bae::GameObject> LevelManager::GetBombermanBase(const std::strin
     bomberman->AddComponent<BombermanComponent>(*bomberman);
     const auto bombermanComp = bomberman->GetComponent<BombermanComponent>();
 
+    // Hitbox
     const glm::vec2 offset = -m_CurrentLevelInfo.HitboxDimension / 2.f;
-
     bomberman->AddComponent<HitboxComponent>(*bomberman, m_CurrentLevelInfo.HitboxDimension, offset);
     bomberman->GetComponent<HitboxComponent>()->SetVisibility(m_bShowHitboxes);
     bomberman->GetComponent<HitboxComponent>()->AddObserver(bombermanComp);
@@ -677,15 +712,38 @@ std::shared_ptr<bae::GameObject> LevelManager::GetBombermanBase(const std::strin
 }
 
 
-std::shared_ptr<bae::GameObject> LevelManager::GetEnemyBase(const std::string& gameObjectName,
-                                                            const glm::vec2& spawnPosition)
+std::shared_ptr<bae::GameObject> LevelManager::GetEnemyBase(const glm::vec2& spawnPosition, const EnemyType enemyType)
 {
+    // Get Enemy Name
+    std::string gameObjectName{};
+    switch(enemyType)
+    {
+        case EnemyType::Balloom:
+            gameObjectName = "Balloom";
+            break;
+        case EnemyType::Oneal:
+            gameObjectName = "Oneal";
+            break;
+        case EnemyType::Doll:
+            gameObjectName = "Doll";
+            break;
+        case EnemyType::Minvo:
+            gameObjectName = "Minvo";
+            break;
+        case EnemyType::BalloomPlayer:
+            gameObjectName = "Balloom Player";
+            break;
+    }
+
+
     const auto enemy = std::make_shared<bae::GameObject>(gameObjectName);
     enemy->SetWorldLocation(spawnPosition);
     enemy->SetWorldScale({ m_GlobalScale, m_GlobalScale });
 
-    const glm::vec2 offset = -m_CurrentLevelInfo.HitboxDimension / 2.f;
+    enemy->AddComponent<EnemyComponent>(*enemy, enemyType);
 
+    // Hitbox
+    const glm::vec2 offset = -m_CurrentLevelInfo.HitboxDimension / 2.f;
     enemy->AddComponent<HitboxComponent>(*enemy, m_CurrentLevelInfo.HitboxDimension, offset);
     enemy->GetComponent<HitboxComponent>()->SetVisibility(m_bShowHitboxes);
 
