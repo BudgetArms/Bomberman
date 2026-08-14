@@ -105,9 +105,15 @@ void FireComponent::HandleIfPlayerCollision(const HitboxComponent& otherHitboxCo
 
 void FireComponent::HandleIfTemporaryWallCollision(const HitboxComponent& otherHitboxComponent)
 {
-    bae::GameObject* otherGameObject = otherHitboxComponent.GetGameObject();
+    bae::GameObject* otherGameObject             = otherHitboxComponent.GetGameObject();
+    const auto gridComponent                     = LevelManager::GetInstance().GetGridComponent();
+    const bae::Graphs::GridPosition gridPosition = gridComponent->GetGridPosition(otherGameObject->GetWorldLocation());
+
+
     if(otherGameObject->GetComponent<TemporaryWallComponent>())
     {
+        LevelManager::GetInstance().GetGridComponent()->SetNodeType(gridPosition, LevelNodeType::Nothing);
+
         otherGameObject->Destroy();
     }
 }

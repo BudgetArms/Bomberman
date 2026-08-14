@@ -6,6 +6,10 @@
 
 #include "Components/SpriteComponent.hpp"
 
+// Notes:
+// I previously wrote the node clearing in the temporary wall component,
+// but then I had to fix LevelManager::RestartLevel only getting called after the components were destroy,
+// and the code looked a bit messy, due to the flag, so I removed it
 
 namespace Game
 {
