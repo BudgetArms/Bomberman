@@ -1,5 +1,6 @@
 #include "EnemyComponent.hpp"
 
+#include "LifeComponent.hpp"
 #include "Base/Events.hpp"
 #include "Managers/LevelManager.hpp"
 #include "States/Entities/EnemyStates.hpp"
@@ -13,9 +14,8 @@ EnemyComponent::EnemyComponent(bae::GameObject& owner, const EnemyType enemyType
     Subject(owner),
     m_EnemyType{ enemyType }
 {
-    m_SpriteComponent       = m_Owner->GetComponent<bae::SpriteComponent>();
-    m_MovementGridComponent = m_Owner->GetComponent<MovementGridComponent>();
-
+    // Life
+    m_Owner->AddComponent<LifeComponent>(*m_Owner, 1, 3.f);
 
     m_State = std::make_unique<States::EnemyAliveState>(*m_Owner);
 
@@ -50,6 +50,14 @@ void EnemyComponent::FixedUpdate()
     UpdateToNewState(m_State->Update());
 }
 
+
+void EnemyComponent::SetSpriteAndGridComponent()
+{
+    m_SpriteComponent       = m_Owner->GetComponent<bae::SpriteComponent>();
+    m_MovementGridComponent = m_Owner->GetComponent<MovementGridComponent>();
+}
+
+
 EnemyType EnemyComponent::GetType() const
 {
     return m_EnemyType;
@@ -57,6 +65,12 @@ EnemyType EnemyComponent::GetType() const
 
 int EnemyComponent::GetScore() const
 {
+    const bool bIsEnemyAlive = static_cast<States::EnemyAliveState*>(m_State.get());
+    if(!bIsEnemyAlive)
+    {
+        return 0;
+    }
+
     std::unordered_map<ScoreType, int> scoreMap = LevelManager::GetInstance().GetScoreMap();
     switch(m_EnemyType)
     {

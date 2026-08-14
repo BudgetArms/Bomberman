@@ -18,6 +18,10 @@ namespace Game
         void FixedUpdate() override;
 
 
+        void SetSpriteAndGridComponent();
+
+        void Kill();
+
         [[nodiscard]] EnemyType GetType() const;
         [[nodiscard]] int GetScore() const;
 
@@ -31,6 +35,8 @@ namespace Game
         MovementGridComponent* m_MovementGridComponent{};
 
         EnemyType m_EnemyType;
+
+        bool m_bIsDying{ false };
     };
 }
 
