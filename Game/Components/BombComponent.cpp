@@ -79,14 +79,6 @@ void BombComponent::SpawnFire()
     fire->SetWorldScale({ LevelManager::m_GlobalScale, LevelManager::m_GlobalScale });
 
     fire->AddComponent<FireComponent>(*fire);
-    const auto fireComp = fire->GetComponent<FireComponent>();
-
-    const glm::vec2 hitboxDimension = LevelManager::GetInstance().GetHitboxDimension();
-    const glm::vec2 offset          = -hitboxDimension / 2.f;
-
-    fire->AddComponent<HitboxComponent>(*fire, hitboxDimension, offset);
-    fire->GetComponent<HitboxComponent>()->SetVisibility(false);
-    fire->GetComponent<HitboxComponent>()->AddObserver(fireComp);
 
     scene->Add(fire);
 }

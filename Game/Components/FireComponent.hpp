@@ -21,6 +21,8 @@ namespace Game
     private:
         void HandleCollision(const HitboxComponent& otherHitboxComponent);
 
+        void AddFireChild(Direction directionFire, int childFireRange);
+
 
         const std::string m_FireCenterTexturePath{ "Textures/Items/FireCenter.png" };
         const std::string m_FireTexturePath{ "Textures/Items/Fire.png" };
@@ -31,6 +33,9 @@ namespace Game
 
         std::unordered_map<Direction, bae::GameObject*> m_FireObjects{};
 
+        // Todo: this should be gotten from level manager but time constraint
+        const float m_GridSize{ 32.f };
+        const glm::vec2 m_HitboxDimension{ 30.f, 30.f };
         const float m_FireDuration{ 1.f };
         float m_ElapsedTime{};
     };

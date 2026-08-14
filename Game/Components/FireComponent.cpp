@@ -1,10 +1,12 @@
 #include "FireComponent.hpp"
 
-#include "Core/Subject.hpp"
+#include "Base/CommonManagerVariables.hpp"
 #include "Components/SpriteComponent.hpp"
+#include "Core/Subject.hpp"
 
 #include "Base/Events.hpp"
 #include "Components/LifeComponent.hpp"
+#include "Core/Scene.hpp"
 #include "Managers/LevelManager.hpp"
 #include "Singletons/GameTime.hpp"
 
@@ -19,6 +21,19 @@ FireComponent::FireComponent(bae::GameObject& owner) :
                                                 m_SpriteNrColumns, m_SpriteNrSprites);
 
     m_SpriteComponent = m_Owner->GetComponent<bae::SpriteComponent>();
+
+    // Add Hitbox
+    const glm::vec2 offset = -m_HitboxDimension / 2.f;
+    m_Owner->AddComponent<HitboxComponent>(*m_Owner, m_HitboxDimension, offset);
+    m_Owner->GetComponent<HitboxComponent>()->AddObserver(this);
+
+
+    [[maybe_unused]] int fireRange = LevelManager::GetInstance().GetBombFireRange();
+
+    AddFireChild(Direction::Up, 1);
+    AddFireChild(Direction::Down, 1);
+    AddFireChild(Direction::Left, 1);
+    AddFireChild(Direction::Right, 1);
 }
 
 void FireComponent::Update()
@@ -80,4 +95,47 @@ void FireComponent::HandleCollision(const HitboxComponent& otherHitboxComponent)
 
     std::cout << FUNCTION_NAME << " Fire" << '\n';
     playerObject->GetComponent<LifeComponent>()->RemoveLife();
+}
+
+void FireComponent::AddFireChild(const Direction directionFire, const int childFireRange)
+{
+    if(childFireRange == 0)
+    {
+        std::cout << FUNCTION_NAME << " Failed, child Fire Range shouldn't be 0" << '\n';
+        return;
+    }
+
+    const auto childFire = std::make_shared<bae::GameObject>("Child Fire");
+
+    // Add Sprite
+    childFire->AddComponent<bae::SpriteComponent>(*childFire, m_FireTexturePath, SDL_FRect(0, 0, 32, 16),
+                                                  m_SpriteNrColumns, m_SpriteNrSprites);
+
+    // Add Hitbox
+    const glm::vec2 offset = -m_HitboxDimension / 2.f;
+    childFire->AddComponent<HitboxComponent>(*childFire, m_HitboxDimension, offset);
+    childFire->GetComponent<HitboxComponent>()->AddObserver(this);
+
+    switch(directionFire)
+    {
+        case Direction::Right:
+            childFire->SetLocalLocation({ childFireRange * m_GridSize, 0.f });
+            break;
+        case Direction::Left:
+            childFire->SetLocalLocation({ -childFireRange * m_GridSize, 0.f });
+            break;
+        case Direction::Up:
+            childFire->SetLocalRotation(90.f);
+            childFire->SetLocalLocation({ 0.f, -childFireRange * m_GridSize });
+            break;
+        case Direction::Down:
+            childFire->SetLocalRotation(90.f);
+            childFire->SetLocalLocation({ 0.f, childFireRange * m_GridSize });
+            break;
+    }
+
+    m_Owner->AttachChild(childFire.get(), false, false, false);
+
+    bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelBackgroundName.data());
+    scene->Add(childFire);
 }
