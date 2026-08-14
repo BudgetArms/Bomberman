@@ -1,10 +1,13 @@
 #include "EnemyStates.hpp"
 
+#include <unordered_map>
+
 #include "Components/SpriteComponent.hpp"
 #include "Core/ServiceLocator.hpp"
 #include "Singletons/GameTime.hpp"
 
 #include "Base/Events.hpp"
+#include "Components/EnemyComponent.hpp"
 #include "Components/HitboxComponent.hpp"
 #include "Components/LifeComponent.hpp"
 #include "Components/MovementGridComponent.hpp"
@@ -17,11 +20,14 @@ using namespace Game::States;
 EnemyAliveState::EnemyAliveState(bae::GameObject& owner) :
     EntityState(owner)
 {
-    float m_Speed                   = 100.f;
-    int m_Intelligence              = 1;
-    float m_ChangeDirectionUpChance = 0.20f;
+    const std::unordered_map<EnemyType, SharedEnemyInfo> sharedEnemyInfo
+            = LevelManager::GetInstance().GetEnemySharedInfo();
 
-    m_EnemyMovement = std::make_unique<EnemyMovement>(owner, m_Speed, m_Intelligence, m_ChangeDirectionUpChance);
+    const EnemyType enemyType        = m_Owner->GetComponent<EnemyComponent>()->GetType();
+    const SharedEnemyInfo& enemyInfo = sharedEnemyInfo.at(enemyType);
+
+    m_EnemyMovement = std::make_unique<EnemyMovement>(owner, enemyInfo.Speed, enemyInfo.Intelligence,
+                                                      enemyInfo.DirectionUpChance);
 }
 
 void EnemyAliveState::OnEnter()
