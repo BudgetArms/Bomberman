@@ -73,7 +73,6 @@ void ItemComponent::HandleCollision(const HitboxComponent& otherHitboxComponent)
         return;
     }
 
-    std::cout << FUNCTION_NAME << " YESSS" << '\n';
     m_bHasBeenPickedUp                                                   = true;
     GetOwner()->GetComponent<HitboxComponent>()->m_bAreCollisionsEnabled = false;
 

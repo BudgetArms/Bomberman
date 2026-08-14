@@ -39,7 +39,7 @@ void BombHandler::TryPlaceBomb()
         return;
     }
 
-    if(m_PlacedBombs.size() >= LevelManager::GetInstance().GetNrBombsAllowContinuously())
+    if(static_cast<int>(m_PlacedBombs.size()) >= LevelManager::GetInstance().GetNrBombsAllowContinuously())
     {
         return;
     }
@@ -111,7 +111,6 @@ void BombHandler::PlaceBomb()
 
 void BombHandler::ActivateBomb()
 {
-    std::cout << FUNCTION_NAME << '\n';
     const bae::GameObject* oldestBomb = m_PlacedBombs.front();
     oldestBomb->GetComponent<BombComponent>()->Explode();
 }

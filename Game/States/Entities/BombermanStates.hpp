@@ -1,7 +1,9 @@
 #pragma once
-#include "EntityState.hpp"
-#include "Base/BombHandler.hpp"
+
 #include "Core/Observer.hpp"
+
+#include "Base/BombHandler.hpp"
+#include "States/Entities/EntityState.hpp"
 
 
 namespace Game::States
