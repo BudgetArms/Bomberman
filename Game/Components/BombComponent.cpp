@@ -75,11 +75,11 @@ void BombComponent::SpawnFire()
 
     const glm::vec2 position = GetOwner()->GetWorldLocation();
 
-    const auto fire = std::make_shared<bae::GameObject>("Fire");
+    auto fire = std::make_unique<bae::GameObject>("Fire");
     fire->SetWorldLocation(position);
     fire->SetWorldScale({ LevelManager::m_GlobalScale, LevelManager::m_GlobalScale });
 
     fire->AddComponent<FireComponent>(*fire, *m_Instigator);
 
-    scene->Add(fire);
+    scene->Add(std::move(fire));
 }

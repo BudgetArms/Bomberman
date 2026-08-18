@@ -153,7 +153,7 @@ void FireComponent::AddFireChild(const Direction directionFire, const int childF
         return;
     }
 
-    const auto childFire = std::make_shared<bae::GameObject>("Child Fire");
+    auto childFire = std::make_unique<bae::GameObject>("Child Fire");
 
     // Add Sprite
     childFire->AddComponent<bae::SpriteComponent>(*childFire, m_FireTexturePath, SDL_FRect(0, 0, 32, 16),
@@ -185,7 +185,7 @@ void FireComponent::AddFireChild(const Direction directionFire, const int childF
     m_Owner->AttachChild(childFire.get(), false, false, false);
 
     bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelBackgroundName.data());
-    scene->Add(childFire);
+    scene->Add(std::move(childFire));
 }
 
 void FireComponent::AddFireChildren()

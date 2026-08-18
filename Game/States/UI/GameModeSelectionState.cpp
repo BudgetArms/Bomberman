@@ -37,15 +37,16 @@ void GameModeSelectionState::OnEnter()
 
     const bae::WindowSize windowSize = bae::Renderer::GetInstance().GetSDLWindowSize();
 
-    const auto gameModeSelectionObject = std::make_shared<bae::GameObject>("GameMode Selection");
+    auto gameModeSelectionObject = std::make_unique<bae::GameObject>("GameMode Selection");
     gameModeSelectionObject->SetWorldLocation({
         static_cast<float>(windowSize.Width) / 2.f, static_cast<float>(windowSize.Height) / 2.f
     });
 
-    const auto singlePlayerObject = std::make_shared<bae::GameObject>("SinglePlayer");
-    const auto coOpObject         = std::make_shared<bae::GameObject>("CoOp");
-    const auto versusObject       = std::make_shared<bae::GameObject>("Versus");
-    const auto backObject         = std::make_shared<bae::GameObject>("Back");
+
+    auto singlePlayerObject = std::make_unique<bae::GameObject>("SinglePlayer");
+    auto coOpObject         = std::make_unique<bae::GameObject>("CoOp");
+    auto versusObject       = std::make_unique<bae::GameObject>("Versus");
+    auto backObject         = std::make_unique<bae::GameObject>("Back");
 
     constexpr float verticalPadding = 200.f;
 
@@ -60,7 +61,7 @@ void GameModeSelectionState::OnEnter()
     gameModeSelectionObject->AttachChild(versusObject.get(), false);
     gameModeSelectionObject->AttachChild(backObject.get(), false);
 
-    const auto textFont = bae::ResourceManager::GetInstance().LoadFont("Fonts/JoystixMonospace.otf", 32);
+    auto textFont = bae::ResourceManager::GetInstance().LoadFont("Fonts/JoystixMonospace.otf", 32);
     singlePlayerObject->AddComponent<bae::TextComponent>(*singlePlayerObject, "SinglePlayer", textFont);
     coOpObject->AddComponent<bae::TextComponent>(*coOpObject, "Co-Op", textFont);
     versusObject->AddComponent<bae::TextComponent>(*versusObject, "Versus", textFont);
@@ -79,7 +80,7 @@ void GameModeSelectionState::OnEnter()
     m_SelectorPositions[2] = { m_SelectorXPosition, versusObject->GetWorldLocation().y + m_SelectorYOffset };
     m_SelectorPositions[3] = { m_SelectorXPosition, backObject->GetWorldLocation().y + m_SelectorYOffset };
 
-    const auto selectorObject = std::make_shared<bae::GameObject>("Selector Object");
+    auto selectorObject = std::make_unique<bae::GameObject>("Selector Object");
     selectorObject->AddComponent<bae::TextureComponent>(*selectorObject, "Textures/Misc/Selector.png");
     selectorObject->SetWorldScale({ 4.f, 4.f });
 
@@ -87,13 +88,13 @@ void GameModeSelectionState::OnEnter()
     UpdateSelectorPosition();
 
     // Add Objects to Scene
-    gameModeSelectionScene->Add(gameModeSelectionObject);
-    gameModeSelectionScene->Add(singlePlayerObject);
-    gameModeSelectionScene->Add(coOpObject);
-    gameModeSelectionScene->Add(versusObject);
-    gameModeSelectionScene->Add(backObject);
+    gameModeSelectionScene->Add(std::move(gameModeSelectionObject));
+    gameModeSelectionScene->Add(std::move(singlePlayerObject));
+    gameModeSelectionScene->Add(std::move(coOpObject));
+    gameModeSelectionScene->Add(std::move(versusObject));
+    gameModeSelectionScene->Add(std::move(backObject));
 
-    gameModeSelectionScene->Add(selectorObject);
+    gameModeSelectionScene->Add(std::move(selectorObject));
 }
 
 void GameModeSelectionState::OnExit()

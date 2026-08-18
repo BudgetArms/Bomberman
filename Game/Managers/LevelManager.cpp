@@ -427,14 +427,14 @@ void LevelManager::CreateGrid()
 
     const GridInfo gridInfo = m_CurrentLevelInfo.GridInfo;
 
-    const auto gridObject = std::make_shared<bae::GameObject>("Grid Object");
+    auto gridObject = std::make_unique<bae::GameObject>("Grid Object");
     gridObject->SetWorldLocation(gridInfo.Offset);
 
     gridObject->AddComponent<GridComponent>(*gridObject, gridInfo.NrColumns, gridInfo.NrRows, gridInfo.CellSize);
 
     m_GridComponent = gridObject->GetComponent<GridComponent>();
 
-    backgroundScene->Add(gridObject);
+    backgroundScene->Add(std::move(gridObject));
 }
 
 void LevelManager::AddPermanentWalls() const
@@ -463,8 +463,8 @@ void LevelManager::SpawnBomberman()
     const glm::vec2 spawnPosition = ToPosition(m_CurrentLevelInfo.BombermanInfo.StartPosition);
 
 
-    const auto bomberman = GetBombermanBase(spawnPosition, PlayerType::Bomberman);
-    m_Bomberman          = bomberman.get();
+    auto bomberman = GetBombermanBase(spawnPosition, PlayerType::Bomberman);
+    m_Bomberman    = bomberman.get();
 
     // Sprite
     bomberman->AddComponent<bae::SpriteComponent>(*bomberman, "Textures/Characters/Bomberman.png",
@@ -497,7 +497,7 @@ void LevelManager::SpawnBomberman()
     auto command = std::make_unique<ForceDamageCommand>(*bomberman);
     keyboard.AddKeyboardCommands(std::move(command), SDLK_6, bae::InputManager::ButtonState::Down);
 
-    scene->Add(bomberman);
+    scene->Add(std::move(bomberman));
 }
 
 void LevelManager::SpawnBombermiss()
@@ -506,8 +506,8 @@ void LevelManager::SpawnBombermiss()
 
     const glm::vec2 spawnPosition = ToPosition(m_CurrentLevelInfo.BombermissInfo.StartPosition);
 
-    const auto bombermiss = GetBombermanBase(spawnPosition, PlayerType::Bombermiss);
-    m_Bombermiss          = bombermiss.get();
+    auto bombermiss = GetBombermanBase(spawnPosition, PlayerType::Bombermiss);
+    m_Bombermiss    = bombermiss.get();
 
     // Sprite
     bombermiss->AddComponent<bae::SpriteComponent>(*bombermiss, "Textures/Characters/Bombermiss.png",
@@ -534,7 +534,7 @@ void LevelManager::SpawnBombermiss()
     // Controls
     AddControls(*bombermiss, false);
 
-    scene->Add(bombermiss);
+    scene->Add(std::move(bombermiss));
 }
 
 void LevelManager::SpawnBalloomPlayer()
@@ -543,7 +543,7 @@ void LevelManager::SpawnBalloomPlayer()
 
     const glm::vec2 spawnPosition = ToPosition(m_CurrentLevelInfo.BalloomPlayerInfo.StartPosition);
 
-    const auto balloomPlayer = GetEnemyBase(spawnPosition, EnemyType::BalloomPlayer);
+    auto balloomPlayer = GetEnemyBase(spawnPosition, EnemyType::BalloomPlayer);
     m_Enemies.insert({ balloomPlayer.get(), EnemyType::BalloomPlayer });
     m_BalloomPlayer = balloomPlayer.get();
 
@@ -558,7 +558,7 @@ void LevelManager::SpawnBalloomPlayer()
     AddControls(*balloomPlayer, false, true);
 
 
-    scene->Add(balloomPlayer);
+    scene->Add(std::move(balloomPlayer));
 }
 
 
@@ -566,7 +566,7 @@ void LevelManager::SpawnBalloom(const glm::vec2& position)
 {
     bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
 
-    const auto balloom = GetEnemyBase(position, EnemyType::Balloom);
+    auto balloom = GetEnemyBase(position, EnemyType::Balloom);
     m_Enemies.insert({ balloom.get(), EnemyType::Balloom });
 
     // Sprite
@@ -579,14 +579,14 @@ void LevelManager::SpawnBalloom(const glm::vec2& position)
     // Set Sprite & Grid
     balloom->GetComponent<EnemyComponent>()->SetSpriteAndGridComponent();
 
-    scene->Add(balloom);
+    scene->Add(std::move(balloom));
 }
 
 void LevelManager::SpawnOneal(const glm::vec2& position)
 {
     bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
 
-    const auto oneal = GetEnemyBase(position, EnemyType::Oneal);
+    auto oneal = GetEnemyBase(position, EnemyType::Oneal);
     m_Enemies.insert({ oneal.get(), EnemyType::Oneal });
 
     // Sprite
@@ -599,14 +599,14 @@ void LevelManager::SpawnOneal(const glm::vec2& position)
     // Set Sprite & Grid
     oneal->GetComponent<EnemyComponent>()->SetSpriteAndGridComponent();
 
-    scene->Add(oneal);
+    scene->Add(std::move(oneal));
 }
 
 void LevelManager::SpawnDoll(const glm::vec2& position)
 {
     bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
 
-    const auto doll = GetEnemyBase(position, EnemyType::Doll);
+    auto doll = GetEnemyBase(position, EnemyType::Doll);
     m_Enemies.insert({ doll.get(), EnemyType::Doll });
 
     // Sprite
@@ -619,14 +619,14 @@ void LevelManager::SpawnDoll(const glm::vec2& position)
     // Set Sprite & Grid
     doll->GetComponent<EnemyComponent>()->SetSpriteAndGridComponent();
 
-    scene->Add(doll);
+    scene->Add(std::move(doll));
 }
 
 void LevelManager::SpawnMinvo(const glm::vec2& position)
 {
     bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelSceneName.data());
 
-    const auto minvo = GetEnemyBase(position, EnemyType::Minvo);
+    auto minvo = GetEnemyBase(position, EnemyType::Minvo);
     m_Enemies.insert({ minvo.get(), EnemyType::Minvo });
 
     // Sprite
@@ -639,14 +639,14 @@ void LevelManager::SpawnMinvo(const glm::vec2& position)
     // Set Sprite & Grid
     minvo->GetComponent<EnemyComponent>()->SetSpriteAndGridComponent();
 
-    scene->Add(minvo);
+    scene->Add(std::move(minvo));
 }
 
 void LevelManager::SpawnItem(const glm::vec2& position, const ItemType itemType)
 {
     bae::Scene* scene = bae::SceneManager::GetInstance().GetScene(g_LevelBackgroundName.data());
 
-    const auto item = std::make_shared<bae::GameObject>("Item");
+    auto item = std::make_unique<bae::GameObject>("Item");
     item->SetWorldLocation(position);
     item->SetWorldScale({ m_GlobalScale, m_GlobalScale });
 
@@ -659,7 +659,7 @@ void LevelManager::SpawnItem(const glm::vec2& position, const ItemType itemType)
     item->GetComponent<HitboxComponent>()->SetVisibility(m_bShowHitboxes);
     item->GetComponent<HitboxComponent>()->AddObserver(itemComp);
 
-    scene->Add(item);
+    scene->Add(std::move(item));
 }
 
 void LevelManager::SpawnPlayers()
@@ -729,7 +729,7 @@ void LevelManager::SpawnItems()
 }
 
 
-std::shared_ptr<bae::GameObject> LevelManager::GetBombermanBase(const glm::vec2& spawnPosition,
+std::unique_ptr<bae::GameObject> LevelManager::GetBombermanBase(const glm::vec2& spawnPosition,
                                                                 const PlayerType playerType)
 {
     // Get Player Name
@@ -744,7 +744,7 @@ std::shared_ptr<bae::GameObject> LevelManager::GetBombermanBase(const glm::vec2&
             break;
     }
 
-    const auto bomberman = std::make_shared<bae::GameObject>(gameObjectName);
+    auto bomberman = std::make_unique<bae::GameObject>(gameObjectName);
     bomberman->SetWorldLocation(spawnPosition);
     bomberman->SetWorldScale({ m_GlobalScale, m_GlobalScale });
 
@@ -772,11 +772,11 @@ std::shared_ptr<bae::GameObject> LevelManager::GetBombermanBase(const glm::vec2&
     const auto lifeDisplayComp = bomberman->GetComponent<LifeDisplayComponent>();
     bomberman->GetComponent<LifeComponent>()->AddObserver(lifeDisplayComp);
 
-    return bomberman;
+    return std::move(bomberman);
 }
 
 
-std::shared_ptr<bae::GameObject> LevelManager::GetEnemyBase(const glm::vec2& spawnPosition, const EnemyType enemyType)
+std::unique_ptr<bae::GameObject> LevelManager::GetEnemyBase(const glm::vec2& spawnPosition, const EnemyType enemyType)
 {
     // Get Enemy Name
     std::string gameObjectName{};
@@ -800,7 +800,7 @@ std::shared_ptr<bae::GameObject> LevelManager::GetEnemyBase(const glm::vec2& spa
     }
 
 
-    const auto enemy = std::make_shared<bae::GameObject>(gameObjectName);
+    auto enemy = std::make_unique<bae::GameObject>(gameObjectName);
     enemy->SetWorldLocation(spawnPosition);
     enemy->SetWorldScale({ m_GlobalScale, m_GlobalScale });
 
@@ -812,14 +812,14 @@ std::shared_ptr<bae::GameObject> LevelManager::GetEnemyBase(const glm::vec2& spa
     hitboxComp->SetVisibility(m_bShowHitboxes);
     hitboxComp->SetOffset({ -m_CurrentLevelInfo.HitboxDimension / 2.f });
 
-    return enemy;
+    return std::move(enemy);
 }
 
 void LevelManager::SpawnTemporaryWall(const glm::vec2& position)
 {
     bae::Scene* scene = bae::SceneManager::GetInstance().GetScene(g_LevelBackgroundName.data());
 
-    const auto temporaryWall = std::make_shared<bae::GameObject>("Temporary Wall");
+    auto temporaryWall = std::make_unique<bae::GameObject>("Temporary Wall");
     temporaryWall->SetWorldLocation(position);
     temporaryWall->SetWorldScale({ m_GlobalScale, m_GlobalScale });
 
@@ -830,14 +830,14 @@ void LevelManager::SpawnTemporaryWall(const glm::vec2& position)
 
     temporaryWall->AddComponent<TemporaryWallComponent>(*temporaryWall);
 
-    scene->Add(temporaryWall);
+    scene->Add(std::move(temporaryWall));
 }
 
 void LevelManager::SpawnDoor(const glm::vec2& position)
 {
     bae::Scene* scene = bae::SceneManager::GetInstance().GetScene(g_LevelBackgroundName.data());
 
-    const auto door = std::make_shared<bae::GameObject>("Door");
+    auto door = std::make_unique<bae::GameObject>("Door");
     door->SetWorldLocation(position);
     door->SetWorldScale({ m_GlobalScale, m_GlobalScale });
 
@@ -851,7 +851,7 @@ void LevelManager::SpawnDoor(const glm::vec2& position)
     door->GetComponent<HitboxComponent>()->SetVisibility(m_bShowHitboxes);
     door->GetComponent<HitboxComponent>()->SetVisibility(true);
 
-    scene->Add(door);
+    scene->Add(std::move(door));
 }
 
 void LevelManager::AddControls(bae::GameObject& gameObject, const bool bIsFirstPlayer, const bool bIsEnemy)

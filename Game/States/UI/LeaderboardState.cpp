@@ -29,9 +29,9 @@ void LeaderboardState::OnEnter()
 
     const bae::WindowSize windowSize = bae::Renderer::GetInstance().GetSDLWindowSize();
 
-    const auto singleplayerSection = std::make_shared<bae::GameObject>("Singleplayer Section");
-    const auto coOpSection         = std::make_shared<bae::GameObject>("Co-Op Section");
-    const auto versusSection       = std::make_shared<bae::GameObject>("Versus Section");
+    auto singleplayerSection = std::make_unique<bae::GameObject>("Singleplayer Section");
+    auto coOpSection         = std::make_unique<bae::GameObject>("Co-Op Section");
+    auto versusSection       = std::make_unique<bae::GameObject>("Versus Section");
 
     constexpr float horizontalOffset{ 50.f };
     const glm::vec2 centerScreen
@@ -49,14 +49,14 @@ void LeaderboardState::OnEnter()
 
     auto AddTitle = [&](const std::string& text, bae::GameObject& gameObject)
     {
-        const auto titleGameObject = std::make_shared<bae::GameObject>(text);
+        auto titleGameObject = std::make_unique<bae::GameObject>(text);
         gameObject.AttachChild(titleGameObject.get(), false, false, false);
         titleGameObject->SetLocalLocation({ 0.f, -175.f });
 
         titleGameObject->AddComponent<bae::TextComponent>(*titleGameObject, text, titleFont);
         titleGameObject->GetComponent<bae::TextComponent>()->m_bIsCenteredAtPosition = true;
 
-        leaderboardSceneName->Add(titleGameObject);
+        leaderboardSceneName->Add(std::move(titleGameObject));
     };
 
 
@@ -76,7 +76,7 @@ void LeaderboardState::OnEnter()
         }
         text += std::to_string(data.Score);
 
-        const auto leaderboardEntryGameObject = std::make_shared<bae::GameObject>(text);
+        auto leaderboardEntryGameObject = std::make_unique<bae::GameObject>(text);
         gameObject.AttachChild(leaderboardEntryGameObject.get(), false, false, false);
         leaderboardEntryGameObject->SetLocalLocation({ 0.f, -125.f });
         leaderboardEntryGameObject->AddLocation({ 0.f, index * 30.f });
@@ -84,7 +84,7 @@ void LeaderboardState::OnEnter()
         leaderboardEntryGameObject->AddComponent<bae::TextComponent>(*leaderboardEntryGameObject, text, entryFont);
         leaderboardEntryGameObject->GetComponent<bae::TextComponent>()->m_bIsCenteredAtPosition = true;
 
-        leaderboardSceneName->Add(leaderboardEntryGameObject);
+        leaderboardSceneName->Add(std::move(leaderboardEntryGameObject));
     };
 
     AddTitle("Singleplayer", *singleplayerSection);
@@ -110,20 +110,20 @@ void LeaderboardState::OnEnter()
     }
 
 
-    leaderboardSceneName->Add(singleplayerSection);
-    leaderboardSceneName->Add(coOpSection);
-    leaderboardSceneName->Add(versusSection);
+    leaderboardSceneName->Add(std::move(singleplayerSection));
+    leaderboardSceneName->Add(std::move(coOpSection));
+    leaderboardSceneName->Add(std::move(versusSection));
 
 
     const auto backFont = bae::ResourceManager::GetInstance().LoadFont("Fonts/JoystixMonospace.otf", 20);
 
-    const auto backButton = std::make_shared<bae::GameObject>("Back Button");
+    auto backButton = std::make_unique<bae::GameObject>("Back Button");
     backButton->SetWorldLocation({ centerScreen.x, 2.f * centerScreen.y - 50.f });
 
     backButton->AddComponent<bae::TextComponent>(*backButton, "Back", backFont);
     backButton->GetComponent<bae::TextComponent>()->m_bIsCenteredAtPosition = true;
 
-    leaderboardSceneName->Add(backButton);
+    leaderboardSceneName->Add(std::move(backButton));
 }
 
 void LeaderboardState::OnExit()

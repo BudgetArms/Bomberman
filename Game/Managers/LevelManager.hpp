@@ -102,8 +102,8 @@ namespace Game
         void SpawnItems();
 
 
-        std::shared_ptr<bae::GameObject> GetBombermanBase(const glm::vec2& spawnPosition, PlayerType playerType);
-        std::shared_ptr<bae::GameObject> GetEnemyBase(const glm::vec2& spawnPosition, EnemyType enemyType);
+        std::unique_ptr<bae::GameObject> GetBombermanBase(const glm::vec2& spawnPosition, PlayerType playerType);
+        std::unique_ptr<bae::GameObject> GetEnemyBase(const glm::vec2& spawnPosition, EnemyType enemyType);
 
         void SpawnTemporaryWall(const glm::vec2& position);
         void SpawnDoor(const glm::vec2& position);

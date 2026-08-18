@@ -36,24 +36,24 @@ void MainMenuState::OnEnter()
     const bae::WindowSize windowSize = bae::Renderer::GetInstance().GetSDLWindowSize();
 
     // Title
-    const auto titleFont   = bae::ResourceManager::GetInstance().LoadFont("Fonts/JoystixMonospace.otf", 56);
-    const auto titleObject = std::make_shared<bae::GameObject>("Title");
+    const auto titleFont = bae::ResourceManager::GetInstance().LoadFont("Fonts/JoystixMonospace.otf", 56);
+    auto titleObject     = std::make_unique<bae::GameObject>("Title");
     titleObject->SetWorldLocation({ windowSize.Width / 2.f, 50.f });
 
     titleObject->AddComponent<bae::TextComponent>(*titleObject, "Bomberman", titleFont);
     titleObject->GetComponent<bae::TextComponent>()->m_bIsCenteredAtPosition = true;
-    gameModeSelectionScene->Add(titleObject);
+    gameModeSelectionScene->Add(std::move(titleObject));
 
 
-    const auto mainMenu = std::make_shared<bae::GameObject>("MainMenu");
+    auto mainMenu = std::make_unique<bae::GameObject>("MainMenu");
     mainMenu->SetWorldLocation({
         static_cast<float>(windowSize.Width) / 2.f, static_cast<float>(windowSize.Height) / 2.f
     });
     mainMenu->AddLocation({ 0, 50 });
 
-    const auto playObject        = std::make_shared<bae::GameObject>("Play");
-    const auto leaderboardObject = std::make_shared<bae::GameObject>("Leaderboard");
-    const auto quitObject        = std::make_shared<bae::GameObject>("Quit");
+    auto playObject        = std::make_unique<bae::GameObject>("Play");
+    auto leaderboardObject = std::make_unique<bae::GameObject>("Leaderboard");
+    auto quitObject        = std::make_unique<bae::GameObject>("Quit");
 
     constexpr float verticalPadding = 120.f;
 
@@ -82,7 +82,7 @@ void MainMenuState::OnEnter()
     m_SelectorPositions[1] = { m_SelectorXPosition, leaderboardObject->GetWorldLocation().y + m_SelectorYOffset };
     m_SelectorPositions[2] = { m_SelectorXPosition, quitObject->GetWorldLocation().y + m_SelectorYOffset };
 
-    const auto selectorObject = std::make_shared<bae::GameObject>("Selector Object");
+    auto selectorObject = std::make_unique<bae::GameObject>("Selector Object");
     selectorObject->AddComponent<bae::TextureComponent>(*selectorObject, "Textures/Misc/Selector.png");
     selectorObject->SetWorldScale({ 4.f, 4.f });
 
@@ -92,12 +92,12 @@ void MainMenuState::OnEnter()
     m_SelectorObject->SetWorldLocation(selectorPosition);
 
     // Add Objects to Scene
-    gameModeSelectionScene->Add(mainMenu);
-    gameModeSelectionScene->Add(playObject);
-    gameModeSelectionScene->Add(leaderboardObject);
-    gameModeSelectionScene->Add(quitObject);
+    gameModeSelectionScene->Add(std::move(mainMenu));
+    gameModeSelectionScene->Add(std::move(playObject));
+    gameModeSelectionScene->Add(std::move(leaderboardObject));
+    gameModeSelectionScene->Add(std::move(quitObject));
 
-    gameModeSelectionScene->Add(selectorObject);
+    gameModeSelectionScene->Add(std::move(selectorObject));
 }
 
 void MainMenuState::OnExit()

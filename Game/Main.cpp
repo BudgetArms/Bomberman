@@ -232,11 +232,11 @@ void LoadManagers()
     Game::ScenesManager& scenesManager = Game::ScenesManager::GetInstance();
     scenesManager.Initialize();
 
-    const auto managersObject = std::make_shared<bae::GameObject>("Managers Object");
+    auto managersObject = std::make_unique<bae::GameObject>("Managers Object");
     managersObject->AddComponent<Game::ManagersComponent>(*managersObject);
 
     bae::Scene* managersScene = bae::SceneManager::GetInstance().GetScene(Game::g_NeverDestroySceneName.data());
-    managersScene->Add(managersObject);
+    managersScene->Add(std::move(managersObject));
 
     auto& levelManager = Game::LevelManager::GetInstance();
 
@@ -251,7 +251,7 @@ void LoadFpsCounterScene()
 
     auto fontSmall = bae::ResourceManager::GetInstance().LoadFont("Fonts/Lingua.otf", 18);
 
-    const auto fpsCounter = std::make_shared<bae::GameObject>("Fps Counter");
+    auto fpsCounter = std::make_unique<bae::GameObject>("Fps Counter");
     fpsCounter->AddComponent<bae::FpsTextComponent>(*fpsCounter, fontSmall, bae::Utils::Color::White);
 
     const bae::WindowSize windowSize = bae::Renderer::GetInstance().GetSDLWindowSize();
@@ -259,7 +259,7 @@ void LoadFpsCounterScene()
     fpsCounter->SetWorldLocation({ windowSize.Width, 0.f });
     fpsCounter->AddLocation({ -75.f, 5.f });
 
-    fpsScene.Add(fpsCounter);
+    fpsScene.Add(std::move(fpsCounter));
 }
 
 void LoadGameNameScene()
@@ -267,8 +267,8 @@ void LoadGameNameScene()
     auto& gameNameScene = bae::SceneManager::GetInstance().CreateScene("Game Name Scene");
     auto font           = bae::ResourceManager::GetInstance().LoadFont("Fonts/Lingua.otf", 48);
 
-    const auto gameName = std::make_shared<bae::GameObject>("Game Name");
+    auto gameName = std::make_unique<bae::GameObject>("Game Name");
     gameName->AddComponent<bae::TextComponent>(*gameName, "Bomberman", font, bae::Utils::Color::Green);
 
-    gameNameScene.Add(gameName);
+    gameNameScene.Add(std::move(gameName));
 }

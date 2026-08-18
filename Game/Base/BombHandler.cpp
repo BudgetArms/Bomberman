@@ -92,7 +92,7 @@ void BombHandler::PlaceBomb()
     const glm::vec2 position                = m_BombHandlerOwner->GetWorldLocation();
     const bae::Graphs::GridPosition gridPos = levelManager.GetGridComponent()->GetClosestValidNodePosition(position);
 
-    const auto bomb = std::make_shared<bae::GameObject>("Bomb");
+    auto bomb = std::make_unique<bae::GameObject>("Bomb");
     bomb->SetWorldLocation(levelManager.ToPosition(gridPos));
     bomb->SetWorldScale({ LevelManager::m_GlobalScale, LevelManager::m_GlobalScale });
 
@@ -106,7 +106,7 @@ void BombHandler::PlaceBomb()
     bomb->AddComponent<BombComponent>(*bomb, *m_BombHandlerOwner);
 
     m_PlacedBombs.push_back(bomb.get());
-    scene->Add(bomb);
+    scene->Add(std::move(bomb));
 }
 
 void BombHandler::ActivateBomb()

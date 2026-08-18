@@ -26,11 +26,11 @@ void ScenesManager::Initialize()
     m_bIsInitialized = true;
 
     // Create SelectionObject
-    const auto selectionObject = std::make_shared<bae::GameObject>("Selection Object");
-    m_SelectionObject          = selectionObject.get();
+    auto selectionObject = std::make_unique<bae::GameObject>("Selection Object");
+    m_SelectionObject    = selectionObject.get();
 
     bae::Scene* scene = bae::SceneManager::GetInstance().GetScene(g_SelectionObjectSceneName.data());
-    scene->Add(selectionObject);
+    scene->Add(std::move(selectionObject));
 
     m_SceneState = std::make_unique<States::MainMenuState>(*m_SelectionObject);
     m_SceneState->OnEnter();

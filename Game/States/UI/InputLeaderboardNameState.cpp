@@ -14,7 +14,6 @@
 #include "Managers/LevelManager.hpp"
 #include "Managers/ResourceManager.hpp"
 #include "States/UI/LeaderboardState.hpp"
-#include "States/UI/MainMenuState.hpp"
 
 
 using namespace Game::States;
@@ -40,35 +39,36 @@ void InputLeaderboardNameState::OnEnter()
     const bae::WindowSize windowSize = bae::Renderer::GetInstance().GetSDLWindowSize();
 
     // Title
-    const auto titleFont   = bae::ResourceManager::GetInstance().LoadFont("Fonts/JoystixMonospace.otf", 49);
-    const auto titleObject = std::make_shared<bae::GameObject>("Title");
+    const auto titleFont = bae::ResourceManager::GetInstance().LoadFont("Fonts/JoystixMonospace.otf", 49);
+    auto titleObject     = std::make_unique<bae::GameObject>("Title");
     titleObject->SetWorldLocation({ windowSize.Width / 2.f, 50.f });
 
     titleObject->AddComponent<bae::TextComponent>(*titleObject, "Input Name", titleFont);
     titleObject->GetComponent<bae::TextComponent>()->m_bIsCenteredAtPosition = true;
-    inputLeaderboardNameScene->Add(titleObject);
+    inputLeaderboardNameScene->Add(std::move(titleObject));
 
 
-    const auto scoreFont   = bae::ResourceManager::GetInstance().LoadFont("Fonts/JoystixMonospace.otf", 32);
-    const auto scoreObject = std::make_shared<bae::GameObject>("Score");
+    const auto scoreFont = bae::ResourceManager::GetInstance().LoadFont("Fonts/JoystixMonospace.otf", 32);
+    auto scoreObject     = std::make_unique<bae::GameObject>("Score");
     scoreObject->SetWorldLocation({ windowSize.Width / 2.f, 90.f });
 
     const std::string scoreText{ "Score: " + std::to_string(m_Score) };
     scoreObject->AddComponent<bae::TextComponent>(*scoreObject, scoreText, scoreFont);
     scoreObject->GetComponent<bae::TextComponent>()->m_bIsCenteredAtPosition = true;
-    inputLeaderboardNameScene->Add(scoreObject);
+    inputLeaderboardNameScene->Add(std::move(scoreObject));
 
 
-    const auto inputNameMenu = std::make_shared<bae::GameObject>("Input LeaderboardName Object");
+    auto inputNameMenu = std::make_unique<bae::GameObject>("Input LeaderboardName Object");
     inputNameMenu->SetWorldLocation({
         static_cast<float>(windowSize.Width) / 2.f, static_cast<float>(windowSize.Height) / 2.f
     });
 
-    const auto letter0Object = std::make_shared<bae::GameObject>("Letter 0");
-    const auto letter1Object = std::make_shared<bae::GameObject>("Letter 1");
-    const auto letter2Object = std::make_shared<bae::GameObject>("Letter 2");
-    const auto letter3Object = std::make_shared<bae::GameObject>("Letter 3");
-    const auto letter4Object = std::make_shared<bae::GameObject>("Letter 4");
+
+    auto letter0Object = std::make_unique<bae::GameObject>("Letter 0");
+    auto letter1Object = std::make_unique<bae::GameObject>("Letter 1");
+    auto letter2Object = std::make_unique<bae::GameObject>("Letter 2");
+    auto letter3Object = std::make_unique<bae::GameObject>("Letter 3");
+    auto letter4Object = std::make_unique<bae::GameObject>("Letter 4");
 
     constexpr float horizontalSpace = 800.f;
 
@@ -98,8 +98,8 @@ void InputLeaderboardNameState::OnEnter()
     AddData(4, *letter4Object.get());
 
 
-    const auto selectorObject = std::make_shared<bae::GameObject>("Selector Object");
-    m_SelectorObject          = selectorObject.get();
+    auto selectorObject = std::make_unique<bae::GameObject>("Selector Object");
+    m_SelectorObject    = selectorObject.get();
 
     auto AddSelectorData = [&](bae::GameObject& gameObject)
     {
@@ -110,10 +110,11 @@ void InputLeaderboardNameState::OnEnter()
         selectorObject->AttachChild(&gameObject, true);
     };
 
-    const auto selectorDownObject  = std::make_shared<bae::GameObject>("Selector Down Object");
-    const auto selectorUpObject    = std::make_shared<bae::GameObject>("Selector Up Object");
-    const auto selectorLeftObject  = std::make_shared<bae::GameObject>("Selector Left Object");
-    const auto selectorRightObject = std::make_shared<bae::GameObject>("Selector Right Object");
+
+    auto selectorDownObject  = std::make_unique<bae::GameObject>("Selector Down Object");
+    auto selectorUpObject    = std::make_unique<bae::GameObject>("Selector Up Object");
+    auto selectorLeftObject  = std::make_unique<bae::GameObject>("Selector Left Object");
+    auto selectorRightObject = std::make_unique<bae::GameObject>("Selector Right Object");
 
     selectorDownObject->AddLocation({ -10.f, +30.f });
     selectorUpObject->AddLocation({ -10.f, -50.f });
@@ -132,23 +133,24 @@ void InputLeaderboardNameState::OnEnter()
 
     inputNameMenu->AttachChild(selectorObject.get(), false);
 
-
-    inputLeaderboardNameScene->Add(inputNameMenu);
-
-    inputLeaderboardNameScene->Add(letter0Object);
-    inputLeaderboardNameScene->Add(letter1Object);
-    inputLeaderboardNameScene->Add(letter2Object);
-    inputLeaderboardNameScene->Add(letter3Object);
-    inputLeaderboardNameScene->Add(letter4Object);
-
-    inputLeaderboardNameScene->Add(selectorObject);
-
-    inputLeaderboardNameScene->Add(selectorDownObject);
-    inputLeaderboardNameScene->Add(selectorUpObject);
-    inputLeaderboardNameScene->Add(selectorLeftObject);
-    inputLeaderboardNameScene->Add(selectorRightObject);
-
     m_SelectorObject = selectorObject.get();
+
+
+    inputLeaderboardNameScene->Add(std::move(inputNameMenu));
+
+    inputLeaderboardNameScene->Add(std::move(letter0Object));
+    inputLeaderboardNameScene->Add(std::move(letter1Object));
+    inputLeaderboardNameScene->Add(std::move(letter2Object));
+    inputLeaderboardNameScene->Add(std::move(letter3Object));
+    inputLeaderboardNameScene->Add(std::move(letter4Object));
+
+    inputLeaderboardNameScene->Add(std::move(selectorObject));
+
+    inputLeaderboardNameScene->Add(std::move(selectorDownObject));
+    inputLeaderboardNameScene->Add(std::move(selectorUpObject));
+    inputLeaderboardNameScene->Add(std::move(selectorLeftObject));
+    inputLeaderboardNameScene->Add(std::move(selectorRightObject));
+
 
     UpdateSelector();
 }
