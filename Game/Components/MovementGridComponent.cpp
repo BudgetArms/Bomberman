@@ -149,7 +149,7 @@ void MovementGridComponent::ApplyMovement()
 
     if(m_LastCorrectDirection != m_DirectionThisFrame)
     {
-        NotifyObservers(GetEventHash(Events::DirectionChanged));
+        NotifyObservers(bae::EventData(GetEventHash(Events::DirectionChanged)));
     }
 
     m_LastCorrectDirection = m_DirectionThisFrame;

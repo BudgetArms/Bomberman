@@ -32,9 +32,9 @@ void LifeDisplayComponent::Render() const
 }
 
 
-void LifeDisplayComponent::Notify(const unsigned eventHash, bae::Subject* subject, const std::any&)
+void LifeDisplayComponent::Notify(const bae::EventData& eventData, bae::Subject* subject)
 {
-    if(GetEvent(eventHash) == Events::LivesChanged)
+    if(GetEvent(eventData.Hash) == Events::LivesChanged)
     {
         const LifeComponent* lifeComponent = subject->GetGameObject()->GetComponent<LifeComponent>();
         m_Lives                            = lifeComponent->GetLives();

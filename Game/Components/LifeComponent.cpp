@@ -53,7 +53,7 @@ void LifeComponent::AddLife()
     }
 
     ++m_Lives;
-    SendEventToObservers(Events::LivesChanged);
+    SendEventToObservers(bae::EventData(GetEventHash(Events::LivesChanged)));
 }
 
 void LifeComponent::RemoveLife()
@@ -71,8 +71,8 @@ void LifeComponent::RemoveLife()
         m_bIsAlive = false;
     }
 
-    SendEventToObservers(Events::LivesChanged);
-    SendEventToObservers(Events::LifeLost);
+    SendEventToObservers(bae::EventData(GetEventHash(Events::LivesChanged)));
+    SendEventToObservers(bae::EventData(GetEventHash(Events::LifeLost)));
 }
 
 void LifeComponent::RemoveAllLives()
@@ -84,8 +84,8 @@ void LifeComponent::RemoveAllLives()
 
     m_Lives    = 0;
     m_bIsAlive = false;
-    SendEventToObservers(Events::LivesChanged);
-    SendEventToObservers(Events::LifeLost);
+    SendEventToObservers(bae::EventData(GetEventHash(Events::LivesChanged)));
+    SendEventToObservers(bae::EventData(GetEventHash(Events::LifeLost)));
 }
 
 int LifeComponent::GetLives() const
@@ -106,7 +106,7 @@ void LifeComponent::SetLives(const int lives)
     }
 
     m_Lives = lives;
-    SendEventToObservers(Events::LivesChanged);
+    SendEventToObservers(bae::EventData(GetEventHash(Events::LivesChanged)));
 }
 
 int LifeComponent::GetMaxLives() const
@@ -152,10 +152,10 @@ bool LifeComponent::IsAlive() const
     return m_bIsAlive;
 }
 
-void LifeComponent::SendEventToObservers(const Events event)
+void LifeComponent::SendEventToObservers(const bae::EventData& eventData)
 {
-    NotifyObservers(GetEventHash(event));
-    bae::EventQueue::GetInstance().SendEvent(GetEventHash(event));
+    NotifyObservers(bae::EventData(eventData.Hash, eventData.Data));
+    bae::EventQueue::GetInstance().SendEvent(eventData);
 }
 
 bool LifeComponent::IsOnDamageCooldown() const

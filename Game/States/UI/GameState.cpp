@@ -1,12 +1,9 @@
 #include "GameState.hpp"
 
 #include "Core/Scene.hpp"
-#include "Wrappers/Keyboard.hpp"
 
 #include "Base/CommonManagerVariables.hpp"
 #include "Base/Events.hpp"
-#include "Commands/ForceDamageCommand.hpp"
-#include "Commands/ToggleMuteSoundsCommand.hpp"
 #include "Managers/LevelManager.hpp"
 #include "Managers/SceneManager.hpp"
 #include "States/UI/InputLeaderboardNameState.hpp"
@@ -55,16 +52,16 @@ std::unique_ptr<SceneState> GameState::Update()
     return std::make_unique<InputLeaderboardNameState>(*m_GameObject, gameMode, finalScore);
 }
 
-void GameState::HandleEvent(const unsigned eventHash)
+void GameState::HandleEvent(const bae::EventData& eventData)
 {
-    if(GetEvent(eventHash) == Events::GameWon ||
-        GetEvent(eventHash) == Events::GameOver)
+    const Events event = GetEvent(eventData.Hash);
+    if(event == Events::GameWon || event == Events::GameOver)
     {
         m_bIsGameFinished = true;
     }
 }
 
-void GameState::Notify(unsigned, bae::Subject*, const std::any&)
+void GameState::Notify(const bae::EventData&, bae::Subject*)
 {
 }
 

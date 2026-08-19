@@ -172,9 +172,9 @@ std::unique_ptr<SceneState> InputLeaderboardNameState::Update()
     return std::make_unique<LeaderboardState>(*m_GameObject);
 }
 
-void InputLeaderboardNameState::Notify(const unsigned eventHash, bae::Subject*, const std::any&)
+void InputLeaderboardNameState::Notify(const bae::EventData& eventData, bae::Subject*)
 {
-    const Events event = GetEvent(eventHash);
+    const Events event = GetEvent(eventData.Hash);
 
     if(event == Events::SelectionConfirmed)
     {

@@ -133,9 +133,9 @@ std::unique_ptr<SceneState> MainMenuState::Update()
     return nullptr;
 }
 
-void MainMenuState::Notify(const unsigned eventHash, bae::Subject*, const std::any&)
+void MainMenuState::Notify(const bae::EventData& eventData, bae::Subject*)
 {
-    const Events event = GetEvent(eventHash);
+    const Events event = GetEvent(eventData.Hash);
 
     if(event != Events::SelectionUp &&
         event != Events::SelectionDown &&

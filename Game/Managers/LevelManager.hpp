@@ -44,8 +44,8 @@ namespace Game
 
         [[nodiscard]] glm::vec2 ToPosition(bae::Graphs::GridPosition gridPosition) const;
 
-        void HandleEvent(unsigned int eventHash) override;
-        void Notify(unsigned eventHash, bae::Subject* subject, const std::any& eventData) override;
+        void HandleEvent(const bae::EventData& eventData) override;
+        void Notify(const bae::EventData& eventData, bae::Subject* subject) override;
 
         void LoadLevelInfo(const std::filesystem::path& jsonFile);
 

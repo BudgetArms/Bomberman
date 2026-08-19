@@ -79,8 +79,12 @@ void HitboxComponent::SendCollisionEventToObservers(HitboxComponent& otherHitbox
         return;
     }
 
-    const unsigned int eventHash = GetEventHash(Events::CollisionEvent);
-    NotifyObservers(eventHash, &otherHitbox);
+    const bae::EventData eventData
+    {
+        GetEventHash(Events::CollisionEvent),
+        &otherHitbox
+    };
+    NotifyObservers(eventData);
 }
 
 void HitboxComponent::RegisterHitboxToCollisionManager() const

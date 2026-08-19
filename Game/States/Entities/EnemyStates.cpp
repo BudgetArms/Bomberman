@@ -59,9 +59,9 @@ std::unique_ptr<EntityState> EnemyAliveState::Update()
     return nullptr;
 }
 
-void EnemyAliveState::Notify(const unsigned eventHash, bae::Subject*, const std::any& eventData)
+void EnemyAliveState::Notify(const bae::EventData& eventData, bae::Subject*)
 {
-    const Events event = GetEvent(eventHash);
+    const Events event = GetEvent(eventData.Hash);
     if(event == Events::LivesChanged)
     {
         m_bIsDying = true;
@@ -73,7 +73,7 @@ void EnemyAliveState::Notify(const unsigned eventHash, bae::Subject*, const std:
     }
 
 
-    if(!eventData.has_value())
+    if(!eventData.Data.has_value())
     {
         throw std::runtime_error(FUNCTION_NAME + std::string(" Failed to Get EventData"));
     }

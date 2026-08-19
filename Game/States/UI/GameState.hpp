@@ -15,9 +15,9 @@ namespace Game::States
 
         std::unique_ptr<SceneState> Update() override;
 
-        void HandleEvent(unsigned eventHash) override;
+        void HandleEvent(const bae::EventData& eventData) override;
 
-        void Notify(unsigned eventHash, bae::Subject* subject, const std::any& eventData) override;
+        void Notify(const bae::EventData& eventData, bae::Subject* subject) override;
 
     private:
         bool m_bIsGameFinished{};

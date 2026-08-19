@@ -4,6 +4,7 @@
 #include "Core/Subject.hpp"
 
 #include "Base/Events.hpp"
+#include "Core/EventQueue.hpp"
 
 
 namespace Game
@@ -37,13 +38,13 @@ namespace Game
         [[nodiscard]] bool IsAlive() const;
 
     private:
-        void SendEventToObservers(Events event);
+        void SendEventToObservers(const bae::EventData& eventData);
 
         [[nodiscard]] bool IsOnDamageCooldown() const;
 
+
         int m_Lives;
         int m_MaxLives;
-
 
         const float m_DamageCooldownDuration{ 1.f };
         float m_ElapsedDamageCooldownTime{ m_DamageCooldownDuration };

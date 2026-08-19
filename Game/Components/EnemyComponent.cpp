@@ -35,19 +35,19 @@ void EnemyComponent::FixedUpdate()
         switch(m_EnemyType)
         {
             case EnemyType::Balloom:
-                NotifyObservers(GetEventHash(Events::BalloomDied), GetGameObject());
+                NotifyObservers(bae::EventData(GetEventHash(Events::BalloomDied), GetGameObject()));
                 break;
             case EnemyType::Oneal:
-                NotifyObservers(GetEventHash(Events::OnealDied), GetGameObject());
+                NotifyObservers(bae::EventData(GetEventHash(Events::OnealDied), GetGameObject()));
                 break;
             case EnemyType::Doll:
-                NotifyObservers(GetEventHash(Events::DollDied), GetGameObject());
+                NotifyObservers(bae::EventData(GetEventHash(Events::DollDied), GetGameObject()));
                 break;
             case EnemyType::Minvo:
-                NotifyObservers(GetEventHash(Events::MinvoDied), GetGameObject());
+                NotifyObservers(bae::EventData(GetEventHash(Events::MinvoDied), GetGameObject()));
                 break;
             case EnemyType::BalloomPlayer:
-                NotifyObservers(GetEventHash(Events::BalloomPlayerDied), GetGameObject());
+                NotifyObservers(bae::EventData(GetEventHash(Events::BalloomPlayerDied), GetGameObject()));
                 break;
         };
     }

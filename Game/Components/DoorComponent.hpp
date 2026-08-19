@@ -14,7 +14,7 @@ namespace Game
     public:
         explicit DoorComponent(bae::GameObject& owner);
 
-        void Notify(unsigned eventHash, bae::Subject* subject, const std::any& eventData) override;
+        void Notify(const bae::EventData& eventData, bae::Subject* subject) override;
 
     private:
         void HandleCollision(const HitboxComponent& otherHitboxComponent);

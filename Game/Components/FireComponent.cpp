@@ -48,14 +48,14 @@ void FireComponent::Update()
     }
 }
 
-void FireComponent::Notify(const unsigned eventHash, bae::Subject*, const std::any& eventData)
+void FireComponent::Notify(const bae::EventData& eventData, bae::Subject*)
 {
-    if(GetEvent(eventHash) != Events::CollisionEvent)
+    if(GetEvent(eventData.Hash) != Events::CollisionEvent)
     {
         return;
     }
 
-    if(!eventData.has_value())
+    if(!eventData.Data.has_value())
     {
         throw std::runtime_error(FUNCTION_NAME + std::string(" Failed to Get EventData"));
     }

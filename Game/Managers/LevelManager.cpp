@@ -230,14 +230,14 @@ GridComponent* LevelManager::GetGridComponent() const
     return m_GridComponent;
 }
 
-void LevelManager::HandleEvent(const unsigned int)
+void LevelManager::HandleEvent(const bae::EventData&)
 {
 }
 
 
-void LevelManager::Notify(const unsigned eventHash, bae::Subject* subject, const std::any&)
+void LevelManager::Notify(const bae::EventData& eventData, bae::Subject* subject)
 {
-    const Events event = GetEvent(eventHash);
+    const Events event = GetEvent(eventData.Hash);
     if(event == Events::PlayerDied)
     {
         if(subject->GetGameObject() == m_Bomberman ||
@@ -299,7 +299,8 @@ void LevelManager::HandleBomberDeath(const bae::GameObject& object)
 
 void LevelManager::HandleGameOver()
 {
-    bae::EventQueue::GetInstance().SendEvent(GetEventHash(Events::GameOver));
+    const bae::EventData eventData{ GetEventHash(Events::GameOver) };
+    bae::EventQueue::GetInstance().SendEvent(eventData);
 }
 
 void LevelManager::ClearLevel()

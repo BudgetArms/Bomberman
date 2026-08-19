@@ -18,7 +18,7 @@ namespace Game::States
 
         std::unique_ptr<EntityState> Update() override;
 
-        void Notify(unsigned eventHash, bae::Subject* subject, const std::any& eventData) override;
+        void Notify(const bae::EventData& eventData, bae::Subject* subject) override;
 
     private:
         bool m_bIsDying{ false };

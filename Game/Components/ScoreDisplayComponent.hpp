@@ -29,7 +29,7 @@ namespace Game
         [[nodiscard]] std::string GetPreScoreText() const;
         void SetPreScoreText(const std::string& text);
 
-        void Notify(unsigned eventHash, bae::Subject* subject, const std::any&) override;
+        void Notify(const bae::EventData& eventData, bae::Subject* subject) override;
 
     private:
         void UpdateDisplayText() const;

@@ -16,7 +16,7 @@ void ScoreComponent::AddScore(const int score)
 {
     m_Score                      += score;
     const unsigned int eventHash = GetEventHash(Events::ScoreChanged);
-    NotifyObservers(eventHash);
+    NotifyObservers(bae::EventData(eventHash));
 }
 
 int ScoreComponent::GetScore() const
@@ -28,6 +28,6 @@ void ScoreComponent::SetScore(const int score)
 {
     m_Score                      = score;
     const unsigned int eventHash = GetEventHash(Events::ScoreChanged);
-    NotifyObservers(eventHash);
+    NotifyObservers(bae::EventData(eventHash));
 }
 

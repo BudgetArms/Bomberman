@@ -139,9 +139,9 @@ std::unique_ptr<SceneState> GameModeSelectionState::Update()
     return nullptr;
 }
 
-void GameModeSelectionState::Notify(const unsigned eventHash, bae::Subject*, const std::any&)
+void GameModeSelectionState::Notify(const bae::EventData& eventData, bae::Subject*)
 {
-    const Events event = GetEvent(eventHash);
+    const Events event = GetEvent(eventData.Hash);
 
     if(event != Events::SelectionUp &&
         event != Events::SelectionDown &&

@@ -24,19 +24,19 @@ ItemComponent::ItemComponent(bae::GameObject& owner, const ItemType item) :
     m_SpriteComponent->m_Index = static_cast<int>(m_ItemType);
 }
 
-void ItemComponent::Notify(const unsigned eventHash, bae::Subject*, const std::any& eventData)
+void ItemComponent::Notify(const bae::EventData& eventData, bae::Subject*)
 {
     if(m_bHasBeenPickedUp)
     {
         return;
     }
 
-    if(GetEvent(eventHash) != Events::CollisionEvent)
+    if(GetEvent(eventData.Hash) != Events::CollisionEvent)
     {
         return;
     }
 
-    if(!eventData.has_value())
+    if(!eventData.Data.has_value())
     {
         throw std::runtime_error(FUNCTION_NAME + std::string(" Failed to Get EventData"));
     }

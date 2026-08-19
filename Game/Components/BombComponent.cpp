@@ -65,7 +65,7 @@ void BombComponent::Explode()
     const bae::SoundID soundId    = Game::Sounds::GetSoundId(Sounds::SoundAssets::BombExplosion);
     soundSystem.Play(soundId);
 
-    NotifyObservers(GetEventHash(Events::BombExplosion));
+    NotifyObservers(bae::EventData(GetEventHash(Events::BombExplosion)));
     GetOwner()->Destroy();
 }
 

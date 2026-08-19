@@ -53,7 +53,7 @@ void ScenesManager::Update()
     UpdateToNewState(m_SceneState->Update());
 }
 
-void ScenesManager::Notify(const unsigned, bae::Subject*, const std::any&)
+void ScenesManager::Notify(const bae::EventData&, bae::Subject*)
 {
 }
 

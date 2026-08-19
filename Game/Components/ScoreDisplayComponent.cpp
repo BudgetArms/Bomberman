@@ -54,9 +54,9 @@ void ScoreDisplayComponent::SetPreScoreText(const std::string& text)
     UpdateDisplayText();
 }
 
-void ScoreDisplayComponent::Notify(const unsigned eventHash, bae::Subject*, const std::any&)
+void ScoreDisplayComponent::Notify(const bae::EventData& eventData, bae::Subject*)
 {
-    if(GetEvent(eventHash) == Events::ScoreChanged)
+    if(GetEvent(eventData.Hash) == Events::ScoreChanged)
     {
         UpdateDisplayText();
     }

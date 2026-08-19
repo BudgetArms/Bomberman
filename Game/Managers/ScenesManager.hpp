@@ -19,7 +19,7 @@ namespace Game
 
         void Update();
 
-        void Notify(unsigned eventHash, bae::Subject* subject, const std::any& eventData) override;
+        void Notify(const bae::EventData& eventData, bae::Subject* subject) override;
 
         bae::GameObject* GetSelectionObject() const;
 

@@ -22,7 +22,7 @@ namespace Game
         void Render() const override;
 
 
-        void Notify(unsigned eventHash, bae::Subject* subject, const std::any&) override;
+        void Notify(const bae::EventData& eventData, bae::Subject* subject) override;
 
         void SetTexture(const std::shared_ptr<bae::Texture2D>& lifeTexture);
 

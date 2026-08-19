@@ -31,7 +31,7 @@ void BombermanComponent::Update()
     std::unique_ptr<States::EntityState> newState = m_State->Update();
     if(dynamic_cast<States::BombermanDeadState*>(newState.get()))
     {
-        NotifyObservers(GetEventHash(Events::PlayerDied), GetGameObject());
+        NotifyObservers(bae::EventData(GetEventHash(Events::PlayerDied), GetGameObject()));
     }
 
     UpdateToNewState(std::move(newState));

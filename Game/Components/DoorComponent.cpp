@@ -19,20 +19,20 @@ DoorComponent::DoorComponent(bae::GameObject& owner) :
     m_SpriteComponent = m_Owner->GetComponent<bae::SpriteComponent>();
 }
 
-void DoorComponent::Notify(const unsigned eventHash, bae::Subject*, const std::any& eventData)
+void DoorComponent::Notify(const bae::EventData& eventData, bae::Subject*)
 {
     if(m_bHasOpenedDoor)
     {
         return;
     }
 
-    const Events event = GetEvent(eventHash);
+    const Events event = GetEvent(eventData.Hash);
     if(event != Events::CollisionEvent)
     {
         return;
     }
 
-    if(!eventData.has_value())
+    if(!eventData.Data.has_value())
     {
         throw std::runtime_error(FUNCTION_NAME + std::string(" Failed to Get EventData"));
     }

@@ -14,7 +14,7 @@ SelectionDownCommand::SelectionDownCommand(bae::GameObject& gameObject) :
 
 void SelectionDownCommand::Execute()
 {
-    NotifyObservers(GetEventHash(Events::SelectionDown));
+    NotifyObservers(bae::EventData(GetEventHash(Events::SelectionDown)));
 }
 
 
@@ -26,7 +26,7 @@ SelectionUpCommand::SelectionUpCommand(bae::GameObject& gameObject) :
 
 void SelectionUpCommand::Execute()
 {
-    NotifyObservers(GetEventHash(Events::SelectionUp));
+    NotifyObservers(bae::EventData(GetEventHash(Events::SelectionUp)));
 }
 
 
@@ -38,7 +38,7 @@ SelectionLeftCommand::SelectionLeftCommand(bae::GameObject& gameObject) :
 
 void SelectionLeftCommand::Execute()
 {
-    NotifyObservers(GetEventHash(Events::SelectionLeft));
+    NotifyObservers(bae::EventData(GetEventHash(Events::SelectionLeft)));
 }
 
 
@@ -50,7 +50,7 @@ SelectionRightCommand::SelectionRightCommand(bae::GameObject& gameObject) :
 
 void SelectionRightCommand::Execute()
 {
-    NotifyObservers(GetEventHash(Events::SelectionRight));
+    NotifyObservers(bae::EventData(GetEventHash(Events::SelectionRight)));
 }
 
 
@@ -62,5 +62,6 @@ SelectionConfirmedCommand::SelectionConfirmedCommand(bae::GameObject& gameObject
 
 void SelectionConfirmedCommand::Execute()
 {
-    NotifyObservers(GetEventHash(Events::SelectionConfirmed));
+    NotifyObservers(bae::EventData(GetEventHash(Events::SelectionConfirmed)));
 }
+

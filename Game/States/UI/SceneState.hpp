@@ -30,7 +30,7 @@ namespace Game::States
 
         virtual std::unique_ptr<SceneState> Update() = 0;
 
-        virtual void Notify(unsigned eventHash, bae::Subject* subject, const std::any& eventData) = 0;
+        virtual void Notify(const bae::EventData& eventData, bae::Subject* subject) = 0;
 
     protected:
         static void ClearScene();

@@ -44,9 +44,9 @@ std::unique_ptr<EntityState> BombermanAliveState::Update()
     return nullptr;
 }
 
-void BombermanAliveState::Notify(const unsigned eventHash, bae::Subject*, const std::any&)
+void BombermanAliveState::Notify(const bae::EventData& eventData, bae::Subject*)
 {
-    if(GetEvent(eventHash) == Events::LifeLost)
+    if(GetEvent(eventData.Hash) == Events::LifeLost)
     {
         m_bIsDying = true;
     }
