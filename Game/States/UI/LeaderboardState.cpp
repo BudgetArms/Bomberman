@@ -50,7 +50,7 @@ void LeaderboardState::OnEnter()
     auto AddTitle = [&](const std::string& text, bae::GameObject& gameObject)
     {
         auto titleGameObject = std::make_unique<bae::GameObject>(text);
-        gameObject.AttachChild(titleGameObject.get(), false, false, false);
+        gameObject.AttachChild(*titleGameObject, false, false, false);
         titleGameObject->SetLocalLocation({ 0.f, -175.f });
 
         titleGameObject->AddComponent<bae::TextComponent>(*titleGameObject, text, titleFont);
@@ -77,7 +77,7 @@ void LeaderboardState::OnEnter()
         text += std::to_string(data.Score);
 
         auto leaderboardEntryGameObject = std::make_unique<bae::GameObject>(text);
-        gameObject.AttachChild(leaderboardEntryGameObject.get(), false, false, false);
+        gameObject.AttachChild(*leaderboardEntryGameObject, false, false, false);
         leaderboardEntryGameObject->SetLocalLocation({ 0.f, -125.f });
         leaderboardEntryGameObject->AddLocation({ 0.f, index * 30.f });
 
@@ -205,4 +205,3 @@ void LeaderboardState::LoadSaveFileData()
     AddData(GameMode::CoOp, m_CoOpData);
     AddData(GameMode::Versus, m_VersusData);
 }
-

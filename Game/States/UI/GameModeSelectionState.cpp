@@ -56,10 +56,10 @@ void GameModeSelectionState::OnEnter()
     backObject->AddLocation({ 0, 3.f * verticalPadding / 4.f });
 
     // AttachChild, but don't freeze position
-    gameModeSelectionObject->AttachChild(singlePlayerObject.get(), false);
-    gameModeSelectionObject->AttachChild(coOpObject.get(), false);
-    gameModeSelectionObject->AttachChild(versusObject.get(), false);
-    gameModeSelectionObject->AttachChild(backObject.get(), false);
+    gameModeSelectionObject->AttachChild(*singlePlayerObject, false);
+    gameModeSelectionObject->AttachChild(*coOpObject, false);
+    gameModeSelectionObject->AttachChild(*versusObject, false);
+    gameModeSelectionObject->AttachChild(*backObject, false);
 
     auto textFont = bae::ResourceManager::GetInstance().LoadFont("Fonts/JoystixMonospace.otf", 32);
     singlePlayerObject->AddComponent<bae::TextComponent>(*singlePlayerObject, "SinglePlayer", textFont);

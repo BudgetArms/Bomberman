@@ -82,7 +82,7 @@ void InputLeaderboardNameState::OnEnter()
     auto AddData = [&](const int index, bae::GameObject& gameObject)
     {
         // AttachChild, but don't freeze position
-        inputNameMenu->AttachChild(&gameObject, false);
+        inputNameMenu->AttachChild(gameObject, false);
 
         gameObject.SetWorldScale({ 4.f, 4.f });
         gameObject.AddComponent<bae::SpriteComponent>(gameObject, "Textures/Misc/Letters.png",
@@ -107,7 +107,7 @@ void InputLeaderboardNameState::OnEnter()
         gameObject.SetWorldScale({ 2.f, 2.f });
 
         // AttachChild, but don't freeze position
-        selectorObject->AttachChild(&gameObject, true);
+        selectorObject->AttachChild(gameObject, true);
     };
 
 
@@ -131,7 +131,7 @@ void InputLeaderboardNameState::OnEnter()
     AddSelectorData(*selectorLeftObject);
     AddSelectorData(*selectorRightObject);
 
-    inputNameMenu->AttachChild(selectorObject.get(), false);
+    inputNameMenu->AttachChild(*selectorObject, false);
 
     m_SelectorObject = selectorObject.get();
 

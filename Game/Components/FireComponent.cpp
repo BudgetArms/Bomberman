@@ -182,7 +182,7 @@ void FireComponent::AddFireChild(const Direction directionFire, const int childF
             break;
     }
 
-    m_Owner->AttachChild(childFire.get(), false, false, false);
+    m_Owner->AttachChild(*childFire, false, false, false);
 
     bae::Scene* const scene = bae::SceneManager::GetInstance().GetScene(g_LevelBackgroundName.data());
     scene->Add(std::move(childFire));

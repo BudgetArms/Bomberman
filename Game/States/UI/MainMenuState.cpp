@@ -62,9 +62,9 @@ void MainMenuState::OnEnter()
     quitObject->AddLocation({ 0, verticalPadding });
 
     // AttachChild, but don't freeze position
-    mainMenu->AttachChild(playObject.get(), false);
-    mainMenu->AttachChild(leaderboardObject.get(), false);
-    mainMenu->AttachChild(quitObject.get(), false);
+    mainMenu->AttachChild(*playObject, false);
+    mainMenu->AttachChild(*leaderboardObject, false);
+    mainMenu->AttachChild(*quitObject, false);
 
     const auto textFont = bae::ResourceManager::GetInstance().LoadFont("Fonts/JoystixMonospace.otf", 32);
     playObject->AddComponent<bae::TextComponent>(*playObject, "Play", textFont);
