@@ -142,7 +142,8 @@ void LevelManager::RenderBackground() const
     if(m_bHasGameStarted)
     {
         constexpr bool isCenteredAtPosition{ false };
-        constexpr glm::vec2 position{ 0.f, 0.f };
+
+        constexpr glm::vec2 position{ 0.f, 200.f };
         constexpr float angle{ 0.f };
         constexpr glm::vec2 scale = { m_GlobalScale, m_GlobalScale };
 
@@ -773,7 +774,7 @@ std::unique_ptr<bae::GameObject> LevelManager::GetBombermanBase(const glm::vec2&
     const auto lifeDisplayComp = bomberman->GetComponent<LifeDisplayComponent>();
     bomberman->GetComponent<LifeComponent>()->AddObserver(lifeDisplayComp);
 
-    return std::move(bomberman);
+    return bomberman;
 }
 
 
@@ -813,7 +814,7 @@ std::unique_ptr<bae::GameObject> LevelManager::GetEnemyBase(const glm::vec2& spa
     hitboxComp->SetVisibility(m_bShowHitboxes);
     hitboxComp->SetOffset({ -m_CurrentLevelInfo.HitboxDimension / 2.f });
 
-    return std::move(enemy);
+    return enemy;
 }
 
 void LevelManager::SpawnTemporaryWall(const glm::vec2& position)
