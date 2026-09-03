@@ -71,7 +71,7 @@ void LeaderboardState::OnEnter()
         {
             for(size_t i{}; i < textToBeOccupied - textOccupied; ++i)
             {
-                text += " ";
+                text += ' ';
             }
         }
         text += std::to_string(data.Score);
@@ -79,7 +79,7 @@ void LeaderboardState::OnEnter()
         auto leaderboardEntryGameObject = std::make_unique<bae::GameObject>(text);
         gameObject.AttachChild(*leaderboardEntryGameObject, false, false, false);
         leaderboardEntryGameObject->SetLocalLocation({ 0.f, -125.f });
-        leaderboardEntryGameObject->AddLocation({ 0.f, index * 30.f });
+        leaderboardEntryGameObject->AddLocation({ 0.f, 30.f * static_cast<float>(index) });
 
         leaderboardEntryGameObject->AddComponent<bae::TextComponent>(*leaderboardEntryGameObject, text, entryFont);
         leaderboardEntryGameObject->GetComponent<bae::TextComponent>()->m_bIsCenteredAtPosition = true;

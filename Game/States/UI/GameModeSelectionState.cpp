@@ -199,4 +199,3 @@ void GameModeSelectionState::UpdateSelectorPosition()
     const glm::vec2 selectorPosition = m_SelectorPositions[static_cast<int>(m_Selection)];
     m_SelectorObject->SetWorldLocation(selectorPosition);
 }
-

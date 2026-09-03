@@ -236,4 +236,3 @@ void MovementGridComponent::PrintDebugMessage(const std::string& message) const
         std::cout << message;
     }
 }
-

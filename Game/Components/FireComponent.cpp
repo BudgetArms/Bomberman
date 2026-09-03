@@ -164,21 +164,22 @@ void FireComponent::AddFireChild(const Direction directionFire, const int childF
     childFire->AddComponent<HitboxComponent>(*childFire, m_HitboxDimension, offset);
     childFire->GetComponent<HitboxComponent>()->AddObserver(this);
 
+    const float childFireRangeGrid = static_cast<float>(childFireRange) * m_GridSize;
     switch(directionFire)
     {
         case Direction::Right:
-            childFire->SetLocalLocation({ childFireRange * m_GridSize, 0.f });
+            childFire->SetLocalLocation({ childFireRangeGrid, 0.f });
             break;
         case Direction::Left:
-            childFire->SetLocalLocation({ -childFireRange * m_GridSize, 0.f });
+            childFire->SetLocalLocation({ -childFireRangeGrid, 0.f });
             break;
         case Direction::Up:
             childFire->SetLocalRotation(90.f);
-            childFire->SetLocalLocation({ 0.f, -childFireRange * m_GridSize });
+            childFire->SetLocalLocation({ 0.f, -childFireRangeGrid });
             break;
         case Direction::Down:
             childFire->SetLocalRotation(90.f);
-            childFire->SetLocalLocation({ 0.f, childFireRange * m_GridSize });
+            childFire->SetLocalLocation({ 0.f, childFireRangeGrid });
             break;
     }
 
@@ -241,4 +242,3 @@ Direction FireComponent::GetDirectionFromGridPos(const bae::Graphs::GridPosition
 
     throw std::runtime_error(FUNCTION_NAME + std::string(" Failed, Invalid grid direction!"));
 }
-
