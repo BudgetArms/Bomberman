@@ -60,7 +60,7 @@ void FireComponent::Notify(const bae::EventData& eventData, bae::Subject*)
         throw std::runtime_error(FUNCTION_NAME + std::string(" Failed to Get EventData"));
     }
 
-    const auto otherHitbox = std::any_cast<HitboxComponent*>(eventData);
+    const auto otherHitbox = std::any_cast<HitboxComponent*>(eventData.Data);
     if(!otherHitbox)
     {
         throw std::runtime_error(FUNCTION_NAME + std::string(" Failed! Invalid EventData GameObject!"));
