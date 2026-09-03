@@ -95,6 +95,8 @@ int main(int, char*[])
 
     bae::Utils::Window window{ "Bomberman", "./Resources/", 992, 450, false };
 
+    bae::GameObject::m_bDebugCreation    = false;
+    bae::GameObject::m_bDebugDestruction = false;
 
     #if __EMSCRIPTEN__
     window.ResourceFolder = "";
