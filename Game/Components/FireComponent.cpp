@@ -111,7 +111,7 @@ void FireComponent::HandleIfEnemyCollision(const HitboxComponent& otherHitboxCom
     [[maybe_unused]] bae::GameObject* otherGameObject = otherHitboxComponent.GetGameObject();
     [[maybe_unused]] const auto gridComponent         = LevelManager::GetInstance().GetGridComponent();
 
-    if(!m_Instigator || m_Instigator->IsMarkedForDeletion())
+    if(!bae::GameObject::IsValid(m_Instigator))
     {
         return;
     }

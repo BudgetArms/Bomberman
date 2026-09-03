@@ -28,7 +28,7 @@ void BombHandler::UpdateBombs()
     // could use events for this, but time constraint
     std::erase_if(m_PlacedBombs, [](const bae::GameObject* bombObject)
     {
-        return !bombObject || bombObject->IsMarkedForDeletion();
+        return !bae::GameObject::IsValid(bombObject);
     });
 }
 

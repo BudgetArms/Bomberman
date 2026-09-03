@@ -18,7 +18,7 @@ ForceMoveCommand::ForceMoveCommand(bae::GameObject& owner, const Direction direc
 
 void ForceMoveCommand::Execute()
 {
-    if(GetActor()->IsMarkedForDeletion())
+    if(!bae::GameObject::IsValid(GetActor()))
     {
         return;
     }
@@ -48,4 +48,3 @@ void ForceMoveCommand::Execute()
         break;
     }
 }
-

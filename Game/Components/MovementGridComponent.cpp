@@ -22,7 +22,7 @@ MovementGridComponent::MovementGridComponent(bae::GameObject& owner) :
 
 void MovementGridComponent::FixedUpdate()
 {
-    if(!m_bIsEnabled)
+    if(!m_bIsEnabled || !IsValid(m_GridComponent))
     {
         return;
     }

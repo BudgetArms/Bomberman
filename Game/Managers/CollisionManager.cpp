@@ -24,7 +24,7 @@ void CollisionManager::HandleCollisions() const
 
     for(size_t i = 0; i < m_HitboxObjects.size(); ++i)
     {
-        if(!m_HitboxObjects[i] || m_HitboxObjects[i]->IsMarkedForDeletion())
+        if(!bae::GameObject::IsValid(m_HitboxObjects[i]))
         {
             continue;
         }
@@ -37,7 +37,7 @@ void CollisionManager::HandleCollisions() const
 
         for(size_t j = i + 1; j < m_HitboxObjects.size(); ++j)
         {
-            if(!m_HitboxObjects[j] || m_HitboxObjects[j]->IsMarkedForDeletion())
+            if(!bae::GameObject::IsValid(m_HitboxObjects[j]))
             {
                 continue;
             }
