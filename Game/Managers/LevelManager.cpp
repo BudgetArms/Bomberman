@@ -143,7 +143,7 @@ void LevelManager::RenderBackground() const
     {
         constexpr bool isCenteredAtPosition{ false };
 
-        constexpr glm::vec2 position{ 0.f, 200.f };
+        constexpr glm::vec2 position{ 0.f, 0.f };
         constexpr float angle{ 0.f };
         constexpr glm::vec2 scale = { m_GlobalScale, m_GlobalScale };
 
