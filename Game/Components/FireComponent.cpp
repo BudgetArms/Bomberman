@@ -30,7 +30,7 @@ FireComponent::FireComponent(bae::GameObject& owner, bae::GameObject& instigator
     // Add Hitbox
     const glm::vec2 offset = -m_HitboxDimension / 2.f;
     m_Owner->AddComponent<HitboxComponent>(*m_Owner, m_HitboxDimension, offset);
-    m_Owner->GetComponent<HitboxComponent>()->SetVisibility(true);
+    m_Owner->GetComponent<HitboxComponent>()->SetVisibility(false);
     m_Owner->GetComponent<HitboxComponent>()->AddObserver(this);
 
     AddFireChildren();

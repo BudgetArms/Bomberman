@@ -851,7 +851,6 @@ void LevelManager::SpawnDoor(const glm::vec2& position)
     door->AddComponent<HitboxComponent>(*door, m_CurrentLevelInfo.HitboxDimension, offset);
     door->GetComponent<HitboxComponent>()->AddObserver(doorComp);
     door->GetComponent<HitboxComponent>()->SetVisibility(m_bShowHitboxes);
-    door->GetComponent<HitboxComponent>()->SetVisibility(true);
 
     scene->Add(std::move(door));
 }
