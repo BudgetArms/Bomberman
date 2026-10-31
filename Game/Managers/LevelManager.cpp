@@ -266,7 +266,7 @@ void LevelManager::Notify(const bae::EventData& eventData, bae::Subject* subject
     {
         if(!m_Enemies.contains(subject->GetGameObject()))
         {
-            std::cout << FUNCTION_NAME << "this should never be reached" << '\n';
+            std::cout << FUNCTION_NAME << " Enemy to Kill is not in enemies list, this should never be reached" << '\n';
             return;
         }
 

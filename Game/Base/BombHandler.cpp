@@ -112,5 +112,10 @@ void BombHandler::PlaceBomb()
 void BombHandler::ActivateBomb()
 {
     const bae::GameObject* oldestBomb = m_PlacedBombs.front();
+    if(!oldestBomb)
+    {
+        std::cout << FUNCTION_NAME << " Placed Bomb is invalid" << '\n';
+        return;
+    }
     oldestBomb->GetComponent<BombComponent>()->Explode();
 }
