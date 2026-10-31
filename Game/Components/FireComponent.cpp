@@ -212,6 +212,15 @@ void FireComponent::AddFireChildren()
                 break;
             }
 
+            // if block is breakable block, then add fire to block
+            const LevelNodeType nodeType = gridComp->GetNodeType(childGridPos);
+            if(nodeType == LevelNodeType::TempBlock
+            )
+            {
+                AddFireChild(currentDirection, i);
+                break;
+            }
+
             AddFireChild(currentDirection, i);
         }
     }
