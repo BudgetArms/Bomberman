@@ -33,7 +33,7 @@ void GameModeSelectionState::OnEnter()
 
     auto* gameModeSelectionScene = bae::SceneManager::GetInstance().GetScene(g_ScenesManagerSceneName.data());
 
-    bae::Renderer::GetInstance().SetBackgroundColor(bae::Utils::Color::Black);
+    bae::Renderer::GetInstance().SetBackgroundColor(bae::Color::Black);
 
     const bae::WindowSize windowSize = bae::Renderer::GetInstance().GetSDLWindowSize();
 

@@ -62,7 +62,7 @@ void HitboxComponent::SetOffset(const glm::vec2& offsetPosition)
     m_OffsetPosition = offsetPosition;
 }
 
-void HitboxComponent::SetColor(const bae::Utils::Color& color)
+void HitboxComponent::SetColor(const bae::Color& color)
 {
     m_Color = color;
 }

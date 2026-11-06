@@ -254,7 +254,7 @@ void LoadFpsCounterScene()
     auto fontSmall = bae::ResourceManager::GetInstance().LoadFont("Fonts/Lingua.otf", 18);
 
     auto fpsCounter = std::make_unique<bae::GameObject>("Fps Counter");
-    fpsCounter->AddComponent<bae::FpsTextComponent>(*fpsCounter, fontSmall, bae::Utils::Color::White);
+    fpsCounter->AddComponent<bae::FpsTextComponent>(*fpsCounter, fontSmall, bae::Color::White);
 
     const bae::WindowSize windowSize = bae::Renderer::GetInstance().GetSDLWindowSize();
 
@@ -270,7 +270,7 @@ void LoadGameNameScene()
     auto font           = bae::ResourceManager::GetInstance().LoadFont("Fonts/Lingua.otf", 48);
 
     auto gameName = std::make_unique<bae::GameObject>("Game Name");
-    gameName->AddComponent<bae::TextComponent>(*gameName, "Bomberman", font, bae::Utils::Color::Green);
+    gameName->AddComponent<bae::TextComponent>(*gameName, "Bomberman", font, bae::Color::Green);
 
     gameNameScene.Add(std::move(gameName));
 }

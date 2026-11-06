@@ -19,8 +19,8 @@ namespace Game
         [[nodiscard]] int GetCircleRadius() const;
         void SetCircleRadius(int radius);
 
-        [[nodiscard]] bae::Utils::Color GetCircleColor() const;
-        void SetCircleColor(const bae::Utils::Color& color);
+        [[nodiscard]] bae::Color GetCircleColor() const;
+        void SetCircleColor(const bae::Color& color);
 
         [[nodiscard]] float GetFontSize() const;
         void SetFontSize(float fontSize) const;
@@ -32,7 +32,7 @@ namespace Game
     private:
         int m_CircleRadius{ 5 };
 
-        bae::Utils::Color m_CircleColor{ bae::Utils::Color::Cyan };
+        bae::Color m_CircleColor{ bae::Color::Cyan };
 
         bae::Text2D m_Text;
     };

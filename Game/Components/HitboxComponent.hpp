@@ -21,7 +21,7 @@ namespace Game
 
         void SetDimensions(const glm::vec2& dimensions);
         void SetOffset(const glm::vec2& offsetPosition);
-        void SetColor(const bae::Utils::Color& color);
+        void SetColor(const bae::Color& color);
         void SetVisibility(bool visibility);
 
         void SendCollisionEventToObservers(HitboxComponent& otherHitbox);
@@ -34,7 +34,7 @@ namespace Game
 
         glm::vec2 m_Dimensions{};
         glm::vec2 m_OffsetPosition{};
-        bae::Utils::Color m_Color{ bae::Utils::Color::Green };
+        bae::Color m_Color{ bae::Color::Green };
 
         bool m_bIsVisible{ false };
     };

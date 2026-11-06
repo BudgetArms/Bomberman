@@ -53,12 +53,12 @@ void RenderCenterComponent::SetCircleRadius(const int radius)
     m_CircleRadius = radius;
 }
 
-bae::Utils::Color RenderCenterComponent::GetCircleColor() const
+bae::Color RenderCenterComponent::GetCircleColor() const
 {
     return m_CircleColor;
 }
 
-void RenderCenterComponent::SetCircleColor(const bae::Utils::Color& color)
+void RenderCenterComponent::SetCircleColor(const bae::Color& color)
 {
     m_CircleColor = color;
 }
