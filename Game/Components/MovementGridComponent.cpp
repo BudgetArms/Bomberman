@@ -2,10 +2,10 @@
 
 #include <glm/glm.hpp>
 
-#include "Base/Events.hpp"
 #include "Components/GridComponent.hpp"
 #include "Singletons/GameTime.hpp"
 
+#include "Base/Events.hpp"
 #include "Managers/LevelManager.hpp"
 
 
@@ -33,35 +33,28 @@ void MovementGridComponent::FixedUpdate()
         return;
     }
     m_bWasDirectionSetThisFrame = false;
-    PrintDebugMessage(std::string(FUNCTION_NAME) + '\t');
 
     // Not Near Node & Opposite/Same Direction Then Last Correct Direction
     if(IsOppositeDirection(m_DirectionThisFrame, m_LastCorrectDirection) ||
         m_DirectionThisFrame == m_LastCorrectDirection)
     {
-        PrintDebugMessage("Opposite/Same Direction\t");
         if(!IsAtNodeCenter())
         {
-            PrintDebugMessage("Not At Node Center\n");
             ApplyMovement();
             return;
         }
-        PrintDebugMessage("At Node Center\t");
 
         if(!CanMoveInDirection(m_DirectionThisFrame))
         {
-            PrintDebugMessage("Cannot Move In Direction\n");
             return;
         }
     }
 
     if(!IsAtNodeCenter() || !CanMoveInDirection(m_DirectionThisFrame))
     {
-        PrintDebugMessage("Not At Node Center Or Cannot Move In Direction\n");
         return;
     }
 
-    PrintDebugMessage("Moving\n");
     ApplyMovement();
 }
 
@@ -227,12 +220,4 @@ bool MovementGridComponent::IsOppositeDirection(const Direction direction, const
     }
 
     return false;
-}
-
-void MovementGridComponent::PrintDebugMessage(const std::string& message) const
-{
-    if(m_bIsDebuggingEnabled)
-    {
-        std::cout << message;
-    }
 }

@@ -28,7 +28,6 @@ namespace Game
 
 
         float m_Speed{ 100.f };
-        bool m_bIsDebuggingEnabled{};
 
     private:
         void ApplyMovement();
@@ -36,8 +35,6 @@ namespace Game
         void LockOnGrid() const;
 
         [[nodiscard]] static bool IsOppositeDirection(Direction direction, Direction oppositeDirection);
-
-        void PrintDebugMessage(const std::string& message) const;
 
         bool m_bIsEnabled{ true };
 
