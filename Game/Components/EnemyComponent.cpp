@@ -74,9 +74,8 @@ int EnemyComponent::GetScore() const
 {
     if(!m_State)
     {
-        const std::string errorMessage = "State is invalid";
-        bae::Logger::LogError(errorMessage);
-        throw std::runtime_error(FUNCTION_NAME + errorMessage);
+        bae::Logger::LogFatal("State is invalid");
+        std::terminate();
     }
 
     const auto enemyAliveState = dynamic_cast<States::EnemyAliveState*>(m_State.get());
@@ -102,9 +101,8 @@ int EnemyComponent::GetScore() const
             return scoreMap[ScoreType::BalloomKill];
     }
 
-    const std::string errorMessage = "Failed to get score";
-    bae::Logger::LogError(errorMessage);
-    throw std::runtime_error(FUNCTION_NAME + errorMessage);
+    bae::Logger::LogFatal("Failed to get score");
+    std::terminate();
 }
 
 void EnemyComponent::UpdateToNewState(std::unique_ptr<States::EntityState> newState)

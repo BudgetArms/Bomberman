@@ -1,6 +1,8 @@
 #pragma once
 
 #include <algorithm>
+// used for std::terminate
+#include <exception>
 
 #include "Core/HelperFunctions.hpp"
 #include "Core/Logger.hpp"
@@ -77,8 +79,7 @@ namespace Game
 
         if(eventPairIt == g_EventsMap.end())
         {
-            const std::string errorMessage = "Event not implemented";
-            bae::Logger::LogError(errorMessage);
+            bae::Logger::LogFatal("Event not implemented");
             std::terminate();
         }
 
@@ -97,9 +98,8 @@ namespace Game
 
         if(eventPairIt == g_EventsMap.end())
         {
-            const std::string errorMessage = "Event not Implemented";
-            bae::Logger::LogError(errorMessage);
-            throw std::runtime_error(FUNCTION_NAME + errorMessage);
+            bae::Logger::LogFatal("Event not Implemented");
+            std::terminate();
         }
 
         return eventPairIt->first;

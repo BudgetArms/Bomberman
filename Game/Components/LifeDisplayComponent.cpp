@@ -1,5 +1,8 @@
 #include "LifeDisplayComponent.hpp"
 
+// used for std::terminate
+#include <exception>
+
 #include "Core/Renderer.hpp"
 #include "Wrappers/Texture2D.hpp"
 

@@ -1,11 +1,14 @@
 #include "MovementGridComponent.hpp"
 
+// used for std::terminate
+#include <exception>
+
 #include <glm/glm.hpp>
 
-#include "Components/GridComponent.hpp"
 #include "Singletons/GameTime.hpp"
 
 #include "Base/Events.hpp"
+#include "Components/GridComponent.hpp"
 #include "Managers/LevelManager.hpp"
 
 

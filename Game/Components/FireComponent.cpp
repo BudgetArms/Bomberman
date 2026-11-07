@@ -58,17 +58,15 @@ void FireComponent::Notify(const bae::EventData& eventData, bae::Subject*)
 
     if(!eventData.Data.has_value())
     {
-        const std::string errorMessage = "EventData doesn't have data";
-        bae::Logger::LogFatal(errorMessage);
-        throw std::runtime_error(FUNCTION_NAME + errorMessage);
+        bae::Logger::LogFatal("EventData doesn't have data");
+        std::terminate();
     }
 
     const auto otherHitbox = std::any_cast<HitboxComponent*>(eventData.Data);
     if(!otherHitbox)
     {
-        const std::string errorMessage = "EventData doesn't have OtherHitbox";
-        bae::Logger::LogError(errorMessage);
-        throw std::runtime_error(FUNCTION_NAME + errorMessage);
+        bae::Logger::LogFatal("EventData doesn't have OtherHitbox");
+        std::terminate();
     }
 
     HandleCollision(*otherHitbox);
@@ -253,7 +251,6 @@ Direction FireComponent::GetDirectionFromGridPos(const bae::Graphs::GridPosition
         return Direction::Down;
     }
 
-    const std::string errorMessage = "Invalid grid direction";
-    bae::Logger::LogError(errorMessage);
-    throw std::runtime_error(FUNCTION_NAME + errorMessage);
+    bae::Logger::LogFatal("Couldn't figure out Direction, invalid direction");
+    std::terminate();
 }

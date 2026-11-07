@@ -350,21 +350,18 @@ void LevelManager::RestartLevel()
 void LevelManager::LoadLevelInfo(const std::filesystem::path& jsonFile)
 {
     const auto resourceFolder = bae::ResourceManager::GetInstance().GetResourcesPath();
+    const auto filePath       = std::filesystem::path(resourceFolder / jsonFile);
     if(!std::filesystem::exists(resourceFolder / jsonFile))
     {
-        const std::string errorMessage = "File Not Found, Path: "
-                + std::filesystem::path(resourceFolder / jsonFile).string();
-        bae::Logger::LogError(errorMessage);
-        throw std::runtime_error(FUNCTION_NAME + errorMessage);
+        bae::Logger::LogFatal("File Not Found, Path: " + filePath.string());
+        std::terminate();
     }
 
-    std::ifstream file{ resourceFolder / jsonFile, std::ios::binary };
+    std::ifstream file{ filePath, std::ios::binary };
     if(!file.is_open())
     {
-        const std::string errorMessage = "Failed to open file, Path: "
-                + std::filesystem::path(resourceFolder / jsonFile).string();
-        bae::Logger::LogError(errorMessage);
-        throw std::runtime_error(FUNCTION_NAME + errorMessage);
+        bae::Logger::LogFatal("Failed to open file, Path: " + filePath.string());
+        std::terminate();
     }
 
     nlohmann::json json{};
@@ -377,9 +374,8 @@ void LevelManager::LoadLevelInfo(const std::filesystem::path& jsonFile)
     }
     catch(const std::exception& exception)
     {
-        const std::string errorMessage = "Failed To Parse Json File! Exception: " + std::string(exception.what());
-        bae::Logger::LogError(errorMessage);
-        throw std::runtime_error(FUNCTION_NAME + errorMessage);
+        bae::Logger::LogFatal("Failed To Parse Json File! Exception: " + std::string(exception.what()));
+        std::terminate();
     }
 
     m_LoadedLevels.insert({ levelInfo.Index, levelInfo });
@@ -1001,9 +997,8 @@ void LevelManager::LoadStartLevelData()
 {
     if(!m_LoadedLevels.contains(0))
     {
-        const std::string errorMessage = "Failed To Find Level With Level Index: 0";
-        bae::Logger::LogError(errorMessage);
-        throw std::runtime_error(FUNCTION_NAME + errorMessage);
+        bae::Logger::LogFatal("Failed To Find Level With Level Index: 0");
+        std::terminate();
     }
 
     m_CurrentLevelInfo = m_LoadedLevels.at(0);
@@ -1013,9 +1008,8 @@ void LevelManager::LoadNewLevelData()
 {
     if(!m_LoadedLevels.contains(m_NrCurrentLevel))
     {
-        const std::string errorMessage = "Failed To Find Level With Level Index: " + std::to_string(m_NrCurrentLevel);
-        bae::Logger::LogError(errorMessage);
-        throw std::runtime_error(FUNCTION_NAME + errorMessage);
+        bae::Logger::LogFatal("Failed To Find Level With Level Index: " + std::to_string(m_NrCurrentLevel));
+        std::terminate();
     }
 
     m_CurrentLevelInfo = m_LoadedLevels.at(m_NrCurrentLevel);

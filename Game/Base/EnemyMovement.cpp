@@ -23,9 +23,8 @@ EnemyMovement::EnemyMovement(bae::GameObject& owner, const float speed, const in
 
     if(!m_MovementComponent)
     {
-        const std::string errorMessage = "EnemyMovement requires MovementGridComponent";
-        bae::Logger::LogError(errorMessage);
-        throw std::runtime_error(FUNCTION_NAME + errorMessage);
+        bae::Logger::LogFatal("EnemyMovement requires MovementGridComponent");
+        std::terminate();
     }
 
     m_MovementComponent->m_Speed = speed;
@@ -213,9 +212,8 @@ Direction EnemyMovement::GetOppositeDirection(const Direction direction)
             return Direction::Up;
     }
 
-    const std::string errorMessage = "This should never be reached";
-    bae::Logger::LogError(errorMessage);
-    throw std::runtime_error(FUNCTION_NAME + errorMessage);
+    bae::Logger::LogFatal("Direction not caught, this should never be reached");
+    std::terminate();
 }
 
 

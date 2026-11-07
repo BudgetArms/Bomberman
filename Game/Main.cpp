@@ -107,7 +107,7 @@ int main(int, char*[])
 
     if(!fs::exists(window.ResourceFolder))
     {
-        bae::Logger::LogError("Resources Folder Not Found");
+        bae::Logger::LogFatal("Resources Folder Not Found");
         std::terminate();
     }
 
@@ -177,7 +177,6 @@ void LoadSounds()
 
     const bool bAreAllSoundLoaded = Game::Sounds::g_sSoundEvents.size()
             == static_cast<std::size_t>(Game::Sounds::SoundAssets::Count);
-
     if(!bAreAllSoundLoaded)
     {
         #ifndef __EMSCRIPTEN__
@@ -186,7 +185,7 @@ void LoadSounds()
         #endif
         #endif
 
-        bae::Logger::LogError("Not ALl SoundEvents are Loaded");
+        bae::Logger::LogFatal("Not All SoundEvents are Loaded");
         std::terminate();
     }
 }
