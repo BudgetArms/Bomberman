@@ -72,8 +72,17 @@ EnemyType EnemyComponent::GetType() const
 
 int EnemyComponent::GetScore() const
 {
-    const bool bIsEnemyAlive = static_cast<States::EnemyAliveState*>(m_State.get());
-    if(!bIsEnemyAlive)
+    if(!m_State)
+    {
+        const std::string errorMessage = "State is invalid";
+        bae::Logger::LogError(errorMessage);
+        throw std::runtime_error(FUNCTION_NAME + errorMessage);
+    }
+
+    const auto enemyAliveState = dynamic_cast<States::EnemyAliveState*>(m_State.get());
+
+    // if enemy is not in alive state, then the enemy is dead
+    if(!enemyAliveState)
     {
         return 0;
     }
