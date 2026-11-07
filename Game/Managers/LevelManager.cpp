@@ -12,6 +12,7 @@
 
 #include "Components/SpriteComponent.hpp"
 #include "Core/HelperFunctions.hpp"
+#include "Core/Logger.hpp"
 #include "Core/Renderer.hpp"
 #include "Core/Scene.hpp"
 #include "Core/Text2D.hpp"
@@ -61,7 +62,7 @@ void LevelManager::StartGame(const GameMode gameMode)
 {
     if(m_bHasGameStarted)
     {
-        std::cout << FUNCTION_NAME << ": Cannot start Game that's already started" << '\n';
+        bae::Logger::LogWarning("Cannot start Game that's already started");
         return;
     }
 
@@ -191,7 +192,7 @@ std::vector<std::pair<bae::GameObject*, PlayerType>> LevelManager::GetPlayers()
             return { { m_Bomberman, PlayerType::Bomberman } };
     }
 
-    std::cout << FUNCTION_NAME << "This should never be reached" << '\n';
+    bae::Logger::LogWarning("This should never be reached");
     return { { nullptr, PlayerType::Bomberman } };
 }
 
@@ -266,7 +267,7 @@ void LevelManager::Notify(const bae::EventData& eventData, bae::Subject* subject
     {
         if(!m_Enemies.contains(subject->GetGameObject()))
         {
-            std::cout << FUNCTION_NAME << " Enemy to Kill is not in enemies list, this should never be reached" << '\n';
+            bae::Logger::LogWarning("Enemy to Kill is not in enemies list, this should never be reached");
             return;
         }
 
@@ -275,14 +276,14 @@ void LevelManager::Notify(const bae::EventData& eventData, bae::Subject* subject
         return;
     }
 
-    std::cout << "Event\n";
+    bae::Logger::LogNormal("Event");
 }
 
 void LevelManager::HandleBomberDeath(const bae::GameObject& object)
 {
     if(&object != m_Bomberman && &object != m_Bombermiss)
     {
-        std::cout << FUNCTION_NAME << " This should never be reached" << '\n';
+        bae::Logger::LogWarning("Object is neither Bomberman or Bombermiss, this should never be reached");
         return;
     }
 
@@ -349,14 +350,19 @@ void LevelManager::LoadLevelInfo(const std::filesystem::path& jsonFile)
     const auto resourceFolder = bae::ResourceManager::GetInstance().GetResourcesPath();
     if(!std::filesystem::exists(resourceFolder / jsonFile))
     {
-        throw std::runtime_error(
-            FUNCTION_NAME + std::string(" Failed! File Not found, file") + jsonFile.string());
+        const std::string errorMessage = "File Not Found, Path: "
+                + std::filesystem::path(resourceFolder / jsonFile).string();
+        bae::Logger::LogError(errorMessage);
+        throw std::runtime_error(FUNCTION_NAME + errorMessage);
     }
 
     std::ifstream file{ resourceFolder / jsonFile, std::ios::binary };
     if(!file.is_open())
     {
-        throw std::runtime_error(FUNCTION_NAME + std::string(" Failed To Open File: ") + jsonFile.string());
+        const std::string errorMessage = "Failed to open file, Path: "
+                + std::filesystem::path(resourceFolder / jsonFile).string();
+        bae::Logger::LogError(errorMessage);
+        throw std::runtime_error(FUNCTION_NAME + errorMessage);
     }
 
     nlohmann::json json{};
@@ -369,10 +375,9 @@ void LevelManager::LoadLevelInfo(const std::filesystem::path& jsonFile)
     }
     catch(const std::exception& exception)
     {
-        std::cout << FUNCTION_NAME << " Failed To Parse Json File! Exception: " << exception.what() << '\n';
-
-        throw std::runtime_error(FUNCTION_NAME + std::string(" Failed To Parse Json File! Exception: ")
-            + std::string(exception.what()));
+        const std::string errorMessage = "Failed To Parse Json File! Exception: " + std::string(exception.what());
+        bae::Logger::LogError(errorMessage);
+        throw std::runtime_error(FUNCTION_NAME + errorMessage);
     }
 
     m_LoadedLevels.insert({ levelInfo.Index, levelInfo });
@@ -713,7 +718,9 @@ void LevelManager::SpawnEnemies()
                 }
                 break;
             case EnemyType::BalloomPlayer:
-                std::cout << "This shouldn't be reached" << '\n';
+                bae::Logger::LogWarning(
+                    std::string("The BalloomPlayer Position shouldn't be set in EnemyStartPositions,")
+                    + std::string(" This shouldn't be reached"));
                 break;
         }
     }
@@ -868,8 +875,8 @@ void LevelManager::AddControls(bae::GameObject& gameObject, const bool bIsFirstP
 
     if(!controller)
     {
-        std::cout << FUNCTION_NAME << " Failed to Get controller, IsFirstPlayer: "
-                << std::boolalpha << bIsFirstPlayer << '\n';
+        bae::Logger::LogWarning("Failed to get controller, is first player controller: "
+            + std::to_string(bIsFirstPlayer));
         return;
     }
 
@@ -991,8 +998,9 @@ void LevelManager::LoadStartLevelData()
 {
     if(!m_LoadedLevels.contains(0))
     {
-        throw std::runtime_error(FUNCTION_NAME + std::string(" Failed To Find Level With Level Index: ")
-            + std::to_string(0));
+        const std::string errorMessage = "Failed To Find Level With Level Index: 0";
+        bae::Logger::LogError(errorMessage);
+        throw std::runtime_error(FUNCTION_NAME + errorMessage);
     }
 
     m_CurrentLevelInfo = m_LoadedLevels.at(0);
@@ -1002,8 +1010,9 @@ void LevelManager::LoadNewLevelData()
 {
     if(!m_LoadedLevels.contains(m_NrCurrentLevel))
     {
-        throw std::runtime_error(FUNCTION_NAME + std::string(" Failed To Find Level With Level Index: ")
-            + std::to_string(m_NrCurrentLevel));
+        const std::string errorMessage = "Failed To Find Level With Level Index: " + std::to_string(m_NrCurrentLevel);
+        bae::Logger::LogError(errorMessage);
+        throw std::runtime_error(FUNCTION_NAME + errorMessage);
     }
 
     m_CurrentLevelInfo = m_LoadedLevels.at(m_NrCurrentLevel);

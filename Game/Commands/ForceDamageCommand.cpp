@@ -1,7 +1,8 @@
 #include "ForceDamageCommand.hpp"
 
+#include "Core/Logger.hpp"
+
 #include "Components/LifeComponent.hpp"
-#include "Core/HelperFunctions.hpp"
 
 
 using namespace Game;
@@ -21,6 +22,6 @@ void ForceDamageCommand::Execute()
 
     const auto lifeComponent = GetActor()->GetComponent<LifeComponent>();
     lifeComponent->RemoveLife();
-    std::cout << FUNCTION_NAME << ": Removed one life, lives left: " << lifeComponent->GetLives() << '\n';
+    bae::Logger::LogNormal("Removed one life, lives left: " + std::to_string(lifeComponent->GetLives()));
 }
 

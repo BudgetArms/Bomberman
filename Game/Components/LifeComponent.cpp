@@ -2,7 +2,10 @@
 
 #include "Core/EventQueue.hpp"
 #include "Core/HelperFunctions.hpp"
+#include "Core/Logger.hpp"
 #include "Singletons/GameTime.hpp"
+
+#include "Base/Events.hpp"
 
 
 using namespace Game;
@@ -17,7 +20,7 @@ LifeComponent::LifeComponent(bae::GameObject& owner, const int maxLives, const f
 {
     if(m_MaxLives <= 0)
     {
-        std::cout << FUNCTION_NAME << " Health is less than 0" << '\n';
+        bae::Logger::LogWarning("Health is less than 0");
 
         m_Lives    = 0;
         m_MaxLives = 0;
@@ -101,7 +104,7 @@ void LifeComponent::SetLives(const int lives)
     }
     if(lives < 0)
     {
-        std::cout << FUNCTION_NAME << " Failed! lives is less than 0" << '\n';
+        bae::Logger::LogWarning("Lives is less than 0");
         return;
     }
 
@@ -122,7 +125,7 @@ void LifeComponent::SetMaxLives(const int maxLives)
     }
     if(maxLives <= 0)
     {
-        std::cout << FUNCTION_NAME << " Failed! MaxLives is equal or less than 0" << '\n';
+        bae::Logger::LogWarning("MaxLives is equal or less than 0");
         return;
     }
 

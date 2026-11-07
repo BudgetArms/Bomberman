@@ -1,8 +1,10 @@
 #include "GridComponent.hpp"
 
+#include "Core/HelperFunctions.hpp"
+#include "Core/Logger.hpp"
+
 #include "Base/LevelGraphNode.hpp"
 #include "Base/LevelGridGraph.hpp"
-#include "Core/HelperFunctions.hpp"
 
 
 using namespace Game;
@@ -48,7 +50,7 @@ void GridComponent::AddNode(const bae::Graphs::GridPosition& position) const
 {
     if(!m_LevelGridGraph->IsWithinBounds(position))
     {
-        std::cout << FUNCTION_NAME << " Failed! GridPosition not in Grid!" << '\n';
+        bae::Logger::LogWarning("GridPosition not in Grid");
         return;
     }
 
@@ -71,7 +73,7 @@ void GridComponent::RemoveNode(const bae::Graphs::GridPosition& position) const
 {
     if(!m_LevelGridGraph->IsWithinBounds(position))
     {
-        std::cout << FUNCTION_NAME << " Failed! GridPosition not in Grid!" << '\n';
+        bae::Logger::LogWarning("GridPosition not in Grid");
         return;
     }
 

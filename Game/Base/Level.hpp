@@ -1,9 +1,9 @@
 #pragma once
 
 #include <set>
+
 #include <nlohmann/json.hpp>
 
-#include "Core/Renderer.hpp"
 #include "Graphs/GridGraph.hpp"
 
 
@@ -94,5 +94,5 @@ namespace Game
     void from_json(const nlohmann::json& json, LevelInfo& level);
 
     bae::Graphs::GridPosition GetGridPosFromJson(nlohmann::basic_json<> data);
-    glm::vec2 GetPosFromJson(nlohmann::basic_json<> data);
+    std::optional<glm::vec2> GetPosFromJson(nlohmann::basic_json<> data);
 }

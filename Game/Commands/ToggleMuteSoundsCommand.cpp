@@ -1,6 +1,7 @@
 #include "ToggleMuteSoundsCommand.hpp"
 
 #include "Commands/Command.hpp"
+#include "Core/Logger.hpp"
 #include "Core/ServiceLocator.hpp"
 
 
@@ -19,10 +20,12 @@ void ToggleMuteSoundsCommand::Execute()
     if(m_bIsMuted)
     {
         soundSystem.UnMuteAllSounds();
+        bae::Logger::LogSuccess("UnMuted");
     }
     else
     {
         soundSystem.MuteAllSounds();
+        bae::Logger::LogSuccess("Muted");
     }
 
     m_bIsMuted = !m_bIsMuted;

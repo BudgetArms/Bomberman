@@ -1,9 +1,9 @@
 #pragma once
 
 #include <algorithm>
-#include <iostream>
 
 #include "Core/HelperFunctions.hpp"
+#include "Core/Logger.hpp"
 
 
 namespace Game
@@ -77,11 +77,9 @@ namespace Game
 
         if(eventPairIt == g_EventsMap.end())
         {
-            const std::string errorMessage = std::string(FUNCTION_NAME) + " Failed! Not Implemented" + '\n';
-            std::cout << errorMessage;
-
-            assert(false && errorMessage.c_str());
-            return bae::HashSDBM("NoEvent");
+            const std::string errorMessage = "Event not implemented";
+            bae::Logger::LogError(errorMessage);
+            std::terminate();
         }
 
         return eventPairIt->second;
@@ -99,12 +97,9 @@ namespace Game
 
         if(eventPairIt == g_EventsMap.end())
         {
-            const std::string errorMessage = std::string(FUNCTION_NAME) + " Failed! Not Implemented" + '\n';
-            std::cout << errorMessage;
-
-            assert(false && errorMessage.c_str());
-            throw std::runtime_error(errorMessage);
-            return Events::NoEvent;
+            const std::string errorMessage = "Event not Implemented";
+            bae::Logger::LogError(errorMessage);
+            throw std::runtime_error(FUNCTION_NAME + errorMessage);
         }
 
         return eventPairIt->first;

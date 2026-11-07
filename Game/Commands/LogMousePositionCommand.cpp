@@ -1,8 +1,8 @@
 #include "LogMousePositionCommand.hpp"
 
-#include <iostream>
-
 #include <SDL3/SDL_mouse.h>
+
+#include "Core/Logger.hpp"
 
 #include "Managers/LevelManager.hpp"
 
@@ -16,7 +16,8 @@ void LogMousePositionCommand::Execute()
     float y{};
     SDL_GetMouseState(&x, &y);
 
-    std::cout << "MousePos X: " << static_cast<int>(x) << ", Y: " << static_cast<int>(y) << '\n';
+    bae::Logger::LogNormal("MousePos X: " + std::to_string(static_cast<int>(x))
+        + ", Y: " + std::to_string(static_cast<int>(y)));
 
     const auto gridComponent = LevelManager::GetInstance().GetGridComponent();
     if(!gridComponent)
@@ -27,9 +28,13 @@ void LogMousePositionCommand::Execute()
     const auto gridPos = gridComponent->GetGridPosition({ x, y });
     if(!gridComponent->IsValidGridPosition(gridPos))
     {
-        std::cout << "not valid" << '\n';
+        bae::Logger::LogWarning("MousePos invalid GridPos, Column" + std::to_string(gridPos.Column)
+            + ", Row: " + std::to_string(gridPos.Row));
+
+        return;
     }
 
-    std::cout << "GridPos Column: " << gridPos.Column << ", Row: " << gridPos.Row << '\n';
+    bae::Logger::LogNormal("MousePos GridPos, Column: " + std::to_string(gridPos.Column)
+        + ", Row: " + std::to_string(gridPos.Row));
 }
 

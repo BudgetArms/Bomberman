@@ -1,17 +1,18 @@
 #include "FireComponent.hpp"
 
-#include "EnemyComponent.hpp"
-#include "ScoreComponent.hpp"
-#include "TemporaryWallComponent.hpp"
-#include "Base/CommonManagerVariables.hpp"
 #include "Components/SpriteComponent.hpp"
-#include "Core/Subject.hpp"
-
-#include "Base/Events.hpp"
-#include "Components/LifeComponent.hpp"
+#include "Core/Logger.hpp"
 #include "Core/Scene.hpp"
-#include "Managers/LevelManager.hpp"
+#include "Core/Subject.hpp"
 #include "Singletons/GameTime.hpp"
+
+#include "Base/CommonManagerVariables.hpp"
+#include "Base/Events.hpp"
+#include "Components/EnemyComponent.hpp"
+#include "Components/LifeComponent.hpp"
+#include "Components/ScoreComponent.hpp"
+#include "Components/TemporaryWallComponent.hpp"
+#include "Managers/LevelManager.hpp"
 
 
 using namespace Game;
@@ -57,13 +58,17 @@ void FireComponent::Notify(const bae::EventData& eventData, bae::Subject*)
 
     if(!eventData.Data.has_value())
     {
-        throw std::runtime_error(FUNCTION_NAME + std::string(" Failed to Get EventData"));
+        const std::string errorMessage = "EventData doesn't have data";
+        bae::Logger::LogFatal(errorMessage);
+        throw std::runtime_error(FUNCTION_NAME + errorMessage);
     }
 
     const auto otherHitbox = std::any_cast<HitboxComponent*>(eventData.Data);
     if(!otherHitbox)
     {
-        throw std::runtime_error(FUNCTION_NAME + std::string(" Failed! Invalid EventData GameObject!"));
+        const std::string errorMessage = "EventData doesn't have OtherHitbox";
+        bae::Logger::LogError(errorMessage);
+        throw std::runtime_error(FUNCTION_NAME + errorMessage);
     }
 
     HandleCollision(*otherHitbox);
@@ -149,7 +154,7 @@ void FireComponent::AddFireChild(const Direction directionFire, const int childF
 {
     if(childFireRange == 0)
     {
-        std::cout << FUNCTION_NAME << " Failed, child Fire Range shouldn't be 0" << '\n';
+        bae::Logger::LogWarning("Child Fire Range shouldn't be 0");
         return;
     }
 
@@ -248,6 +253,7 @@ Direction FireComponent::GetDirectionFromGridPos(const bae::Graphs::GridPosition
         return Direction::Down;
     }
 
-
-    throw std::runtime_error(FUNCTION_NAME + std::string(" Failed, Invalid grid direction!"));
+    const std::string errorMessage = "Invalid grid direction";
+    bae::Logger::LogError(errorMessage);
+    throw std::runtime_error(FUNCTION_NAME + errorMessage);
 }

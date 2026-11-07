@@ -1,5 +1,7 @@
 #include "EnemyComponent.hpp"
 
+#include "Core/Logger.hpp"
+
 #include "Base/Events.hpp"
 #include "Components/LifeComponent.hpp"
 #include "Managers/LevelManager.hpp"
@@ -91,7 +93,9 @@ int EnemyComponent::GetScore() const
             return scoreMap[ScoreType::BalloomKill];
     }
 
-    throw std::runtime_error(FUNCTION_NAME + std::string(" Failed to Get Score"));
+    const std::string errorMessage = "Failed to get score";
+    bae::Logger::LogError(errorMessage);
+    throw std::runtime_error(FUNCTION_NAME + errorMessage);
 }
 
 void EnemyComponent::UpdateToNewState(std::unique_ptr<States::EntityState> newState)

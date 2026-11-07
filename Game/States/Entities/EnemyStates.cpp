@@ -3,6 +3,7 @@
 #include <unordered_map>
 
 #include "Components/SpriteComponent.hpp"
+#include "Core/Logger.hpp"
 #include "Core/ServiceLocator.hpp"
 #include "Singletons/GameTime.hpp"
 
@@ -75,13 +76,17 @@ void EnemyAliveState::Notify(const bae::EventData& eventData, bae::Subject*)
 
     if(!eventData.Data.has_value())
     {
-        throw std::runtime_error(FUNCTION_NAME + std::string(" Failed to Get EventData"));
+        const std::string errorMessage = "EventData doesn't have data";
+        bae::Logger::LogError(errorMessage);
+        throw std::runtime_error(FUNCTION_NAME + errorMessage);
     }
 
     const auto otherHitbox = std::any_cast<HitboxComponent*>(eventData.Data);
     if(!otherHitbox)
     {
-        throw std::runtime_error(FUNCTION_NAME + std::string(" Failed! Invalid EventData GameObject!"));
+        const std::string errorMessage = "EventData doesn't have OtherHitbox";
+        bae::Logger::LogError(errorMessage);
+        throw std::runtime_error(FUNCTION_NAME + errorMessage);
     }
 
     HandleCollision(*otherHitbox);

@@ -1,6 +1,7 @@
 #include "GameModeSelectionState.hpp"
 
 #include "Components/TextComponent.hpp"
+#include "Core/Logger.hpp"
 #include "Core/Renderer.hpp"
 #include "Core/Scene.hpp"
 #include "Managers/ResourceManager.hpp"
@@ -135,7 +136,7 @@ std::unique_ptr<SceneState> GameModeSelectionState::Update()
             return std::make_unique<MainMenuState>(*m_GameObject);
     }
 
-    std::cout << FUNCTION_NAME << " This should never be reached" << '\n';
+    bae::Logger::LogWarning("The Selection should be returned before, this should never be reached");
     return nullptr;
 }
 

@@ -1,9 +1,8 @@
 #include "LevelGridGraph.hpp"
 
-#include <iostream>
+#include "Core/Logger.hpp"
 
-#include "LevelGraphNode.hpp"
-#include "Core/HelperFunctions.hpp"
+#include "Base/LevelGraphNode.hpp"
 
 
 Game::LevelGridGraph::LevelGridGraph(const glm::vec2& position, const int columns, const int rows,
@@ -19,8 +18,8 @@ Game::LevelNodeType Game::LevelGridGraph::GetNodeType(const bae::Graphs::GridPos
     const auto levelNode = dynamic_cast<LevelGraphNode*>(node);
     if(!levelNode)
     {
-        std::cout << FUNCTION_NAME << " Failed! Node is not valid, GridPosition:" << gridPosition.Column << " " <<
-                gridPosition.Row << '\n';
+        bae::Logger::LogWarning("Node is not valid, GridPosition:" + std::to_string(gridPosition.Column) + " "
+            + std::to_string(gridPosition.Row));
         return LevelNodeType::Block;
     }
 
@@ -32,8 +31,8 @@ void Game::LevelGridGraph::SetNodeType(const bae::Graphs::GridPosition& gridPosi
     const auto pNode = dynamic_cast<LevelGraphNode*>(GetNode(gridPosition));
     if(!pNode)
     {
-        std::cout << FUNCTION_NAME << " Failed! Node is not valid, GridPosition:" << gridPosition.Column << " " <<
-                gridPosition.Row << '\n';
+        bae::Logger::LogWarning("Node is invalid, GridPosition:" + std::to_string(gridPosition.Column) + " "
+            + std::to_string(gridPosition.Row));
         return;
     }
 

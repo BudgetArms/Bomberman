@@ -1,6 +1,9 @@
 #include "BombHandler.hpp"
 
-#include "CommonManagerVariables.hpp"
+#include "Core/Logger.hpp"
+#include "Core/Scene.hpp"
+
+#include "Base/CommonManagerVariables.hpp"
 #include "Components/BombComponent.hpp"
 #include "Components/HitboxComponent.hpp"
 #include "Core/HelperFunctions.hpp"
@@ -66,7 +69,7 @@ void BombHandler::TryActivateBomb()
 
     if(!m_PlacedBombs[0])
     {
-        std::cout << FUNCTION_NAME << " Invalid Bomb" << '\n';
+        bae::Logger::LogWarning("First Placed Bomb is Invalid");
         return;
     }
 
@@ -114,7 +117,7 @@ void BombHandler::ActivateBomb()
     const bae::GameObject* oldestBomb = m_PlacedBombs.front();
     if(!oldestBomb)
     {
-        std::cout << FUNCTION_NAME << " Placed Bomb is invalid" << '\n';
+        bae::Logger::LogWarning("First placed bomb is invalid");
         return;
     }
     oldestBomb->GetComponent<BombComponent>()->Explode();

@@ -4,6 +4,7 @@
 
 #include <nlohmann/json.hpp>
 
+#include "Core/Logger.hpp"
 #include "Core/Renderer.hpp"
 #include "Core/Scene.hpp"
 #include "Managers/SceneManager.hpp"
@@ -292,7 +293,7 @@ std::string InputLeaderboardNameState::GetLeaderboardName() const
         leaderboardName.append(GetLetter(leaderboardSpriteSheet->m_Index));
     }
 
-    std::cout << FUNCTION_NAME << " " << leaderboardName << '\n';
+    bae::Logger::LogNormal("Name: " + leaderboardName);
     return leaderboardName;
 }
 

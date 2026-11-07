@@ -4,6 +4,7 @@
 #include <limits>
 
 #include "Core/HelperFunctions.hpp"
+#include "Core/Logger.hpp"
 
 #include "Components/MovementGridComponent.hpp"
 #include "Managers/LevelManager.hpp"
@@ -22,7 +23,9 @@ EnemyMovement::EnemyMovement(bae::GameObject& owner, const float speed, const in
 
     if(!m_MovementComponent)
     {
-        throw std::runtime_error(FUNCTION_NAME + std::string("EnemyMovement requires MovementGridComponent"));
+        const std::string errorMessage = "EnemyMovement requires MovementGridComponent";
+        bae::Logger::LogError(errorMessage);
+        throw std::runtime_error(FUNCTION_NAME + errorMessage);
     }
 
     m_MovementComponent->m_Speed = speed;
@@ -210,8 +213,9 @@ Direction EnemyMovement::GetOppositeDirection(const Direction direction)
             return Direction::Up;
     }
 
-    std::cout << FUNCTION_NAME << " This should never be reached" << '\n';
-    throw std::runtime_error(FUNCTION_NAME + std::string("Failed! This should never be reached"));
+    const std::string errorMessage = "This should never be reached";
+    bae::Logger::LogError(errorMessage);
+    throw std::runtime_error(FUNCTION_NAME + errorMessage);
 }
 
 

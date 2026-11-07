@@ -9,6 +9,7 @@
 #include <filesystem>
 #include <iostream>
 #include <memory>
+#include <print>
 
 
 // External libraries includes
@@ -47,6 +48,7 @@
 // BudgetArmsEngine includes
 #include "Core/BudgetEngine.hpp"
 #include "Core/GameObject.hpp"
+#include "Core/Logger.hpp"
 #include "Core/Renderer.hpp"
 #include "Core/Scene.hpp"
 
@@ -87,10 +89,12 @@ void LoadGameNameScene();
 
 int main(int, char*[])
 {
+    bae::Logger::Initialize(bae::LogVerbosity::All);
+
     #if _DEBUG && __has_include(<vld.h>)
-    std::cout << "VLD enabled" << '\n';
+    bae::Logger::LogSuccess("VLD is enabled");
     #else
-    std::cout << "VLD disabled" << '\n';
+    bae::Logger::LogNormal("VLD is disabled");
     #endif
 
     bae::Utils::Window window{ "Bomberman", "./Resources/", 992, 450, false };
@@ -104,14 +108,14 @@ int main(int, char*[])
 
     if(!fs::exists(window.ResourceFolder))
     {
+        bae::Logger::LogWarning("Existing ResourceFolder not found, changing resource folder");
         window.ResourceFolder = "../Resources/";
     }
 
     if(!fs::exists(window.ResourceFolder))
     {
-        std::cout << "Resources Folder Not Found" << '\n';
-        assert("Resources Folder Not Found");
-        exit(-1);
+        bae::Logger::LogError("Resources Folder Not Found");
+        std::terminate();
     }
 
     #ifdef STEAMWORKS_ENABLED
@@ -129,7 +133,8 @@ int main(int, char*[])
     bae::SteamManager::GetInstance().Shutdown();
     #endif
 
-    std::cout << "\n\n";
+    std::println();
+    std::println();
     return 0;
 }
 
@@ -206,8 +211,8 @@ void LoadSounds()
         #endif
         #endif
 
-        std::cout << errorMessage;
-        assert(false && errorMessage.c_str());
+        bae::Logger::LogError("Not ALl SoundEvents are Loaded");
+        std::terminate();
     }
 }
 

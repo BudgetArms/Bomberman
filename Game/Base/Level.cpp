@@ -1,5 +1,7 @@
 #include "Level.hpp"
 
+#include "Core/Logger.hpp"
+
 
 using namespace Game;
 
@@ -11,7 +13,7 @@ void Game::from_json(const nlohmann::json& json, LevelInfo& level)
         .Name  = json.at("Name"),
         .Index = json.at("Index"),
 
-        .HitboxDimension = GetPosFromJson(json.at("Hitbox")),
+        .HitboxDimension = GetPosFromJson(json.at("Hitbox")).value_or(glm::vec2{ -1, -1 }),
 
         .GridInfo =
         {
@@ -21,7 +23,7 @@ void Game::from_json(const nlohmann::json& json, LevelInfo& level)
                 json.at("Grid").at("CellSize").at("Width"),
                 json.at("Grid").at("CellSize").at("Height"),
             },
-            .Offset = GetPosFromJson(json.at("Grid").at("Offset"))
+            .Offset = GetPosFromJson(json.at("Grid").at("Offset")).value_or(glm::vec2{ -1, -1 })
         },
 
         .BombermanInfo =
@@ -174,18 +176,40 @@ bae::Graphs::GridPosition Game::GetGridPosFromJson(nlohmann::basic_json<> data)
 {
     return bae::Graphs::GridPosition
     {
-        data.at("Column"),
-        data.at("Row"),
+        .Column = data.at("Column"),
+        .Row    = data.at("Row"),
     };
 }
 
-glm::vec2 Game::GetPosFromJson(nlohmann::basic_json<> data)
+std::optional<glm::vec2> Game::GetPosFromJson(nlohmann::basic_json<> data)
 {
-    auto it = data.begin();
+    if(data.size() < 2)
+    {
+        bae::Logger::LogError("Data is not bigger than two");
+        return std::nullopt;
+    }
+
+    auto it       = data.begin();
+    const auto& x = *it;
+
+    ++it;
+    const auto& y = *it;
+
+    if(!x.is_number())
+    {
+        bae::Logger::LogError("X is not a number");
+        return std::nullopt;
+    }
+
+    if(!y.is_number())
+    {
+        bae::Logger::LogError("Y is not a number");
+        return std::nullopt;
+    }
 
     return glm::vec2
     {
-        (it++)->get<float>(),
-        (it++)->get<float>()
+        x.get<float>(),
+        y.get<float>()
     };
 }

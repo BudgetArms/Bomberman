@@ -1,8 +1,9 @@
 #include "ScenesManager.hpp"
 
-#include "Base/CommonManagerVariables.hpp"
-#include "Core/HelperFunctions.hpp"
+#include "Core/Logger.hpp"
 #include "Core/Scene.hpp"
+
+#include "Base/CommonManagerVariables.hpp"
 #include "Managers/SceneManager.hpp"
 #include "States/UI/MainMenuState.hpp"
 
@@ -19,7 +20,7 @@ void ScenesManager::Initialize()
 {
     if(m_bIsInitialized)
     {
-        std::cout << FUNCTION_NAME << " Failed! Already is initialized" << '\n';
+        bae::Logger::LogWarning("Already is initialized");
         return;
     }
 
