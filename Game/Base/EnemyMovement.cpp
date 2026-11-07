@@ -268,4 +268,3 @@ bae::GameObject* EnemyMovement::GetClosestPlayer() const
 
     return closestPlayer;
 }
-

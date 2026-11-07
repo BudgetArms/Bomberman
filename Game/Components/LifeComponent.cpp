@@ -165,4 +165,3 @@ bool LifeComponent::IsOnDamageCooldown() const
 {
     return m_ElapsedDamageCooldownTime < m_DamageCooldownDuration;
 }
-

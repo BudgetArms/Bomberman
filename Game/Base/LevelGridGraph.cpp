@@ -44,4 +44,3 @@ void Game::LevelGridGraph::SetNodeType(const glm::vec2& position, const LevelNod
     const bae::Graphs::GridPosition gridPosition = GetGridPosition(position);
     return SetNodeType(gridPosition, type);
 }
-

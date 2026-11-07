@@ -15,8 +15,7 @@ void EntityState::OnResume()
 {
     m_bIsPaused = false;
 
-    const auto movementComponent = m_Owner->GetComponent<MovementGridComponent>();
-    if(movementComponent)
+    if(const auto movementComponent = m_Owner->GetComponent<MovementGridComponent>())
     {
         movementComponent->Enable();
     }
@@ -26,10 +25,8 @@ void EntityState::OnSuspend()
 {
     m_bIsPaused = true;
 
-    const auto movementComponent = m_Owner->GetComponent<MovementGridComponent>();
-    if(movementComponent)
+    if(const auto movementComponent = m_Owner->GetComponent<MovementGridComponent>())
     {
         movementComponent->Disable();
     }
 }
-

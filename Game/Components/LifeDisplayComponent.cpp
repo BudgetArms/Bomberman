@@ -1,17 +1,17 @@
 #include "LifeDisplayComponent.hpp"
 
+#include "Core/Renderer.hpp"
 #include "Wrappers/Texture2D.hpp"
 
 #include "Base/Events.hpp"
 #include "Components/LifeComponent.hpp"
-#include "Core/Renderer.hpp"
 
 
 using namespace Game;
 
 
 LifeDisplayComponent::LifeDisplayComponent(bae::GameObject& owner, const glm::vec2& position,
-                                           std::shared_ptr<bae::Texture2D> texture) :
+                                           const std::shared_ptr<bae::Texture2D>& texture) :
     Component(owner),
     m_Position{ position },
     m_LifeTexture{ texture }
@@ -27,7 +27,7 @@ void LifeDisplayComponent::Render() const
         const glm::vec2 imageSize   = m_Scale * m_LifeTexture->GetSize();
         const glm::vec2 newPosition = m_Position + glm::vec2(i, i) * (m_Margin + glm::vec2{ imageSize.x, 0 });
 
-        bae::Renderer::GetInstance().RenderTexture(*m_LifeTexture.get(), false, newPosition, 0.f, m_Scale);
+        bae::Renderer::GetInstance().RenderTexture(*m_LifeTexture, false, newPosition, 0.f, m_Scale);
     }
 }
 

@@ -1,5 +1,6 @@
 #include "SceneState.hpp"
 
+#include "Core/Scene.hpp"
 #include "Managers/SceneManager.hpp"
 #include "Wrappers/Controller.hpp"
 #include "Wrappers/Keyboard.hpp"
@@ -7,7 +8,6 @@
 #include "Base/CommonManagerVariables.hpp"
 #include "Base/Events.hpp"
 #include "Commands/SelectionCommands.hpp"
-#include "Core/Scene.hpp"
 #include "Managers/LevelManager.hpp"
 #include "Managers/ScenesManager.hpp"
 

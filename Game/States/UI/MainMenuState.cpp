@@ -38,7 +38,7 @@ void MainMenuState::OnEnter()
     // Title
     const auto titleFont = bae::ResourceManager::GetInstance().LoadFont("Fonts/JoystixMonospace.otf", 56);
     auto titleObject     = std::make_unique<bae::GameObject>("Title");
-    titleObject->SetWorldLocation({ windowSize.Width / 2.f, 50.f });
+    titleObject->SetWorldLocation({ static_cast<float>(windowSize.Width) / 2.f, 50.f });
 
     titleObject->AddComponent<bae::TextComponent>(*titleObject, "Bomberman", titleFont);
     titleObject->GetComponent<bae::TextComponent>()->m_bIsCenteredAtPosition = true;
@@ -187,4 +187,3 @@ void MainMenuState::UpdateSelectorPosition()
     const glm::vec2 selectorPosition = m_SelectorPositions[static_cast<int>(m_Selection)];
     m_SelectorObject->SetWorldLocation(selectorPosition);
 }
-

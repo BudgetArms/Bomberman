@@ -17,7 +17,7 @@ namespace Game
     {
     public:
         LifeDisplayComponent(bae::GameObject& owner, const glm::vec2& position,
-                             std::shared_ptr<bae::Texture2D> lifeTexture);
+                             const std::shared_ptr<bae::Texture2D>& lifeTexture);
 
         void Render() const override;
 

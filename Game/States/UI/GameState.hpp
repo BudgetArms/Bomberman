@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Core/EventListener.hpp"
+
 #include "States/UI/SceneState.hpp"
 
 
@@ -23,4 +25,3 @@ namespace Game::States
         bool m_bIsGameFinished{};
     };
 }
-

@@ -33,7 +33,7 @@ namespace Game
 
         Direction GetDirectionTowardsPlayer() const;
 
-        static Direction GetDirectionFromDistance(const glm::vec2& difference);
+        static Direction GetDirectionFromDistance(const glm::vec2& distanceToPlayer);
         bae::GameObject* GetClosestPlayer() const;
 
 

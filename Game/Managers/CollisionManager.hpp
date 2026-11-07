@@ -18,7 +18,7 @@ namespace Game
         void HandleCollisions() const;
 
         void RegisterHitbox(const HitboxComponent& hitbox);
-        void UnRegisterHitbox(HitboxComponent* hitbox);
+        void UnRegisterHitbox(const HitboxComponent* hitbox);
 
     private:
         static void SendHitboxesNotifications(HitboxComponent* hitboxA, HitboxComponent* hitboxB);

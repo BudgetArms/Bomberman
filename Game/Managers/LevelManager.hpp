@@ -6,13 +6,13 @@
 #include <nlohmann/json.hpp>
 
 #include "Components/Component.hpp"
+#include "Core/EventListener.hpp"
+#include "Core/Observer.hpp"
 #include "Core/SpriteSheet.hpp"
 
 #include "Base/GameMode.hpp"
 #include "Base/Level.hpp"
 #include "Components/GridComponent.hpp"
-#include "Core/EventListener.hpp"
-#include "Core/Observer.hpp"
 
 
 namespace Game
@@ -103,7 +103,7 @@ namespace Game
 
 
         std::unique_ptr<bae::GameObject> GetBombermanBase(const glm::vec2& spawnPosition, PlayerType playerType);
-        std::unique_ptr<bae::GameObject> GetEnemyBase(const glm::vec2& spawnPosition, EnemyType enemyType);
+        std::unique_ptr<bae::GameObject> GetEnemyBase(const glm::vec2& spawnPosition, EnemyType enemyType) const;
 
         void SpawnTemporaryWall(const glm::vec2& position);
         void SpawnDoor(const glm::vec2& position);
@@ -149,4 +149,3 @@ namespace Game
         GridComponent* m_GridComponent{};
     };
 }
-

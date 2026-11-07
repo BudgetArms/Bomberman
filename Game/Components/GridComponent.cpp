@@ -289,8 +289,7 @@ bool GridComponent::DoesConnectionExistInDirection(const bae::Graphs::GridPositi
 
 std::vector<glm::vec2> GridComponent::GetALlConnections() const
 {
-    auto nodes = m_LevelGridGraph->GetActiveNodes();
-
+    const std::vector<bae::Graphs::Node*> nodes = m_LevelGridGraph->GetActiveNodes();
     return bae::Graphs::ConvertNodesToPositions(nodes);
 }
 
@@ -316,4 +315,3 @@ std::vector<glm::vec2> GridComponent::GetShortestPath(const glm::vec2& startPos,
 
     return GetShortestPath(startNodeId, endNodeId);
 }
-

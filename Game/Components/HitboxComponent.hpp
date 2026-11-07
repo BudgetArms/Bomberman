@@ -30,7 +30,7 @@ namespace Game
 
     private:
         void RegisterHitboxToCollisionManager() const;
-        void UnRegisterHitboxToCollisionManager();
+        void UnRegisterHitboxToCollisionManager() const;
 
         glm::vec2 m_Dimensions{};
         glm::vec2 m_OffsetPosition{};

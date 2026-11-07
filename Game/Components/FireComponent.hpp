@@ -5,10 +5,10 @@
 #include "Components/Component.hpp"
 #include "Components/SpriteComponent.hpp"
 #include "Core/Observer.hpp"
+#include "Graphs/GridGraph.hpp"
 
 #include "Base/DirectionEnum.hpp"
 #include "Components/HitboxComponent.hpp"
-#include "Graphs/GridGraph.hpp"
 
 
 namespace Game
@@ -24,7 +24,7 @@ namespace Game
     private:
         void HandleCollision(const HitboxComponent& otherHitboxComponent);
         void HandleIfPlayerCollision(const HitboxComponent& otherHitboxComponent) const;
-        void HandleIfEnemyCollision(const HitboxComponent& otherHitboxComponent);
+        void HandleIfEnemyCollision(const HitboxComponent& otherHitboxComponent) const;
         static void HandleIfTemporaryWallCollision(const HitboxComponent& otherHitboxComponent);
 
         void AddFireChild(Direction directionFire, int childFireRange);

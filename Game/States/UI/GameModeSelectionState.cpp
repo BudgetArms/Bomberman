@@ -1,6 +1,7 @@
 #include "GameModeSelectionState.hpp"
 
 #include "Components/TextComponent.hpp"
+#include "Components/TextureComponent.hpp"
 #include "Core/Logger.hpp"
 #include "Core/Renderer.hpp"
 #include "Core/Scene.hpp"
@@ -9,7 +10,6 @@
 
 #include "Base/CommonManagerVariables.hpp"
 #include "Base/Events.hpp"
-#include "Components/TextureComponent.hpp"
 #include "Managers/LevelManager.hpp"
 #include "States/UI/GameState.hpp"
 #include "States/UI/MainMenuState.hpp"

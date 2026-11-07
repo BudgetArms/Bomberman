@@ -2,11 +2,12 @@
 
 #include <fstream>
 
-#include "Base/CommonManagerVariables.hpp"
-#include "Base/Events.hpp"
 #include "Components/TextComponent.hpp"
 #include "Core/Renderer.hpp"
 #include "Core/Scene.hpp"
+
+#include "Base/CommonManagerVariables.hpp"
+#include "Base/Events.hpp"
 #include "Managers/LevelManager.hpp"
 #include "Managers/ResourceManager.hpp"
 #include "Managers/SceneManager.hpp"

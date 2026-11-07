@@ -75,4 +75,3 @@ void ScenesManager::UpdateToNewState(std::unique_ptr<States::SceneState> newStat
     m_SceneState = std::move(newState);
     m_SceneState->OnEnter();
 }
-

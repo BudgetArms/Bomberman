@@ -6,8 +6,6 @@
 #include "Base/CommonManagerVariables.hpp"
 #include "Components/BombComponent.hpp"
 #include "Components/HitboxComponent.hpp"
-#include "Core/HelperFunctions.hpp"
-#include "Core/Scene.hpp"
 #include "Managers/LevelManager.hpp"
 #include "Managers/SceneManager.hpp"
 

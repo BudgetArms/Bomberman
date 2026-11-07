@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+
 #include "States/UI/SceneState.hpp"
 
 

@@ -1,5 +1,6 @@
 #include "BombermanStates.hpp"
 
+#include "Components/SpriteComponent.hpp"
 #include "Core/ServiceLocator.hpp"
 #include "Singletons/GameTime.hpp"
 #include "Sounds/SoundSystem.hpp"
@@ -9,7 +10,6 @@
 #include "Components/HitboxComponent.hpp"
 #include "Components/LifeComponent.hpp"
 #include "Components/MovementGridComponent.hpp"
-#include "Components/SpriteComponent.hpp"
 #include "Managers/LevelManager.hpp"
 
 
@@ -69,8 +69,7 @@ void BombermanDyingState::OnEnter()
     hitboxComp->m_bAreCollisionsEnabled = false;
 
     // Disable Movement
-    const auto movementComponent = m_Owner->GetComponent<MovementGridComponent>();
-    if(movementComponent)
+    if(const auto movementComponent = m_Owner->GetComponent<MovementGridComponent>())
     {
         movementComponent->Disable();
     }
@@ -114,6 +113,3 @@ std::unique_ptr<EntityState> BombermanDeadState::Update()
 {
     return nullptr;
 }
-
-
-

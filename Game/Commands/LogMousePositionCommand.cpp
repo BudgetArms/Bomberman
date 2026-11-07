@@ -37,4 +37,3 @@ void LogMousePositionCommand::Execute()
     bae::Logger::LogNormal("MousePos GridPos, Column: " + std::to_string(gridPos.Column)
         + ", Row: " + std::to_string(gridPos.Row));
 }
-

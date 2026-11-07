@@ -247,6 +247,7 @@ void LevelManager::Notify(const bae::EventData& eventData, bae::Subject* subject
         {
             HandleBomberDeath(*subject->GetGameObject());
         }
+
         return;
     }
 
@@ -256,6 +257,7 @@ void LevelManager::Notify(const bae::EventData& eventData, bae::Subject* subject
         {
             SpawnBalloomPlayer();
         }
+
         return;
     }
 
@@ -785,7 +787,8 @@ std::unique_ptr<bae::GameObject> LevelManager::GetBombermanBase(const glm::vec2&
 }
 
 
-std::unique_ptr<bae::GameObject> LevelManager::GetEnemyBase(const glm::vec2& spawnPosition, const EnemyType enemyType)
+std::unique_ptr<bae::GameObject> LevelManager::GetEnemyBase(const glm::vec2& spawnPosition,
+                                                            const EnemyType enemyType) const
 {
     // Get Enemy Name
     std::string gameObjectName{};
@@ -816,7 +819,7 @@ std::unique_ptr<bae::GameObject> LevelManager::GetEnemyBase(const glm::vec2& spa
     enemy->AddComponent<EnemyComponent>(*enemy, enemyType);
 
     // Hitbox
-    auto hitboxComp = enemy->GetComponent<HitboxComponent>();
+    const auto hitboxComp = enemy->GetComponent<HitboxComponent>();
     hitboxComp->SetDimensions(m_CurrentLevelInfo.HitboxDimension);
     hitboxComp->SetVisibility(m_bShowHitboxes);
     hitboxComp->SetOffset({ -m_CurrentLevelInfo.HitboxDimension / 2.f });

@@ -24,15 +24,14 @@ EnemyAliveState::EnemyAliveState(bae::GameObject& owner, const EnemyType enemyTy
     const std::unordered_map<EnemyType, SharedEnemyInfo> sharedEnemyInfo
             = LevelManager::GetInstance().GetEnemySharedInfo();
 
-    SharedEnemyInfo enemyInfo{};
     if(!sharedEnemyInfo.contains(enemyType) || enemyType == EnemyType::BalloomPlayer)
     {
         return;
     }
 
-    enemyInfo       = sharedEnemyInfo.at(enemyType);
-    m_EnemyMovement = std::make_unique<EnemyMovement>(owner, enemyInfo.Speed, enemyInfo.Intelligence,
-                                                      enemyInfo.DirectionUpChance);
+    SharedEnemyInfo enemyInfo = sharedEnemyInfo.at(enemyType);
+    m_EnemyMovement           = std::make_unique<EnemyMovement>(owner, enemyInfo.Speed, enemyInfo.Intelligence,
+                                                                enemyInfo.DirectionUpChance);
 }
 
 void EnemyAliveState::OnEnter()
@@ -138,8 +137,7 @@ void EnemyDyingState::OnEnter()
     hitboxComp->m_bAreCollisionsEnabled = false;
 
     // Disable Movement
-    const auto movementComponent = m_Owner->GetComponent<MovementGridComponent>();
-    if(movementComponent)
+    if(const auto movementComponent = m_Owner->GetComponent<MovementGridComponent>())
     {
         movementComponent->Disable();
     }
@@ -180,6 +178,3 @@ std::unique_ptr<EntityState> EnemyDeadState::Update()
 {
     return nullptr;
 }
-
-
-

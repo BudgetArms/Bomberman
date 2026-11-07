@@ -4,16 +4,16 @@
 
 #include <nlohmann/json.hpp>
 
+#include "Components/TextComponent.hpp"
 #include "Core/Logger.hpp"
 #include "Core/Renderer.hpp"
 #include "Core/Scene.hpp"
+#include "Managers/ResourceManager.hpp"
 #include "Managers/SceneManager.hpp"
 
 #include "Base/CommonManagerVariables.hpp"
 #include "Base/Events.hpp"
-#include "Components/TextComponent.hpp"
 #include "Managers/LevelManager.hpp"
-#include "Managers/ResourceManager.hpp"
 #include "States/UI/LeaderboardState.hpp"
 
 
@@ -42,7 +42,7 @@ void InputLeaderboardNameState::OnEnter()
     // Title
     const auto titleFont = bae::ResourceManager::GetInstance().LoadFont("Fonts/JoystixMonospace.otf", 49);
     auto titleObject     = std::make_unique<bae::GameObject>("Title");
-    titleObject->SetWorldLocation({ windowSize.Width / 2.f, 50.f });
+    titleObject->SetWorldLocation({ static_cast<float>(windowSize.Width) / 2.f, 50.f });
 
     titleObject->AddComponent<bae::TextComponent>(*titleObject, "Input Name", titleFont);
     titleObject->GetComponent<bae::TextComponent>()->m_bIsCenteredAtPosition = true;
@@ -51,7 +51,7 @@ void InputLeaderboardNameState::OnEnter()
 
     const auto scoreFont = bae::ResourceManager::GetInstance().LoadFont("Fonts/JoystixMonospace.otf", 32);
     auto scoreObject     = std::make_unique<bae::GameObject>("Score");
-    scoreObject->SetWorldLocation({ windowSize.Width / 2.f, 90.f });
+    scoreObject->SetWorldLocation({ static_cast<float>(windowSize.Width) / 2.f, 90.f });
 
     const std::string scoreText{ "Score: " + std::to_string(m_Score) };
     scoreObject->AddComponent<bae::TextComponent>(*scoreObject, scoreText, scoreFont);
@@ -92,11 +92,11 @@ void InputLeaderboardNameState::OnEnter()
         m_LeaderboardName[index] = gameObject.GetComponent<bae::SpriteComponent>();
     };
 
-    AddData(0, *letter0Object.get());
-    AddData(1, *letter1Object.get());
-    AddData(2, *letter2Object.get());
-    AddData(3, *letter3Object.get());
-    AddData(4, *letter4Object.get());
+    AddData(0, *letter0Object);
+    AddData(1, *letter1Object);
+    AddData(2, *letter2Object);
+    AddData(3, *letter3Object);
+    AddData(4, *letter4Object);
 
 
     auto selectorObject = std::make_unique<bae::GameObject>("Selector Object");
@@ -296,4 +296,3 @@ std::string InputLeaderboardNameState::GetLeaderboardName() const
     bae::Logger::LogNormal("Name: " + leaderboardName);
     return leaderboardName;
 }
-

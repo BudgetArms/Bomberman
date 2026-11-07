@@ -111,7 +111,7 @@ void FireComponent::HandleIfPlayerCollision(const HitboxComponent& otherHitboxCo
     m_Owner->GetComponent<HitboxComponent>()->m_bAreCollisionsEnabled = false;
 }
 
-void FireComponent::HandleIfEnemyCollision(const HitboxComponent& otherHitboxComponent)
+void FireComponent::HandleIfEnemyCollision(const HitboxComponent& otherHitboxComponent) const
 {
     [[maybe_unused]] bae::GameObject* otherGameObject = otherHitboxComponent.GetGameObject();
     [[maybe_unused]] const auto gridComponent         = LevelManager::GetInstance().GetGridComponent();
@@ -121,7 +121,7 @@ void FireComponent::HandleIfEnemyCollision(const HitboxComponent& otherHitboxCom
         return;
     }
 
-    auto enemyComp = otherGameObject->GetComponent<EnemyComponent>();
+    const auto enemyComp = otherGameObject->GetComponent<EnemyComponent>();
     if(!enemyComp)
     {
         return;
@@ -196,7 +196,7 @@ void FireComponent::AddFireChild(const Direction directionFire, const int childF
 
 void FireComponent::AddFireChildren()
 {
-    GridComponent* gridComp                        = LevelManager::GetInstance().GetGridComponent();
+    const GridComponent* gridComp                  = LevelManager::GetInstance().GetGridComponent();
     const bae::Graphs::GridPosition centerPosition = gridComp->GetClosestValidNodePosition(m_Owner->GetWorldLocation());
     const int fireRange                            = LevelManager::GetInstance().GetBombFireRange();
 

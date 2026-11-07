@@ -24,4 +24,3 @@ void ForceDamageCommand::Execute()
     lifeComponent->RemoveLife();
     bae::Logger::LogNormal("Removed one life, lives left: " + std::to_string(lifeComponent->GetLives()));
 }
-

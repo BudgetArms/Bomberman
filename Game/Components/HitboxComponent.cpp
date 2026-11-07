@@ -1,11 +1,10 @@
 #include "HitboxComponent.hpp"
 
-#include "Managers/CollisionManager.hpp"
 #include "Core/GameObject.hpp"
 #include "Core/Utils.hpp"
 
 #include "Base/Events.hpp"
-#include "Managers/SceneManager.hpp"
+#include "Managers/CollisionManager.hpp"
 
 
 using namespace Game;
@@ -41,15 +40,13 @@ SDL_FRect HitboxComponent::GetHitbox() const
     const glm::vec2 gameObjectPos = m_Owner->GetWorldLocation();
     const glm::vec2 hitboxPos     = gameObjectPos + m_OffsetPosition;
 
-    const SDL_FRect hitboxRect
+    return SDL_FRect
     {
-        hitboxPos.x,
-        hitboxPos.y,
-        m_Dimensions.x,
-        m_Dimensions.y,
+        .x = hitboxPos.x,
+        .y = hitboxPos.y,
+        .w = m_Dimensions.x,
+        .h = m_Dimensions.y,
     };
-
-    return hitboxRect;
 }
 
 void HitboxComponent::SetDimensions(const glm::vec2& dimensions)
@@ -92,7 +89,7 @@ void HitboxComponent::RegisterHitboxToCollisionManager() const
     CollisionManager::GetInstance().RegisterHitbox(*this);
 }
 
-void HitboxComponent::UnRegisterHitboxToCollisionManager()
+void HitboxComponent::UnRegisterHitboxToCollisionManager() const
 {
     CollisionManager::GetInstance().UnRegisterHitbox(this);
 }

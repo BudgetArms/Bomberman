@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 
 #include "Core/Scene.hpp"
+#include "Core/ServiceLocator.hpp"
 #include "Singletons/GameTime.hpp"
 
 #include "Base/CommonManagerVariables.hpp"
@@ -10,7 +11,6 @@
 #include "Base/SoundAssets.hpp"
 #include "Components/FireComponent.hpp"
 #include "Components/HitboxComponent.hpp"
-#include "Core/ServiceLocator.hpp"
 #include "Managers/LevelManager.hpp"
 
 

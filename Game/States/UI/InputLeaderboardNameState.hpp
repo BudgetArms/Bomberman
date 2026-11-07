@@ -1,7 +1,10 @@
 #pragma once
 
-#include "Base/GameMode.hpp"
+#include <array>
+
 #include "Components/SpriteComponent.hpp"
+
+#include "Base/GameMode.hpp"
 #include "States/UI/SceneState.hpp"
 
 
@@ -25,7 +28,7 @@ namespace Game::States
         void SaveScore() const;
 
         static std::string GetLetter(int letterIndex);
-        std::string GetLeaderboardName() const;
+        [[nodiscard]] std::string GetLeaderboardName() const;
 
 
         std::array<bae::SpriteComponent*, 5> m_LeaderboardName{};
@@ -40,4 +43,3 @@ namespace Game::States
         const int m_Score;
     };
 }
-

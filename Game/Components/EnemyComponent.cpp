@@ -51,7 +51,7 @@ void EnemyComponent::FixedUpdate()
             case EnemyType::BalloomPlayer:
                 NotifyObservers(bae::EventData(GetEventHash(Events::BalloomPlayerDied), GetGameObject()));
                 break;
-        };
+        }
     }
 
     UpdateToNewState(m_State->Update());
@@ -110,4 +110,3 @@ void EnemyComponent::UpdateToNewState(std::unique_ptr<States::EntityState> newSt
     m_State = std::move(newState);
     m_State->OnEnter();
 }
-

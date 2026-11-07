@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+
 #include "States/UI/SceneState.hpp"
 
 
@@ -37,4 +39,3 @@ namespace Game::States
         bae::GameObject* m_SelectorObject{};
     };
 }
-

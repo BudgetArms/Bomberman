@@ -1,10 +1,8 @@
 #pragma once
 
 #include "Components/Component.hpp"
-#include "Core/Subject.hpp"
-
-#include "Base/Events.hpp"
 #include "Core/EventQueue.hpp"
+#include "Core/Subject.hpp"
 
 
 namespace Game

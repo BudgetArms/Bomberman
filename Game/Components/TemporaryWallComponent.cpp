@@ -1,6 +1,6 @@
 #include "TemporaryWallComponent.hpp"
 
-#include "HitboxComponent.hpp"
+#include "Components/HitboxComponent.hpp"
 #include "Managers/LevelManager.hpp"
 
 
@@ -17,4 +17,3 @@ TemporaryWallComponent::TemporaryWallComponent(bae::GameObject& owner) :
 
     gridComponent->SetNodeType(gridPosition, LevelNodeType::TempBlock);
 }
-

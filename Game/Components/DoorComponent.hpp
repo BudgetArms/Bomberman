@@ -1,9 +1,9 @@
 #pragma once
 
-#include "HitboxComponent.hpp"
 #include "Components/Component.hpp"
 #include "Core/Observer.hpp"
 
+#include "Components/HitboxComponent.hpp"
 #include "Components/SpriteComponent.hpp"
 
 
@@ -26,4 +26,3 @@ namespace Game
         bae::SpriteComponent* m_SpriteComponent{};
     };
 }
-

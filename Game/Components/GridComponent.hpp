@@ -1,10 +1,11 @@
 #pragma once
 
-#include "Base/DirectionEnum.hpp"
-#include "Base/LevelNodeType.hpp"
 #include "Components/Component.hpp"
 #include "Graphs/AStar.hpp"
 #include "Graphs/GridGraph.hpp"
+
+#include "Base/DirectionEnum.hpp"
+#include "Base/LevelNodeType.hpp"
 
 
 namespace Game
@@ -84,4 +85,3 @@ namespace Game
         bae::Graphs::AStar m_AStar;
     };
 }
-

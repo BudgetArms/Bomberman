@@ -19,9 +19,6 @@ void CollisionManager::HandleCollisions() const
         return;
     }
 
-    HitboxComponent* hitboxComponentA{};
-    HitboxComponent* hitboxComponentB{};
-
     for(size_t i = 0; i < m_HitboxObjects.size(); ++i)
     {
         if(!bae::GameObject::IsValid(m_HitboxObjects[i]))
@@ -29,7 +26,7 @@ void CollisionManager::HandleCollisions() const
             continue;
         }
 
-        hitboxComponentA = m_HitboxObjects[i]->GetComponent<HitboxComponent>();
+        auto* hitboxComponentA = m_HitboxObjects[i]->GetComponent<HitboxComponent>();
         if(!hitboxComponentA || !hitboxComponentA->m_bAreCollisionsEnabled)
         {
             continue;
@@ -42,7 +39,7 @@ void CollisionManager::HandleCollisions() const
                 continue;
             }
 
-            hitboxComponentB = m_HitboxObjects[j]->GetComponent<HitboxComponent>();
+            auto* hitboxComponentB = m_HitboxObjects[j]->GetComponent<HitboxComponent>();
             if(!hitboxComponentB || !hitboxComponentB->m_bAreCollisionsEnabled)
             {
                 continue;
@@ -80,7 +77,7 @@ void CollisionManager::RegisterHitbox(const HitboxComponent& hitbox)
     m_HitboxObjects.push_back(hitboxObject);
 }
 
-void CollisionManager::UnRegisterHitbox(HitboxComponent* hitbox)
+void CollisionManager::UnRegisterHitbox(const HitboxComponent* hitbox)
 {
     bae::GameObject* hitboxObject = hitbox->GetGameObject();
     if(!hitboxObject)

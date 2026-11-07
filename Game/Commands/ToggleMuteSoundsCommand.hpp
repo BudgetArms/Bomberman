@@ -14,7 +14,6 @@ namespace Game
         void Execute() override;
 
     private:
-        bool m_bIsMuted{ false };
+        bool m_bIsMuted{};
     };
 }
-

@@ -105,4 +105,3 @@ namespace Game
         return eventPairIt->first;
     }
 }
-

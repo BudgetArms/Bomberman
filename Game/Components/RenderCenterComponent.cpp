@@ -30,7 +30,7 @@ void RenderCenterComponent::Render() const
 
 void RenderCenterComponent::Update()
 {
-    const glm::ivec2 position      = glm::ivec2(m_Owner->GetWorldLocation());
+    const auto position            = glm::ivec2(m_Owner->GetWorldLocation());
     const std::string positionText = "X: " + std::to_string(position.x) + ", Y: " + std::to_string(position.y);
 
     m_Text.m_Position = m_Owner->GetWorldLocation() + glm::vec2(0, -20.f);
@@ -77,4 +77,3 @@ void RenderCenterComponent::SetFontSize(const float fontSize) const
 
     TTF_SetFontSize(m_Text.GetFont()->GetFont(), fontSize);
 }
-

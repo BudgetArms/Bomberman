@@ -5,16 +5,12 @@
 #include <XInput.h>
 #endif
 
-#include <array>
 #include <memory>
-
 
 #include <SDL3/SDL_keycode.h>
 
-#include "Core/EventListener.hpp"
 #include "Core/GameObject.hpp"
 #include "Core/Observer.hpp"
-#include "Core/SpriteSheet.hpp"
 
 
 namespace Game::States
@@ -23,14 +19,14 @@ namespace Game::States
     {
     public:
         explicit SceneState(bae::GameObject& selectionObject);
-        virtual ~SceneState() = default;
+        ~SceneState() override = default;
 
         virtual void OnEnter() = 0;
         virtual void OnExit() = 0;
 
         virtual std::unique_ptr<SceneState> Update() = 0;
 
-        virtual void Notify(const bae::EventData& eventData, bae::Subject* subject) = 0;
+        void Notify(const bae::EventData& eventData, bae::Subject* subject) override = 0;
 
     protected:
         static void ClearScene();

@@ -30,4 +30,3 @@ void ToggleMuteSoundsCommand::Execute()
 
     m_bIsMuted = !m_bIsMuted;
 }
-
