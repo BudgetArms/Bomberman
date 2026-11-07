@@ -3,11 +3,11 @@
 #include <vld.h>
 #endif
 
+
 // STD includes
 #include <cassert>
 #include <chrono>
 #include <filesystem>
-#include <iostream>
 #include <memory>
 #include <print>
 
@@ -20,24 +20,6 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 
-#include "Core/ServiceLocator.hpp"
-#include "Sounds/LoggingSoundSystem.hpp"
-
-#ifndef __EMSCRIPTEN__
-#include "Sounds/MixerSoundSystem.hpp"
-#endif
-#include "Base/CommonManagerVariables.hpp"
-#include "Base/SoundAssets.hpp"
-#include "Commands/LogMousePositionCommand.hpp"
-#include "Commands/ToggleMuteSoundsCommand.hpp"
-#include "Components/ManagersComponent.hpp"
-#include "Managers/InputManager.hpp"
-#include "Managers/ScenesManager.hpp"
-#include "Sounds/SoLoudSoundSystem.hpp"
-#include "Wrappers/Keyboard.hpp"
-#include "Wrappers/Mouse.hpp"
-
-
 #ifdef STEAMWORKS_ENABLED
 #pragma warning (push)
 #pragma warning (disable: 4996)
@@ -45,22 +27,27 @@
 #pragma warning (pop)
 #endif
 
+
 // BudgetArmsEngine includes
+#include "Components/FpsCounterComponent.hpp"
+#include "Components/TextComponent.hpp"
 #include "Core/BudgetEngine.hpp"
 #include "Core/GameObject.hpp"
 #include "Core/Logger.hpp"
 #include "Core/Renderer.hpp"
 #include "Core/Scene.hpp"
-
-#include "Components/FpsCounterComponent.hpp"
-#include "Components/TextComponent.hpp"
-#include "Components/TextureComponent.hpp"
-
+#include "Core/ServiceLocator.hpp"
 #include "Managers/ResourceManager.hpp"
 #include "Managers/SceneManager.hpp"
-
+#include "Sounds/LoggingSoundSystem.hpp"
+#include "Sounds/SoLoudSoundSystem.hpp"
+#include "Wrappers/Keyboard.hpp"
 #include "Wrappers/Texture2D.hpp"
 
+
+#ifndef __EMSCRIPTEN__
+#include "Sounds/MixerSoundSystem.hpp"
+#endif
 
 #ifdef STEAMWORKS_ENABLED
 #include "Core/Achievement.hpp"
@@ -70,21 +57,27 @@
 
 
 // Game Includes
+#include "Base/CommonManagerVariables.hpp"
+#include "Base/SoundAssets.hpp"
+#include "Commands/ToggleMuteSoundsCommand.hpp"
+#include "Components/ManagersComponent.hpp"
+#include "Managers/InputManager.hpp"
 #include "Managers/LevelManager.hpp"
+#include "Managers/ScenesManager.hpp"
 
 
 namespace fs = std::filesystem;
 
-void Start();
+static void Start();
 
-void LoadSounds();
-void LoadSoundCommands();
+static void LoadSounds();
+static void LoadSoundCommands();
 
-void CreateAllScenes();
-void LoadManagers();
+static void CreateAllScenes();
+static void LoadManagers();
 
-void LoadFpsCounterScene();
-void LoadGameNameScene();
+[[maybe_unused]] static void LoadFpsCounterScene();
+[[maybe_unused]] static void LoadGameNameScene();
 
 
 int main(int, char*[])
@@ -152,22 +145,6 @@ void Start()
     // LoadGameNameScene();
 }
 
-#ifndef __EMSCRIPTEN__
-void CreateConsole()
-{
-    if(AllocConsole())
-    {
-        FILE* fp;
-
-        freopen_s(&fp, "CONOUT$", "w", stdout);
-        freopen_s(&fp, "CONOUT$", "w", stderr);
-        freopen_s(&fp, "CONIN$", "r", stdin);
-
-        std::cout << "Release Mode: Console created\n";
-    }
-}
-#endif
-
 void LoadSounds()
 {
     namespace gs = Game::Sounds;
@@ -203,11 +180,9 @@ void LoadSounds()
 
     if(!bAreAllSoundLoaded)
     {
-        const std::string errorMessage = std::string(FUNCTION_NAME) + " Failed Not All SoundEvents are Loaded \n";
-
         #ifndef __EMSCRIPTEN__
         #ifdef NDEBUG
-        CreateConsole();
+        bae::Utils::CreateConsole();
         #endif
         #endif
 
