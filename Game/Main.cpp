@@ -7,6 +7,8 @@
 // STD includes
 #include <cassert>
 #include <chrono>
+// used for std::terminate
+#include <exception>
 #include <filesystem>
 #include <memory>
 #include <print>
@@ -82,7 +84,9 @@ static void LoadManagers();
 
 int main(int, char*[])
 {
-    bae::Logger::Initialize(bae::LogVerbosity::All);
+    const std::string gameName = "Bomberman";
+
+    bae::Logger::Initialize(gameName, bae::LogVerbosity::All);
 
     #if _DEBUG && __has_include(<vld.h>)
     bae::Logger::LogSuccess("VLD is enabled");
@@ -90,7 +94,8 @@ int main(int, char*[])
     bae::Logger::LogNormal("VLD is disabled");
     #endif
 
-    bae::Utils::Window window{ "Bomberman", "./Resources/", 992, 450, false };
+
+    bae::Utils::Window window{ gameName, "./Resources/", 992, 450, false };
 
     bae::GameObject::m_bDebugCreation    = false;
     bae::GameObject::m_bDebugDestruction = false;
@@ -117,6 +122,8 @@ int main(int, char*[])
 
     #endif
 
+    bae::Logger::DebugPrintAllColors();
+    bae::Logger::DebugPrintAllVerbosity();
 
     bae::BudgetEngine engine(window);
     engine.Run(Start);
