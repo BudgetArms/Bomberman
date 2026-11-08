@@ -79,7 +79,7 @@ void EnemyMovement::ChooseRandomDirection()
         return;
     }
 
-    const int randomIndex = bae::GetRandomInt(0, static_cast<int>(validDirections.size() - 1));
+    const int randomIndex = bae::Random::GetRandomInt(0, static_cast<int>(validDirections.size() - 1));
     m_CurrentDirection    = validDirections[randomIndex];
 }
 
@@ -147,7 +147,7 @@ void EnemyMovement::ChooseIntelligentDirection()
 
 bool EnemyMovement::ShouldChangeDirection() const
 {
-    const float randomChance = bae::GetRandomFloat(0.f, 1.f);
+    const float randomChance = bae::Random::GetRandomFloat(0.f, 1.f);
     return randomChance < m_ChangeDirectionUpChance;
 }
 
