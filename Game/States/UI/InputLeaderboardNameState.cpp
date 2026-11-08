@@ -236,7 +236,10 @@ void InputLeaderboardNameState::UpdateSelector() const
 
 void InputLeaderboardNameState::SaveScore() const
 {
-    std::ifstream file(LevelManager::m_SaveFileName.data());
+    std::ifstream file(LevelManager::m_SaveFilePath);
+
+    // create directory if it doesn't already exist
+    std::filesystem::create_directories(LevelManager::m_SaveFilePath.parent_path());
 
     json data{};
     if(!file)
@@ -275,7 +278,7 @@ void InputLeaderboardNameState::SaveScore() const
         }
     );
 
-    std::ofstream outputFile(LevelManager::m_SaveFileName.data());
+    std::ofstream outputFile(LevelManager::m_SaveFilePath);
     outputFile << data.dump(4);
 }
 

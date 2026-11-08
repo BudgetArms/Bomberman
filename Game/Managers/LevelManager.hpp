@@ -62,7 +62,7 @@ namespace Game
         void RemoveEnemy(bae::GameObject* enemyObject);
 
 
-        static constexpr std::string_view m_SaveFileName{ "Scores.json" };
+        inline static const std::filesystem::path m_SaveFilePath{ "Scores/Scores.json" };
         static constexpr std::string_view m_SaveEntryName{ "Name" };
         static constexpr std::string_view m_SaveEntryScore{ "Score" };
         static constexpr std::string_view m_SinglePlayerName{ "Singleplayer" };
@@ -102,8 +102,10 @@ namespace Game
         void SpawnItems();
 
 
-        std::unique_ptr<bae::GameObject> GetBombermanBase(const glm::vec2& spawnPosition, PlayerType playerType);
-        std::unique_ptr<bae::GameObject> GetEnemyBase(const glm::vec2& spawnPosition, EnemyType enemyType) const;
+        [[nodiscard]] std::unique_ptr<bae::GameObject> GetBombermanBase(const glm::vec2& spawnPosition,
+                                                                        PlayerType playerType);
+        [[nodiscard]] std::unique_ptr<bae::GameObject> GetEnemyBase(const glm::vec2& spawnPosition,
+                                                                    EnemyType enemyType) const;
 
         void SpawnTemporaryWall(const glm::vec2& position);
         void SpawnDoor(const glm::vec2& position);

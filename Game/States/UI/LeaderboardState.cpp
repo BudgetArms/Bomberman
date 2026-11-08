@@ -153,9 +153,10 @@ void LeaderboardState::Notify(const bae::EventData& eventData, bae::Subject*)
 
 void LeaderboardState::LoadSaveFileData()
 {
-    std::ifstream file(LevelManager::m_SaveFileName.data());
+    std::ifstream file(LevelManager::m_SaveFilePath);
     if(!file)
     {
+        bae::Logger::LogWarning("SaveFile not found");
         return;
     }
 
@@ -189,8 +190,8 @@ void LeaderboardState::LoadSaveFileData()
         {
             const ScoreData entryData
             {
-                scoreInfo[LevelManager::m_SaveEntryName.data()],
-                scoreInfo[LevelManager::m_SaveEntryScore.data()]
+                .Name  = scoreInfo[LevelManager::m_SaveEntryName.data()],
+                .Score = scoreInfo[LevelManager::m_SaveEntryScore.data()]
             };
 
             dataVector.emplace_back(entryData);
