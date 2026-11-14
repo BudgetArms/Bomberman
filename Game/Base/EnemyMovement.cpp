@@ -40,11 +40,7 @@ void EnemyMovement::Update()
 
     if(m_MovementComponent->IsAtNodeCenter())
     {
-        if(!m_MovementComponent->CanMoveInDirection(m_CurrentDirection))
-        {
-            ChooseDirection();
-        }
-        else if(ShouldChangeDirection())
+        if(!m_MovementComponent->CanMoveInDirection(m_CurrentDirection) || ShouldChangeDirection())
         {
             ChooseDirection();
         }
