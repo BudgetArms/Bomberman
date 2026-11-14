@@ -3,7 +3,6 @@
 #include <vld.h>
 #endif
 
-
 // STD includes
 #include <cassert>
 #include <chrono>
@@ -86,6 +85,14 @@ int main(int, char*[])
 {
     const std::string gameName = "Bomberman";
 
+    // to fix const std::chrono::zoned_time* (fake) leaks
+    #if _DEBUG && __has_include(<vld.h>)
+    VLDDisable();
+    (void)std::chrono::current_zone();
+    VLDEnable();
+    #endif
+
+    bae::Logger::Initialize(gameName, bae::LogVerbosity::All);
     bae::Logger::Initialize(gameName, bae::LogVerbosity::All);
 
     #if _DEBUG && __has_include(<vld.h>)
